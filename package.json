@@ -7,13 +7,13 @@
     "url": "https://vendeli.eu/"
   },
   "license": "MIT",
-  "homepage": "https://github.com/vendelieu/angular-blog",
+  "homepage": "https://github.com/vendelieu/blog-frontend",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vendelieu/angular-blog.git"
+    "url": "https://github.com/vendelieu/blog-frontend.git"
   },
   "bugs": {
-    "url": "https://github.com/vendelieu/angular-blog/issues"
+    "url": "https://github.com/vendelieu/blog-frontend/issues"
   },
   "scripts": {
     "ng": "ng",
@@ -84,7 +84,6 @@
     "Vendelieu",
     "Blog",
     "CMS",
-    "Angular",
-    "angular-universal"
+    "Angular"
   ]
 }

@@ -1,0 +1,88 @@
+@body-width: 1000px;
+@header-height: 52px;
+@header-bg-height: 4px;
+@sider-width: 280px;
+@primary-margin: 16px;
+@content-margin: 24px;
+@content-header-margin: 28px;
+@border-radius: 4px;
+@box-shadow-width: 2px;
+@content-box-shadow: 0 0 @box-shadow-width rgba(0, 0, 0, .2);
+@post-line-height: 24px;
+@tag-row-span: 2px;
+@content-shadow: 0 5px 40px -1px rgba(2, 10, 18, 0.11);
+
+@base-font-size: 10px;
+@primary-font-size: 14px;
+@minor-font-size: 13px;
+@meta-font-size: 12px;
+
+@action-color: #f50;
+@alert-color: rgba(32, 136, 255, 0.2);
+
+@input-line-height: 1.57142857;
+@input-border-color: #eaeaea;
+@input-invalid-color: #ff4d4f;
+
+@m-primary-margin: 1.6rem;
+@m-content-margin: 1.2rem;
+@m-content-header-margin: 2.8rem;
+@m-footer-margin: 2.4rem;
+@m-header-height: 5.2rem;
+@m-sider-width: 66%;
+@m-sider-font-color: #fff;
+@m-sider-background-color: #34393d;
+@m-sider-border-color: #2d3135;
+
+:root {
+  --color-background: #fff;
+  --color-background-secondary: #f6f8fa;
+  --color-background-third: #dcdcdc;
+  --color-background-rgb: 255, 255, 255;
+  --color-text: #33333d;
+  --color-text-secondary: #5d5c5c;
+  --color-text-third: #999;
+  --color-border: #eee;
+}
+
+@dark-color-background: #1e2128;
+@dark-color-background-secondary: #24292E;
+@dark-color-background-third: #1A2428DD;
+@dark-color-background-rgb: 30, 33, 40;
+@dark-color-text: #ddd;
+@dark-color-text-secondary: #9899ab;
+@dark-color-text-third: #7d8594;
+@dark-color-border: #2b3038;
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-mode: 'dark';
+  }
+
+  :root:not([color-mode]) {
+    --color-background: @dark-color-background;
+    --color-background-secondary: @dark-color-background-secondary;
+    --color-background-third: @dark-color-background-third;
+    --color-background-rgb: @dark-color-background-rgb;
+    --color-text: @dark-color-text;
+    --color-text-secondary: @dark-color-text-secondary;
+    --color-text-third: @dark-color-text-third;
+    --color-border: @dark-color-border;
+  }
+}
+
+[color-mode='dark'] {
+  --color-background: @dark-color-background;
+  --color-background-secondary: @dark-color-background-secondary;
+  --color-background-third: @dark-color-background-third;
+  --color-background-rgb: @dark-color-background-rgb;
+  --color-text: @dark-color-text;
+  --color-text-secondary: @dark-color-text-secondary;
+  --color-text-third: @dark-color-text-third;
+  --color-border: @dark-color-border;
+}
+
+[color-mode='dark'] .tags a {
+  color: var(--color-text) !important;
+}

@@ -1,0 +1,30 @@
+<div [ngClass]="{'open': siderOpen}" class='sider'>
+  <aside class='sider-body'>
+    <div class='sider-info'>
+      <div class='sider-info-logo'>
+        <img alt="{{options['site_name']}}" class='logo' src='/logo.png' />
+      </div>
+      <div class='sider-info-profile'>
+        <h2 class='sider-info-profile-name'>{{options['site_name']}}</h2>
+        <div class='sider-info-profile-slogan'>{{options['site_slogan']}}</div>
+      </div>
+    </div>
+    <nav class='sider-nav'>
+      <ul class='sider-nav-list'>
+        <li [ngClass]="{'active': activePage == 'projects'}">
+          <a [routerLink]="['/projects']" title="{{options['site_name']}} projects">Projects</a>
+        </li>
+        <li [ngClass]="{'active': activePage === 'about'}">
+          <a routerLink='/about'><i class='icon icon-person-heart'></i><span>About</span></a>
+        </li>
+        <div class='separator'></div>
+        <li *ngIf='!isLoggedIn'>
+          <a routerLink='/user/login' title='Login'><i class='icon icon-login'></i><span>Login</span></a>
+        </li>
+        <ng-container *ngIf='isLoggedIn'>
+          <li><a (click)='logout()'><i class='icon icon-logout'></i><span>Logout</span></a></li>
+        </ng-container>
+      </ul>
+    </nav>
+  </aside>
+</div>

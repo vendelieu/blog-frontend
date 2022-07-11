@@ -1,0 +1,67 @@
+@import "../../../styles/variables";
+
+.footer {
+  @footer-color: var(--color-text);
+  line-height: 28px;
+  text-align: center;
+  font-size: @minor-font-size;
+  background: var(--color-background-secondary);
+  color: @footer-color;
+
+  &-desktop {
+    margin-top: @content-margin;
+    padding: 16px 0;
+  }
+
+  &-mobile {
+    padding: @m-primary-margin 0;
+  }
+
+  .footer-link {
+    li:not(:last-child) {
+      margin-right: 12px;
+    }
+  }
+
+  .footer-record {
+    display: flex;
+    justify-content: center;
+
+    &-desktop {
+      li:not(:last-child):after {
+        content: '';
+        margin: 0 12px;
+        border-right: 1px solid @footer-color;
+      }
+    }
+
+    &-mobile {
+      flex-direction: column;
+    }
+  }
+
+  ul li {
+    display: inline-block;
+  }
+
+  a {
+    color: @footer-color;
+  }
+
+  .inactive-icon {
+    color: var(--color-text-third);
+  }
+
+  .github-hover {
+    color: #854bef;
+  }
+
+  .telegram-hover {
+    color: #0088cc;
+  }
+
+  .email-hover {
+    color: #EA4335;
+  }
+
+}

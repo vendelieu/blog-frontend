@@ -1,0 +1,27 @@
+@import "variables";
+
+.tag-list {
+  padding: 0 0 1em 0;
+}
+
+.tag-list .tag-list-item {
+  display: inline-block;
+  list-style-type: none;
+  padding: 0 5px 0 5px;
+  background-color: var(--color-background-third);
+}
+
+.tag-list .tag-list-item a {
+  display: inline-block;
+  line-height: 20px;
+  height: 20px;
+}
+
+.tag-list .tag-list-item:hover {
+  cursor: pointer;
+  background-color: @action-color;
+}
+
+.tag-list .tag-list-item:hover a {
+  color: var(--color-background);
+}

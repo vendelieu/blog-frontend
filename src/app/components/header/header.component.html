@@ -1,0 +1,65 @@
+<ng-container *ngIf='!isMobile'>
+  <header class='header header-desktop'>
+    <nav class='nav'>
+      <a [routerLink]="['/']" class='logo' title="{{options['site_name']}}">
+        <img alt="{{options['site_name']}}" class='logo' src='/assets/images/logo.png' />
+      </a>
+      <ul class='nav-list'>
+        <li [ngClass]="{'active': activePage == 'projects'}">
+          <a [routerLink]="['/projects']" title="{{options['site_name']}} projects">Projects</a>
+        </li>
+        <li [ngClass]="{'active': activePage == 'about'}">
+          <a [routerLink]="['/about']" title="{{options['site_name']}} about">About</a>
+        </li>
+      </ul>
+      <ul class='link-list'>
+        <li>
+          <a (click)='toggleTheme()'>
+            <fa-icon [icon]='currentTheme === "dark" ? lightThemeIcon : darkThemeIcon'></fa-icon>
+          </a>
+        </li>
+        <li>
+          <a (click)='toggleSiderOpen()' target='_blank' title='Search'>
+            <fa-icon [icon]='searchIcon'></fa-icon>
+          </a>
+        </li>
+        <li>
+          <a *ngIf='!isLoggedIn' routerLink='/user/login' title='Login'>
+            <i class='icon icon-login'></i><span>Login</span>
+          </a>
+          <ng-container *ngIf='isLoggedIn'>
+            <a href='javascript:'>
+              <i class='icon icon-user'></i><span>{{user?.username}}</span>
+            </a>
+            <ul class='sub-nav-list'>
+              <li>
+                <a (click)='logout()'><i class='icon icon-logout'></i><span>Logout</span></a>
+              </li>
+            </ul>
+          </ng-container>
+        </li>
+      </ul>
+    </nav>
+  </header>
+</ng-container>
+<ng-container *ngIf='isMobile'>
+  <header class='header'>
+    <div class='header-mobile'>
+      <ng-container *ngIf='!showSearch'>
+        <i (click)='toggleSiderOpen()' class='icon icon-menu'></i>
+        <a [routerLink]="['/']" class='logo' title="{{options['site_name']}}">
+          <img alt="{{options['site_name']}}" class='logo' src='/assets/images/logo.png' />
+        </a>
+        <i (click)='toggleSearchStatus()' class='icon icon-search'></i>
+      </ng-container>
+      <ng-container *ngIf='showSearch'>
+        <form (submit)='search()' action='/' method='get'>
+          <input [(ngModel)]='keyword' [autofocus]='focusSearch' autocomplete='off' class='header-input'
+                 name='keyword' placeholder='Search...' type='text' />
+          <input class='header-button' type='submit' value='Search' />
+        </form>
+        <div (click)='toggleSearchStatus()' class='mask mask-search'></div>
+      </ng-container>
+    </div>
+  </header>
+</ng-container>

@@ -1,0 +1,15 @@
+<div id='sider'>
+  <div class='search hide-search' (click)='onClick($event)'>
+    <div class='search-container'>
+      <div class='search-close'>
+        <i class='iconfont iconbaseline-close-px'></i>
+      </div>
+      <div class='search-input-wrapper'>
+        <input [(ngModel)]='keyword' name='keyword' class='search-input' type='search' id='search-input'
+               placeholder='Search...' autocomplete='off'
+               autocorrect='off' autocapitalize='off'>
+        <fa-icon [icon]='searchIcon' (click)='search()' class='search-icon'></fa-icon>
+      </div>
+    </div>
+  </div>
+</div>

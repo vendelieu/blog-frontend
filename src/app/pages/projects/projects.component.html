@@ -1,0 +1,47 @@
+<div class='banner'>
+  <ul>
+    <li class='projects-banner'>
+      <img src='/assets/images/projectBg.png' alt='My projects' /></li>
+  </ul>
+</div>
+<div class='container'>
+  <div class='alert'>
+    In my spare time, I support some open source projects, including but not limited to, quirky products, tools,
+    libraries, and frameworks that improve the developer experience.<br><br>
+
+    If you have any relevant suggestions or interesting questions to discuss, please contact me directly via <a href='mailto:{{email}}'>email</a>.
+  </div>
+  <div class='row'>
+    <h1 class='project-text'>
+      <b>Projects</b>
+    </h1>
+  </div>
+  <i *ngIf='loading' class='icon icon-loading'></i>
+  <div
+    *ngIf='tabOption === 0 && githubProjects?.length ?? 0 > 0'
+    class='row'
+    id='starred-projects'
+  >
+    <a *ngFor='let project of githubProjects; let i = index'
+       [ngClass]="{ 'offset-l2': i % 2 !== 0, 'offset-m2': i % 2 !== 0 }"
+       class='card'
+       href='{{ project.html_url }}'
+       target='_blank'
+    >
+      <div class='card-content secondary-color project-text'>
+        <span>
+          <div class='card-title-content'>
+            <h5 class='project-title'>
+              <fa-icon [icon]='projectIcon'> </fa-icon>
+              {{ project.name }}
+            </h5>
+            <span *ngIf='project.language'><fa-icon [icon]='langIcon'></fa-icon>
+              {{ project.language }}
+            </span>
+          </div>
+        </span>
+        <p class='project-description'>{{ project.description }}</p>
+      </div>
+    </a>
+  </div>
+</div>

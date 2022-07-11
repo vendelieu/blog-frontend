@@ -1,0 +1,182 @@
+<div class='post-content'>
+  <div [ngClass]="{'post-desktop': !isMobile, 'post-mobile': isMobile}" class='post'>
+    <header class='post-header'>
+      <img src='./assets/images/image.jpg' alt=''>
+      <div class='post-card'>
+        <h1 class='post-title'>
+          {{post?.title}}
+        </h1>
+        <div class='post-meta post-meta-top'>
+            <span title='Date of article creation.'>
+              <i class='icon icon-calendar'></i><span>{{post?.updated_at | date:'EEE, MMMM d, y, HH:mm'}}</span>
+            </span>
+          <span title='Read time'>
+              <i class='icon icon-book'></i> {{post.content | readingTime}} min
+            </span>
+        </div>
+      </div>
+    </header>
+    <div>
+      <article [innerHTML]="(post?.content || '')" class='post-content'></article>
+    </div>
+    <footer class='post-footer'>
+      <div class='related' *ngIf='relatedPosts?.length ?? 0 > 0'>
+        <div class='post-meta'>
+          <h4>Related posts:</h4>
+          <ng-container *ngFor='let relatedPost of relatedPosts'>
+            <a [routerLink]="['/' + relatedPost.slug]" title='{{relatedPost.title}}'>
+              <span class='post-link-text'>{{relatedPost.title}}</span>
+            </a>
+          </ng-container>
+        </div>
+      </div>
+      <div class='post-actions'>
+        <div>
+          <button (click)='showShareQrcode()' *ngIf='!isMobile'>
+            <fa-icon [icon]='qrCodeIcon'></fa-icon>
+          </button>
+        </div>
+      </div>
+      <div *ngIf='postTags?.length ?? 0 > 0' class='post-meta'>
+        <div class='post-meta-icon'><i class='icon icon-tag'></i></div>
+        <ul class='post-meta-info tag-list'>
+          <li *ngFor='let tag of postTags'>
+            <a [routerLink]="['/tag/' + tag.slug]" class='tag-list-item'
+               rel='category' title='{{tag.name}}'>{{tag.name}}</a>
+          </li>
+        </ul>
+      </div>
+      <div class='divider-dashed' *ngIf='prevPost || nextPost'></div>
+      <div class='post-link' *ngIf='prevPost || nextPost'>
+        <div class='post-link-prev'>
+          <a *ngIf='prevPost' [routerLink]="['/' + prevPost.slug]" title='{{prevPost.title}}'>
+            <span class='post-link-text'>prev.：{{prevPost.title}}</span>
+          </a>
+        </div>
+        <div class='post-link-next'>
+          <a *ngIf='nextPost' [routerLink]="['/' + nextPost.slug]" title='{{nextPost.title}}'>
+            <span class='post-link-text'>next：{{nextPost.title}}</span><span>&gt;</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <div [ngClass]="{'comment-desktop': !isMobile, 'comment-mobile': isMobile}" class='comment'
+       *ngIf='post?.commentaries_open &&  commentValues?.length ?? 0 > 0'>
+    <ng-container>
+      <div class='banner'>
+      <span>Sort by:
+        <button (click)="changeSort('newest')" [disabled]='this.commentarySort === "newest"'>Newest</button> |
+        <button (click)="changeSort('oldest')" [disabled]='this.commentarySort === "oldest"'>Oldest</button>
+      </span>
+      </div>
+      <div class='comment-list' id='comments'>
+        <ng-container *ngFor='let comment of commentValues'>
+          <div *ngIf='!isMobile' class='comment-item comment-item-desktop' id='{{comment.id}}'>
+            <div class='meta'>
+              <div class='info'>
+                <div class='author'>
+                  <span class='from'>
+                    <span class='name'>{{comment.username}}</span>
+                  </span>
+                  <span class='time'>{{comment.created_at | date:'yyyy-MM-dd HH:mm'}}</span>
+                </div>
+              </div>
+              <div *ngIf='!isMobile' class='hash'>
+                <a [fragment]='comment.id | numberToString'
+                   [routerLink]="['.']">#{{comment.id}}</a>
+              </div>
+            </div>
+            <div class='content'>
+              <div *ngIf='comment.reply_to' class='parent'>
+                <span class='text'>Reply to</span>
+                <a (click)='scrollToComment($event)'
+                   [attr.data-hash]='comments.get(comment.reply_to)?.id'
+                   class='author'
+                >#{{comments.get(comment.reply_to)?.id}} @{{comments.get(comment.reply_to)?.username}}</a>
+              </div>
+              <div>{{comment.text}}</div>
+            </div>
+            <div *ngIf='this.isLoggedIn' class='actions'>
+              <a (click)='replyComment(comment, actionForm)' *ngIf='actionTrigger[comment.id] !== "reply"'>
+                <i class='icon icon-chat'></i><span>Reply</span>
+              </a>
+              <a (click)='cancelReply()' *ngIf='actionTrigger[comment.id] === "reply"'>
+                <i class='icon icon-close'></i><span>Cancel</span>
+              </a>
+              <a (click)='turnUpdateMode(comment, actionForm)'
+                 *ngIf='actionTrigger[comment.id] !== "update" && this.user?.username === comment.username'>
+                <i class='icon icon-write'></i><span>Update</span>
+              </a>
+              <a (click)='cancelUpdateMode(actionForm)'
+                 *ngIf='actionTrigger[comment.id] === "update" && this.user?.username === comment.username'>
+                <i class='icon icon-close'></i><span>Cancel</span>
+              </a>
+              <a (click)='deleteComment(comment)' *ngIf='this.user?.username === comment.username'>
+                <i class='icon icon-del'></i><span>Delete</span>
+              </a>
+            </div>
+          </div>
+          <div *ngIf='isMobile' class='comment-item comment-item-mobile' id='{{comment.id}}'>
+            <div class='body'>
+              <div class='from'>
+                <span class='name'>{{comment.username}}</span>
+              </div>
+              <div class='content'>
+                <div *ngIf='comment.reply_to' class='parent'>
+                  <span class='text'>Reply to</span>
+                  <a (click)='scrollToComment($event)'
+                     [attr.data-hash]='comments.get(comment.reply_to)?.id'
+                     class='author'
+                  >#{{comments.get(comment.reply_to)?.id}} @{{comments.get(comment.reply_to)?.username}}</a>
+                </div>
+                <div>{{comment.text}}</div>
+              </div>
+              <div class='meta'>
+                <span class='time'>{{comment.created_at | date:'yy-MM-dd HH:mm'}}</span>
+                <div class='actions'>
+                  <a (click)='replyComment(comment, actionForm)' *ngIf='actionTrigger[comment.id] !== "reply"'>
+                    <i class='icon icon-chat'></i>
+                  </a>
+                  <a (click)='cancelReply()' *ngIf='actionTrigger[comment.id] === "update"'>
+                    <i class='icon icon-close'></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf='actionTrigger[comment.id]'>
+            <ng-container *ngTemplateOutlet='commentFormTpl; context: { $implicit: actionForm }'></ng-container>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+    <ng-template #commentFormTpl let-form>
+      <div *ngIf='post?.commentaries_open && this.isLoggedIn' class='comment-form'>
+        <form (ngSubmit)='updateCommentId ? updateComment(form) : saveComment(form)' [formGroup]='form'>
+          <div class='form-row'>
+          <span class='flex'>
+            <textarea class='input input-textarea' formControlName='content'
+                      maxlength='400' placeholder='Comment content*' rows='4'></textarea>
+          </span>
+          </div>
+          <div class='form-row form-btns'>
+            <input formControlName='reply_to' type='hidden' />
+            <button [disabled]='saveLoading' [ngClass]='{loading: saveLoading}' class='button button-submit'
+                    type='submit'>
+              <i *ngIf='saveLoading' class='icon icon-loading'></i>
+              <span>Submit</span>
+            </button>
+            <button class='button' type='reset'>Reset</button>
+          </div>
+        </form>
+      </div>
+    </ng-template>
+    <ng-container *ngIf='!replyMode && !updateCommentId'>
+      <div *ngIf='post?.commentaries_open && comments.size ?? 0 > 0' class='divider'></div>
+      <ng-container *ngTemplateOutlet='commentFormTpl; context: { $implicit: commentForm }'></ng-container>
+    </ng-container>
+  </div>
+  <app-modal (toggleModal)='toggleImgModal($event)'
+             *ngIf='showImgModal' [imgEle]='clickedImage' [padding]='imgModalPadding'></app-modal>
+</div>

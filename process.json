@@ -1,0 +1,19 @@
+{
+  "apps": [
+    {
+      "name": "vendelieu-blog-frontend",
+      "script": "./dist/server/main.js",
+      "out_file": "/dev/null",
+      "watch": false,
+      "env": {
+        "ENV": "production"
+      },
+      "env_production": {
+        "ENV": "production"
+      },
+      "env_development": {
+        "ENV": "development"
+      }
+    }
+  ]
+}

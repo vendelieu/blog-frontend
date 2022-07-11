@@ -1,0 +1,66 @@
+@import "../../../styles/variables";
+
+.search {
+  background-color: rgba(var(--color-background-rgb), 0.7) !important;
+}
+
+.search {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba(var(--color-background-rgb), 0.7);
+  -webkit-backdrop-filter: saturate(180%) blur(10px);
+  backdrop-filter: saturate(180%) blur(10px);
+  z-index: 300;
+
+  input {
+    border: 0;
+    background: none;
+    outline: none;
+  }
+
+  .search-icon {
+    display: block;
+    border-radius: 100%;
+    box-shadow: 0 5px 10px 0 var(--color-text-third);
+  }
+}
+
+.hide-search {
+  display: none;
+}
+
+.search .search-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search .search-container .search-input-wrapper {
+  width: 100%;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+}
+
+.search .search-container .search-input-wrapper .search-input {
+  width: 100%;
+  font-size: 1.5em;
+  padding: 1px 2px;
+  vertical-align: middle;
+  color: var(--color-text);
+}
+
+.search .search-container .search-input-wrapper .search-input-icon {
+  margin-right: 10px;
+  font-size: 1.8em;
+  color: var(--color-text);
+}
+

@@ -1,0 +1,121 @@
+@import "../../../styles/variables";
+
+.sider {
+  @item-margin: 0.8rem;
+
+  position: fixed;
+  width: @m-sider-width;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: @m-sider-background-color;
+  transform: translate3d(-100%, 0, 0);
+  transition: all .38s ease-out;
+  z-index: 9;
+
+  &.open {
+    transform: translateZ(0);
+    overflow: hidden;
+
+    .sider-body {
+      transform: scale(1);
+      transition: all .38s ease-out;
+      opacity: 1;
+    }
+  }
+
+  .sider-body {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    transform: scale(.8);
+    transition: all .38s ease-out;
+    color: @m-sider-font-color;
+    opacity: 0;
+    overflow: auto;
+  }
+
+  .sider-info {
+    @sider-info-size: 6rem;
+    @sider-info-padding: 2rem;
+    display: flex;
+    align-items: flex-start;
+    padding: @sider-info-padding;
+    border-bottom: 1px solid @m-sider-border-color;
+
+    .sider-info-logo {
+      width: @sider-info-size;
+      min-width: @sider-info-size;
+      height: @sider-info-size;
+
+      img {
+        box-sizing: border-box;
+        max-width: 100%;
+        border: 2px solid @m-sider-font-color;
+        border-radius: 50%;
+        background-color: @m-sider-font-color;
+        overflow: hidden;
+      }
+    }
+
+    .sider-info-profile {
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: @sider-info-size;
+      padding-left: 1.6rem;
+      max-width: @sider-width - @sider-info-padding * 2 - @sider-info-size;
+
+      &-name {
+        margin-bottom: 0.8rem;
+        color: @m-sider-font-color;
+        font-size: 1.8rem;
+        font-weight: 700;
+      }
+
+      &-slogan {
+        color: var(--color-text);
+      }
+    }
+  }
+
+  .sider-nav {
+    margin: 1.2rem 0;
+
+    li {
+      padding: 0 2rem;
+      line-height: 4rem;
+
+      &:not(:last-child) {
+        margin-bottom: @item-margin;
+      }
+
+      &.active {
+        background-color: var(--color-background);
+
+        a {
+          color: var(--color-text);
+        }
+      }
+    }
+
+    a {
+      display: inline-block;
+      width: 100%;
+      color: @m-sider-font-color;
+      text-decoration: none;
+    }
+
+    .icon {
+      display: inline-block;
+      width: 1.6rem;
+      margin-right: 1.2rem;
+    }
+  }
+
+  .separator {
+    margin: @item-margin 0;
+    border-bottom: 1px solid @m-sider-border-color;
+  }
+}

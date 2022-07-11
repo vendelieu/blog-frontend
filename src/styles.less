@@ -1,0 +1,127 @@
+
+// Custom Theming for NG-ZORRO
+// For more information: https://ng.ant.design/docs/customize-theme/en
+@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
+
+// Override less variables to here
+// View all variables: https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/style/themes/default.less
+
+@import "styles/icons";
+@import "styles/variables";
+@import "styles/reset";
+
+a, a:hover, a:focus {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--color-text);
+  color: var(--color-background-secondary);
+  text-shadow: none;
+}
+
+.input, .button {
+  line-height: @input-line-height;
+  border-radius: @border-radius;
+  font-size: @primary-font-size;
+}
+
+.input {
+  padding: 4px 11px;
+  border: 1px solid var(--color-text);
+  color: var(--color-text-secondary);
+  background: var(--color-background-secondary);
+
+  &:focus {
+    color: var(--color-text-secondary);
+    border-color: var(--color-text);
+  }
+}
+
+.button {
+  position: relative;
+  padding: 4px 16px;
+  border: 1px solid var(--color-text);
+  text-align: center;
+  color: rgba(var(--color-background-rgb), 0.85);
+  background: var(--color-text);
+  -webkit-appearance: button;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-background-third);
+    border-color: var(--color-text);
+    background-color: var(--color-text-third);
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+
+  &.loading {
+    cursor: default;
+
+    &:before {
+      display: block;
+      position: absolute;
+      top: -1px;
+      right: -1px;
+      bottom: -1px;
+      left: -1px;
+      z-index: 1;
+      background: var(--color-background);
+      border-radius: inherit;
+      opacity: 0.35;
+      transition: opacity 0.2s;
+      content: '';
+      pointer-events: none;
+    }
+  }
+}
+
+.button-submit {
+  border-color: var(--color-border);
+  color: var(--color-background-secondary);
+  background-color: var(--color-text);
+
+  &:hover {
+    border-color: var(--color-border);
+    color: var(--color-background-secondary);
+    background-color: @action-color;
+  }
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--color-background-secondary);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  touch-action: none;
+}
+
+.icon-loading {
+  display: inline-block;
+  margin-top: -2px;
+  line-height: 1em;
+  vertical-align: middle;
+  animation: loading-circle 1s infinite linear;
+
+  + span {
+    margin-left: 8px;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text);
+}
+
+@keyframes loading-circle {
+  100% {
+    transform: rotate(360deg);
+  }
+}

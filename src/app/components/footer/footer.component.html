@@ -1,0 +1,28 @@
+<footer [ngClass]="{'footer-desktop': !isMobile, 'footer-mobile': isMobile}" class='footer'>
+  <ul class='footer-link'>
+    <li>
+      <a class='inactive-icon' href='{{githubUrl}}' title='Github'
+         onmouseout="this.classList.remove('github-hover')"
+         onmouseover="this.classList.add('github-hover')">
+        <fa-icon [icon]='githubIcon'></fa-icon>
+      </a>
+    </li>
+    <li>
+      <a class='inactive-icon' href='{{telegramUrl}}' title='Telegram'
+         onmouseout="this.classList.remove('telegram-hover')"
+         onmouseover="this.classList.add('telegram-hover')">
+        <fa-icon [icon]='telegramIcon'></fa-icon>
+      </a>
+    </li>
+    <li>
+      <a class='inactive-icon' href='mailto:{{email}}' title='Email'
+         onmouseout="this.classList.remove('email-hover')"
+         onmouseover="this.classList.add('email-hover')">
+        <fa-icon [icon]='emailIcon'></fa-icon>
+      </a>
+    </li>
+  </ul>
+  <ul>
+    <li [innerHTML]="'Copyright © ' + options['copyright_notice'] + ' - ' + curYear"></li>
+  </ul>
+</footer>

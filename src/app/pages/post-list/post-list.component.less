@@ -1,0 +1,247 @@
+@import "../../../styles/variables";
+
+.banner, .article {
+  border-radius: @border-radius;
+  background-color: var(--color-background-secondary);
+  box-shadow: @content-box-shadow;
+
+  ul {
+    margin-bottom: 0;
+  }
+}
+
+.banner {
+  position: relative;
+  margin: @box-shadow-width @box-shadow-width @primary-margin;
+  border-radius: @border-radius;
+
+  li {
+    border-radius: @border-radius;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+    }
+  }
+}
+
+.article-list-desktop {
+  margin: 0 @box-shadow-width;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.sort-button {
+  background: inherit;
+  border: none;
+  color: var(--color-background);
+}
+
+.sort-button:hover {
+  color: @action-color;
+  transition: 0.1s;
+}
+
+.article-link {
+  position: relative;
+  padding-bottom: 66%;
+  display: block;
+  width: 100%;
+  height: 0;
+}
+
+.article-content {
+  padding: 0 20px;
+
+  p {
+    height: 60%;
+  }
+}
+
+.article-card {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 5px 20px;
+  background-color: rgba(var(--color-background-rgb),0.6);
+}
+
+.article {
+  @article-header-height: 32px;
+  line-height: @post-line-height;
+  box-shadow: @content-shadow;
+  width: 300px;
+  margin: 0 0 30px 0;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    overflow: hidden
+  }
+
+  &:hover {
+    box-shadow: 0 1px 1px 0 rgba(var(--color-background-rgb));
+    transition: 0.3s;
+  }
+
+  &-mobile {
+    padding: @m-content-margin @m-primary-margin;
+  }
+
+  .icon {
+    margin-right: 4px;
+  }
+
+  > header {
+    position: relative;
+
+    h3 {
+      margin-bottom: 0;
+
+      a {
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        &:hover {
+          color: @action-color;
+        }
+      }
+    }
+  }
+
+  .meta-tag {
+    flex-shrink: 0;
+    margin-right: 8px;
+    padding: 4px 8px;
+    border-radius: 2px;
+    line-height: 1;
+    font-size: @minor-font-size;
+    font-weight: normal;
+  }
+
+  .article-stat, .article-meta {
+    color: var(--color-text);
+    font-size: @meta-font-size;
+
+    a {
+      color: var(--color-text-secondary);
+
+      &:hover {
+        color: var(--color-text);
+      }
+    }
+  }
+
+  .article-stat {
+    position: absolute;
+    top: 0;
+    right: 0;
+    line-height: @article-header-height;
+
+    > :not(:last-child) {
+      margin-right: 12px;
+    }
+  }
+
+  .article-meta {
+    &-top {
+      > span:not(:last-child):after {
+        content: '|';
+        display: inline-block;
+        position: relative;
+        top: -2px;
+        margin: 0 10px;
+        vertical-align: middle;
+      }
+
+      a:not(:last-child) {
+        margin-right: 8px;
+      }
+    }
+
+    &-bottom {
+      margin-top: 8px;
+      padding-bottom: 0;
+      border-top: 1px dashed var(--color-border);
+
+      .icon {
+        line-height: @post-line-height + @tag-row-span * 2;
+      }
+
+      .article-meta-tag {
+        padding-top: 5px;
+
+        &:not(:last-child) {
+          margin-bottom: 4px;
+        }
+
+        @import "../../../styles/tag-list";
+
+        .article-meta-icon {
+          float: left;
+        }
+
+        .article-meta-info {
+          padding-left: 20px;
+        }
+
+        ul li, .article-meta-info-text {
+          display: inline-block;
+          padding: @tag-row-span 0;
+        }
+
+        ul li:not(:last-child) {
+          margin-right: 8px;
+        }
+
+        a {
+          padding: 4px 8px;
+          border-radius: 2px;
+          color: var(--color-text-secondary);
+          background-color: var(--color-text);
+
+          &:hover {
+            color: var(--color-background-secondary);
+            background-color: var(--color-text);
+          }
+        }
+      }
+    }
+  }
+
+  .article-excerpt {
+    margin-top: 0.5rem;
+    word-wrap: break-word;
+    height: 85%;
+
+    a:hover {
+      color: @action-color;
+    }
+
+    .read-more {
+      margin-left: 4px;
+    }
+  }
+}
+
+.sort-button-dropdown {
+  display: flex;
+  justify-content: flex-end;
+  height: 30px;
+  position: absolute;
+  right: 0;
+  margin-right: 20px;
+}

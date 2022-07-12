@@ -1,7 +1,7 @@
 <div class='post-content'>
   <div [ngClass]="{'post-desktop': !isMobile, 'post-mobile': isMobile}" class='post'>
     <header class='post-header'>
-      <img src='./assets/images/image.jpg' alt=''>
+      <img src='{{post.image}}' alt='Article image'>
       <div class='post-card'>
         <h1 class='post-title'>
           {{post?.title}}

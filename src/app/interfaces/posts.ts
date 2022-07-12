@@ -7,6 +7,7 @@ export interface NavPost {
 
 export interface PostEntity {
   id: number;
+  image: string;
   title: string;
   content: string;
   short_content: string;

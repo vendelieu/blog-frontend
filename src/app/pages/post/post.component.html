@@ -31,11 +31,15 @@
         </div>
       </div>
       <div class='post-actions'>
-        <div>
           <button (click)='showShareQrcode()' *ngIf='!isMobile'>
             <fa-icon [icon]='qrCodeIcon'></fa-icon>
           </button>
-        </div>
+          <button (click)='shareButton("linkedin")' *ngIf='!isMobile'>
+            <fa-icon [icon]='linkedinIcon'></fa-icon>
+          </button>
+        <button (click)='shareButton("twitter")' *ngIf='!isMobile'>
+          <fa-icon [icon]='twitterIcon'></fa-icon>
+        </button>
       </div>
       <div *ngIf='postTags?.length ?? 0 > 0' class='post-meta'>
         <div class='post-meta-icon'><i class='icon icon-tag'></i></div>

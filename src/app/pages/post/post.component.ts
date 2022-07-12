@@ -22,11 +22,13 @@ import { Options } from '../../config/site-options';
 import { Tag } from '../../interfaces/tag';
 import { MarkdownService } from 'ngx-markdown';
 import { STORAGE_COMMENTS_SORTING_KEY } from '../../config/constants';
-import { faQrcode, faSort } from '@fortawesome/free-solid-svg-icons';
+import { faHashtag, faQrcode, faSort } from '@fortawesome/free-solid-svg-icons';
 import { PaginatorEntity } from '../../interfaces/paginator';
 import { PaginatorService } from '../../core/paginator.service';
+import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 type actionType = 'reply' | 'update';
+type shareType = 'twitter' | 'linkedin';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -69,7 +71,6 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     reply_to: []
   });
   actionForm: FormGroup = this.formGroupConfig;
-  qrCodeIcon = faQrcode;
   commentsLoad = false;
   commentsPage = 0;
   total = 0;
@@ -80,10 +81,13 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
   comments: Map<number, Comment> | undefined = undefined;
   commentValues: Comment[] | undefined = undefined;
   commentsLoading = false;
+  qrCodeIcon = faQrcode;
+  linkedinIcon = faLinkedin;
+  twitterIcon = faHashtag;
+  shareUrl = '';
 
   private id: number = -0;
   private postSlug = '';
-  private shareUrl = '';
   private options: OptionEntity = Options;
   private referer = '';
   private urlListener!: Subscription;
@@ -246,6 +250,14 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     setTimeout(() => this.generateShareQrcode(), 0);
   }
 
+  shareButton(type: shareType) {
+    if (type === 'twitter') {
+      location.href = 'https://twitter.com/intent/tweet?url=' + this.shareUrl;
+    } else if (type === 'linkedin') {
+      location.href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + this.shareUrl;
+    }
+  }
+
   protected updateActivePage(): void {
     this.commonService.updateActivePage(this.pageIndex);
   }
@@ -311,6 +323,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     this.updateActivePage();
     this.initMeta();
     this.parseHtml();
+    this.shareUrl = Options.site_url + '/' + this.post.slug;
   }
 
   loadComments() {

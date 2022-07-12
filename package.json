@@ -36,6 +36,7 @@
     "@angular/router": "^14.0.3",
     "@fortawesome/angular-fontawesome": "^0.11.1",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
+    "@fortawesome/free-brands-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@nguniversal/common": "^14.0.2",
     "@nguniversal/express-engine": "^14.0.2",

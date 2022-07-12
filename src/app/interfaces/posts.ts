@@ -10,7 +10,7 @@ export interface PostEntity {
   image: string;
   title: string;
   content: string;
-  short_content: string;
+  description: string;
   slug: string;
   commentaries_open: boolean;
   tags: Tag[] | null;

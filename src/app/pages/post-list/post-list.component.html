@@ -27,7 +27,7 @@
     </header>
     <div class='article-content'>
       <p class='article-excerpt'>
-        <span [innerHTML]='post.short_content'></span>
+        <span [innerHTML]='post.description'></span>
         <a [routerLink]="['/' + post.slug]" class='read-more' title='{{post.title}}'>..read more</a>
       </p>
       <div *ngIf='post.tags?.length ?? 0 > 0' class='article-meta article-meta-bottom'>

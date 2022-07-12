@@ -1,7 +1,7 @@
 import { DOCUMENT, ViewportScroller } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { uniq } from 'lodash';
 import * as QRCode from 'qrcode';
 import { Subscription } from 'rxjs';
@@ -22,7 +22,9 @@ import { Options } from '../../config/site-options';
 import { Tag } from '../../interfaces/tag';
 import { MarkdownService } from 'ngx-markdown';
 import { STORAGE_COMMENTS_SORTING_KEY } from '../../config/constants';
-import { faQrcode } from '@fortawesome/free-solid-svg-icons';
+import { faQrcode, faSort } from '@fortawesome/free-solid-svg-icons';
+import { PaginatorEntity } from '../../interfaces/paginator';
+import { PaginatorService } from '../../core/paginator.service';
 
 type actionType = 'reply' | 'update';
 
@@ -40,12 +42,11 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
   prevPost: NavPost | null = null;
   nextPost: NavPost | null = null;
   relatedPosts: NavPost[] | undefined = undefined;
-  comments: Map<number, Comment> = new Map<number, Comment>();
-  commentValues: Comment[] | undefined = undefined;
   post: PostEntity = {
     commentaries_open: false,
     content: '',
     id: 0,
+    image: '',
     next: null,
     prev: null,
     short_content: '',
@@ -67,9 +68,18 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     content: ['', [Validators.required, Validators.maxLength(400)]],
     reply_to: []
   });
-  commentForm: FormGroup = this.formGroupConfig;
   actionForm: FormGroup = this.formGroupConfig;
   qrCodeIcon = faQrcode;
+  commentsLoad = false;
+  commentsPage = 0;
+  total = 0;
+  paginatorData: PaginatorEntity | null = null;
+  pageUrl = '';
+  pageUrlParam: Params = {};
+  sortIcon = faSort;
+  comments: Map<number, Comment> = new Map<number, Comment>();
+  commentValues: Comment[] | undefined = undefined;
+
   private id: number = -0;
   private postSlug = '';
   private shareUrl = '';
@@ -93,6 +103,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     private message: MessageService,
     private scroller: ViewportScroller,
     private markdownService: MarkdownService,
+    private paginator: PaginatorService,
     @Inject(DOCUMENT) private document: Document
   ) {
     super();
@@ -109,7 +120,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
       this.fetchPost();
       this.scroller.scrollToPosition([0, 0]);
       this.fetchRelated();
-      this.resetCommentForm(this.commentForm);
+      this.resetCommentForm(this.actionForm);
     });
     this.commentarySort = localStorage.getItem(STORAGE_COMMENTS_SORTING_KEY) || 'newest';
     this.userListener = this.usersService.loginUser$.subscribe((user) => {
@@ -248,16 +259,16 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
       const errors = ctrl?.errors;
       errors && ctrl?.markAsTouched({ onlySelf: true });
       errors &&
-        Object.keys(errors).forEach((type) => {
-          switch (type) {
-            case 'required':
-              msgs.push(`Please enter ${formLabels[key]}`);
-              break;
-            case 'maxlength':
-              msgs.push(`${formLabels[key]} length should be no greater than ${errors[type].requiredLength} character, currently ${errors[type].actualLength}`);
-              break;
-          }
-        });
+      Object.keys(errors).forEach((type) => {
+        switch (type) {
+          case 'required':
+            msgs.push(`Please enter ${formLabels[key]}`);
+            break;
+          case 'maxlength':
+            msgs.push(`${formLabels[key]} length should be no greater than ${errors[type].requiredLength} character, currently ${errors[type].actualLength}`);
+            break;
+        }
+      });
     });
     msgs.length > 0 && this.message.error(msgs[0]);
   }
@@ -307,6 +318,10 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     this.commentsService.getCommentsByPostSlug(this.postSlug, sortParam).subscribe((res) => {
       res?.data?.forEach((i) => this.comments.set(i.id, i));
       this.commentValues = res?.data;
+      this.total = res?.total_elements ?? 0;
+      this.commentsPage = res?.page_num ?? 0;
+      this.paginator.setPageSize(res?.page_size ?? 9);
+      this.paginatorData = this.paginator.getPaginator(this.commentsPage, this.total);
     });
     cb && cb();
   }

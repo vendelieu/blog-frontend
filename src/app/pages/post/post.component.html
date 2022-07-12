@@ -62,14 +62,8 @@
     </footer>
   </div>
   <div [ngClass]="{'comment-desktop': !isMobile, 'comment-mobile': isMobile}" class='comment'
-       *ngIf='post?.commentaries_open &&  commentValues?.length ?? 0 > 0'>
+       *ngIf='post?.commentaries_open && commentValues?.length ?? 0 > 0'>
     <ng-container>
-      <div class='banner'>
-      <span>Sort by:
-        <button (click)="changeSort('newest')" [disabled]='this.commentarySort === "newest"'>Newest</button> |
-        <button (click)="changeSort('oldest')" [disabled]='this.commentarySort === "oldest"'>Oldest</button>
-      </span>
-      </div>
       <div class='comment-list' id='comments'>
         <ng-container *ngFor='let comment of commentValues'>
           <div *ngIf='!isMobile' class='comment-item comment-item-desktop' id='{{comment.id}}'>
@@ -174,8 +168,29 @@
     </ng-template>
     <ng-container *ngIf='!replyMode && !updateCommentId'>
       <div *ngIf='post?.commentaries_open && comments.size ?? 0 > 0' class='divider'></div>
-      <ng-container *ngTemplateOutlet='commentFormTpl; context: { $implicit: commentForm }'></ng-container>
+      <ng-container *ngTemplateOutlet='commentFormTpl; context: { $implicit: actionForm }'></ng-container>
     </ng-container>
+    <app-page-bar [paginator]='paginatorData' [param]='pageUrlParam' [url]='pageUrl'>
+      <div class='sort-button-dropdown'>
+        <a nz-dropdown [nzDropdownMenu]='menu'>
+          <fa-icon [icon]='sortIcon'></fa-icon>
+        </a>
+        <nz-dropdown-menu #menu='nzDropdownMenu'>
+          <ul nz-menu nzSelectable>
+            <li nz-menu-item>
+              <button class='sort-button' (click)="changeSort('newest')" [disabled]='this.commentarySort === "newest"'>
+                Newest
+              </button>
+            </li>
+            <li nz-menu-item>
+              <button class='sort-button' (click)="changeSort('oldest')" [disabled]='this.commentarySort === "oldest"'>
+                Oldest
+              </button>
+            </li>
+          </ul>
+        </nz-dropdown-menu>
+      </div>
+    </app-page-bar>
   </div>
   <app-modal (toggleModal)='toggleImgModal($event)'
              *ngIf='showImgModal' [imgEle]='clickedImage' [padding]='imgModalPadding'></app-modal>

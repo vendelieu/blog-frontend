@@ -32,25 +32,6 @@
     font-style: normal;
   }
 
-  .original-sign {
-    @sign-offset: 24px;
-    @sign-height: 24px;
-    @sign-width: @sign-offset * 2 * 1.41421356 + @sign-height;
-    position: absolute;
-    top: @sign-offset - (@sign-height / 2);
-    left: @sign-offset - (@sign-width / 2);
-    width: @sign-width;
-    height: @sign-height;
-    line-height: @sign-height;
-    transform: rotate(-45deg);
-    transform-origin: center;
-    text-align: center;
-    background-color: var(--color-text);
-    color: #fff;
-    font-size: @minor-font-size;
-    font-weight: 700;
-  }
-
   &-desktop {
     .post-header {
       position: relative;
@@ -437,7 +418,7 @@
               margin-left: 50%;
               transition: transform .25s, margin .25s;
               transition-delay: .5s;
-              animation: pre-like-icon .2s infinite;
+              animation: pre-icon .2s infinite;
               animation-delay: .75s;
               transform: translateY(-2px) translate(-50%);
             }
@@ -546,15 +527,6 @@
           }
         }
       }
-
-      .captcha-wrapper {
-        display: flex;
-        flex-basis: @captcha-input-width + @captcha-img-width + @form-item-margin;
-
-        .input-captcha {
-          max-width: @captcha-input-width;
-        }
-      }
     }
   }
 
@@ -573,14 +545,6 @@
           > :not(:last-child) {
             margin-bottom: @form-row-margin;
           }
-        }
-      }
-
-      .captcha-wrapper {
-        display: flex;
-
-        .input-captcha {
-          flex-grow: 1;
         }
       }
     }
@@ -607,15 +571,9 @@
           color: var(--color-text);
           white-space: nowrap;
         }
-
-        .location {
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
       }
 
-      .location, .time, .hash {
+      .time, .hash {
         font-size: @meta-font-size;
       }
 
@@ -795,7 +753,10 @@
   }
 }
 
-@keyframes pre-like-icon {
+@import "../../../styles/sort-buttons";
+
+
+@keyframes pre-icon {
   0% {
     transform: translateY(-2px) translate(-40%)
   }

@@ -32,17 +32,6 @@
   justify-content: space-between;
 }
 
-.sort-button {
-  background: inherit;
-  border: none;
-  color: var(--color-background);
-}
-
-.sort-button:hover {
-  color: @action-color;
-  transition: 0.1s;
-}
-
 .article-link {
   position: relative;
   padding-bottom: 66%;
@@ -237,11 +226,4 @@
   }
 }
 
-.sort-button-dropdown {
-  display: flex;
-  justify-content: flex-end;
-  height: 30px;
-  position: absolute;
-  right: 0;
-  margin-right: 20px;
-}
+@import "../../../styles/sort-buttons";

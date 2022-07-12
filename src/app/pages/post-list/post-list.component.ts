@@ -38,7 +38,7 @@ export class PostListComponent extends PageComponent implements OnInit, OnDestro
   paginatorData: PaginatorEntity | null = null;
   pageUrl = '';
   pageUrlParam: Params = {};
-  sort_btn = faSort;
+  sortIcon = faSort;
 
   private paramListener!: Subscription;
 
@@ -108,7 +108,7 @@ export class PostListComponent extends PageComponent implements OnInit, OnDestro
       this.postList = res?.data || undefined;
       this.page = res?.page_num || 1;
       this.total = res?.total_elements || 0;
-      this.paginator.setPageSize(res?.page_size ?? 10);
+      this.paginator.setPageSize(res?.page_size ?? 9);
 
       const siteName: string = this.options['site_name'] || '';
       let description: string = '';

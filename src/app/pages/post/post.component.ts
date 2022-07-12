@@ -22,7 +22,14 @@ import { Options } from '../../config/site-options';
 import { Tag } from '../../interfaces/tag';
 import { MarkdownService } from 'ngx-markdown';
 import { STORAGE_COMMENTS_SORTING_KEY } from '../../config/constants';
-import { faArrowDownShortWide, faArrowUpShortWide, faHashtag, faQrcode } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAnglesLeft,
+  faAnglesRight,
+  faArrowDownShortWide,
+  faArrowUpShortWide,
+  faHashtag,
+  faQrcode
+} from '@fortawesome/free-solid-svg-icons';
 import { PaginatorEntity } from '../../interfaces/paginator';
 import { PaginatorService } from '../../core/paginator.service';
 import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
@@ -85,6 +92,8 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
   twitterIcon = faHashtag;
   sortNewestIcon = faArrowDownShortWide;
   sortOldestIcon = faArrowUpShortWide;
+  nextIcon = faAnglesRight;
+  prevIcon = faAnglesLeft;
   shareUrl = '';
 
   private id: number = -0;

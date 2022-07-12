@@ -54,12 +54,12 @@
       <div class='post-link' *ngIf='prevPost || nextPost'>
         <div class='post-link-prev'>
           <a *ngIf='prevPost' [routerLink]="['/' + prevPost.slug]" title='{{prevPost.title}}'>
-            <span class='post-link-text'>prev.：{{prevPost.title}}</span>
+            <span class='post-link-text'><fa-icon [icon]='prevIcon'></fa-icon> {{prevPost.title}}</span>
           </a>
         </div>
         <div class='post-link-next'>
           <a *ngIf='nextPost' [routerLink]="['/' + nextPost.slug]" title='{{nextPost.title}}'>
-            <span class='post-link-text'>next：{{nextPost.title}}</span><span>&gt;</span>
+            <span class='post-link-text'>{{nextPost.title}} <fa-icon [icon]='nextIcon'></fa-icon></span>
           </a>
         </div>
       </div>

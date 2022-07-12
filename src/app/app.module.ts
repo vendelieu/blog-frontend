@@ -1,6 +1,6 @@
 import { APP_BASE_HREF, registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, SecurityContext } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -66,6 +66,7 @@ registerLocaleData(en);
     FontAwesomeModule,
     ClipboardModule,
     MarkdownModule.forRoot({
+      sanitize: SecurityContext.NONE,
       clipboardOptions: {
         provide: ClipboardOptions,
         useValue: {

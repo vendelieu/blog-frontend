@@ -77,7 +77,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
   pageUrl = '';
   pageUrlParam: Params = {};
   sortIcon = faSort;
-  comments: Map<number, Comment> = new Map<number, Comment>();
+  comments: Map<number, Comment> | undefined = undefined;
   commentValues: Comment[] | undefined = undefined;
   commentsLoading = false;
 
@@ -305,10 +305,12 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     this.id = this.post.id;
     this.postTags = post.tags;
     this.pageIndex = post.title;
+    this.commentsLoad = false;
+    this.comments = undefined;
+    this.commentValues = undefined;
     this.updateActivePage();
     this.initMeta();
     this.parseHtml();
-    //
   }
 
   loadComments() {
@@ -324,7 +326,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     else sortParam = Sort.newest;
 
     this.commentsService.getCommentsByPostSlug(this.postSlug, sortParam).subscribe((res) => {
-      res?.data?.forEach((i) => this.comments.set(i.id, i));
+      res?.data?.forEach((i) => this.comments?.set(i.id, i));
       this.commentValues = res?.data;
       this.total = res?.total_elements ?? 0;
       this.commentsPage = res?.page_num ?? 0;

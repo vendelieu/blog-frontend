@@ -87,9 +87,9 @@
               <div *ngIf='comment.reply_to' class='parent'>
                 <span class='text'>Reply to</span>
                 <a (click)='scrollToComment($event)'
-                   [attr.data-hash]='comments.get(comment.reply_to)?.id'
+                   [attr.data-hash]='comments?.get(comment.reply_to)?.id'
                    class='author'
-                >#{{comments.get(comment.reply_to)?.id}} @{{comments.get(comment.reply_to)?.username}}</a>
+                >#{{comments?.get(comment.reply_to)?.id}} @{{comments?.get(comment.reply_to)?.username}}</a>
               </div>
               <div>{{comment.text}}</div>
             </div>
@@ -122,9 +122,9 @@
                 <div *ngIf='comment.reply_to' class='parent'>
                   <span class='text'>Reply to</span>
                   <a (click)='scrollToComment($event)'
-                     [attr.data-hash]='comments.get(comment.reply_to)?.id'
+                     [attr.data-hash]='comments?.get(comment.reply_to)?.id'
                      class='author'
-                  >#{{comments.get(comment.reply_to)?.id}} @{{comments.get(comment.reply_to)?.username}}</a>
+                  >#{{comments?.get(comment.reply_to)?.id}} @{{comments?.get(comment.reply_to)?.username}}</a>
                 </div>
                 <div>{{comment.text}}</div>
               </div>
@@ -169,11 +169,11 @@
       </div>
     </ng-template>
     <ng-container *ngIf='!replyMode && !updateCommentId'>
-      <div *ngIf='post?.commentaries_open && comments.size ?? 0 > 0' class='divider'></div>
+      <div *ngIf='post?.commentaries_open && commentValues?.length ?? 0 > 0' class='divider'></div>
       <ng-container *ngTemplateOutlet='commentFormTpl; context: { $implicit: actionForm }'></ng-container>
     </ng-container>
     <app-page-bar [paginator]='paginatorData' [param]='pageUrlParam' [url]='pageUrl'>
-      <div class='sort-button-dropdown' *ngIf='comments.size ?? 0 > 0'>
+      <div class='sort-button-dropdown' *ngIf='commentValues?.length ?? 0 > 0'>
         <a nz-dropdown [nzDropdownMenu]='menu'>
           <fa-icon [icon]='sortIcon'></fa-icon>
         </a>

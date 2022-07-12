@@ -64,7 +64,6 @@
         </div>
       </div>
     </footer>
-    <div class='btn' *ngIf='post?.commentaries_open && !commentsLoad' (click)='loadComments()'>View comments</div>
   </div>
   <div [ngClass]="{'comment-desktop': !isMobile, 'comment-mobile': isMobile}" class='comment'
        *ngIf='post?.commentaries_open && commentsLoad'>
@@ -190,6 +189,7 @@
       </div>
     </app-page-bar>
   </div>
+  <div class='btn' *ngIf='post?.commentaries_open' (click)='!commentsLoad ? loadComments() : hideComments()'>{{!commentsLoad ? 'View comments' : 'Hide comments'}}</div>
   <app-modal (toggleModal)='toggleImgModal($event)'
              *ngIf='showImgModal' [imgEle]='clickedImage' [padding]='imgModalPadding'></app-modal>
 </div>

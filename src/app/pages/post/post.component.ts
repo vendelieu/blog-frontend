@@ -348,6 +348,11 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     this.resetCommentForm(this.actionForm);
   }
 
+  hideComments() {
+    this.commentsLoad = false;
+    this.resetCommentForm(this.actionForm);
+  }
+
   private fetchComments(cb?: Function) {
     let sortParam: Sort;
     if (this.commentarySort === 'oldest') sortParam = Sort.oldest;

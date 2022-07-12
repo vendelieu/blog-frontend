@@ -23,7 +23,7 @@ import { PostListComponent } from './pages/post-list/post-list.component';
 import { PostComponent } from './pages/post/post.component';
 import { PipesModule } from './pipes/pipes.module';
 import { httpInterceptorProviders } from './interceptors/http-interceptors';
-import { ClipboardButtonComponent, ClipboardOptions, MarkdownModule, MarkdownService } from 'ngx-markdown';
+import { ClipboardButtonComponent, ClipboardOptions, MarkdownModule } from 'ngx-markdown';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ProjectsComponent } from './pages/projects/projects.component';
 import { AboutComponent } from './pages/about/about.component';
@@ -74,7 +74,7 @@ registerLocaleData(en);
       }
     })
   ],
-  providers: [httpInterceptorProviders, { provide: APP_BASE_HREF, useValue: env.host }, MarkdownService],
+  providers: [httpInterceptorProviders, { provide: APP_BASE_HREF, useValue: env.host }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -323,7 +323,6 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     this.commentValues = undefined;
     this.updateActivePage();
     this.initMeta();
-    this.parseHtml();
     this.shareUrl = Options.site_url + '/' + this.post.slug;
   }
 
@@ -362,10 +361,6 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     this.actionTrigger = {};
     this.replyMode = false;
     this.updateCommentId = undefined;
-  }
-
-  private parseHtml() {
-    this.post.content = this.markdownService.parse(this.post.content);
   }
 
   private generateShareQrcode() {

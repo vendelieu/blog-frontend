@@ -16,9 +16,9 @@
         </div>
       </div>
     </header>
-    <div>
-      <article [innerHTML]="(post?.content || '')" class='post-content'></article>
-    </div>
+    <article class='post-content'>
+      <markdown [data]='post?.content'></markdown>
+    </article>
     <footer class='post-footer'>
       <div class='related' *ngIf='relatedPosts?.length ?? 0 > 0'>
         <div class='post-meta'>

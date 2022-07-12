@@ -137,7 +137,9 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     });
     this.paginationService.pageChanged.subscribe((newPage) => {
       this.commentsPage = newPage;
-      this.fetchComments();
+      this.fetchComments(() => {
+        this.scroller.scrollToAnchor('comments');
+      });
     });
     this.paginationService.sortingChanged.subscribe((newSort) => {
       this.commentarySort = newSort;

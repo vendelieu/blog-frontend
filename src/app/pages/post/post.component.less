@@ -20,6 +20,27 @@
   }
 }
 
+.markdown-clipboard-button {
+  position: relative;
+  padding: 0 5px;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  background: var(--color-background);
+  -webkit-appearance: button;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-background-third);
+    border-color: var(--color-text-secondary);
+    background-color: var(--color-text-third);
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+}
+
 .post-content {
   box-shadow: @content-shadow;
 }
@@ -519,8 +540,6 @@
   @form-row-margin: 12px;
   @form-item-margin: 8px;
   @form-item-border-radius: 2px;
-  @captcha-input-width: 120px;
-  @captcha-img-width: 80px;
 
   &-desktop {
     margin-top: @content-margin;
@@ -742,7 +761,7 @@
       justify-content: center;
     }
 
-    .input, .button, .captcha {
+    .input, .button {
       box-sizing: border-box;
       border-radius: @form-item-border-radius;
     }

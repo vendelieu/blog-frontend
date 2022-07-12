@@ -64,7 +64,7 @@
         </div>
       </div>
     </footer>
-    <div class='btn' *ngIf='!commentsLoad' (click)='loadComments()'>View comments</div>
+    <div class='btn' *ngIf='post?.commentaries_open && !commentsLoad' (click)='loadComments()'>View comments</div>
   </div>
   <div [ngClass]="{'comment-desktop': !isMobile, 'comment-mobile': isMobile}" class='comment'
        *ngIf='post?.commentaries_open && commentsLoad'>

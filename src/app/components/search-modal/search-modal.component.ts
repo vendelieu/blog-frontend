@@ -29,6 +29,9 @@ export class SearchModalComponent {
   }
 
   onClick(e: Event) {
-    if (!(e.target as HTMLInputElement).type) this.hideModal();
+    if (!(e.target as HTMLInputElement).type) {
+      this.hideModal();
+      this.keyword = '';
+    }
   }
 }

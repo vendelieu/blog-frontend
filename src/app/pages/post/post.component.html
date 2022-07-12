@@ -60,10 +60,12 @@
         </div>
       </div>
     </footer>
+    <div class='btn' *ngIf='!commentsLoad' (click)='loadComments()'>View comments</div>
   </div>
   <div [ngClass]="{'comment-desktop': !isMobile, 'comment-mobile': isMobile}" class='comment'
-       *ngIf='post?.commentaries_open && commentValues?.length ?? 0 > 0'>
-    <ng-container>
+       *ngIf='post?.commentaries_open && commentsLoad'>
+    <i *ngIf='commentsLoading' class='icon icon-loading'></i>
+    <ng-container *ngIf='commentValues?.length ?? 0 > 0'>
       <div class='comment-list' id='comments'>
         <ng-container *ngFor='let comment of commentValues'>
           <div *ngIf='!isMobile' class='comment-item comment-item-desktop' id='{{comment.id}}'>

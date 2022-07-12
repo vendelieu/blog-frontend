@@ -500,6 +500,20 @@
       }
     }
   }
+
+  .btn {
+    display: block;
+    padding: 10px;
+    background-color: var(--color-background-third);
+    text-align: center;
+  }
+  .btn:hover {
+    background-color: @action-color;
+    background-image: linear-gradient(-60deg, #ff5858 0%, #f09819 100%);
+    color: var(--color-background);
+    transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
+    cursor: pointer;
+  }
 }
 
 .comment {

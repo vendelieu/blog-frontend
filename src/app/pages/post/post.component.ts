@@ -79,6 +79,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
   sortIcon = faSort;
   comments: Map<number, Comment> = new Map<number, Comment>();
   commentValues: Comment[] | undefined = undefined;
+  commentsLoading = false;
 
   private id: number = -0;
   private postSlug = '';
@@ -307,7 +308,14 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     this.updateActivePage();
     this.initMeta();
     this.parseHtml();
+    //
+  }
+
+  loadComments() {
+    this.commentsLoad = true;
+    this.commentsLoading = true;
     this.fetchComments();
+    this.commentsLoading = false;
   }
 
   private fetchComments(cb?: Function) {

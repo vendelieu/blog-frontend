@@ -27,10 +27,8 @@ import { ClipboardButtonComponent, ClipboardOptions, MarkdownModule, MarkdownSer
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ProjectsComponent } from './pages/projects/projects.component';
 import { AboutComponent } from './pages/about/about.component';
-import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
 import en from '@angular/common/locales/en';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { ScrollTopComponent } from './components/scroll-top/scroll-top.component';
 
 registerLocaleData(en);
@@ -74,10 +72,10 @@ registerLocaleData(en);
           buttonComponent: ClipboardButtonComponent
         }
       }
-    }),
-    NzDropDownModule
+    })
   ],
-  providers: [httpInterceptorProviders, { provide: APP_BASE_HREF, useValue: env.host }, MarkdownService, { provide: NZ_I18N, useValue: en_US }],
+  providers: [httpInterceptorProviders, { provide: APP_BASE_HREF, useValue: env.host }, MarkdownService],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

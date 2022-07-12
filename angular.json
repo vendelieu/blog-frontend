@@ -59,7 +59,7 @@
               "node_modules/prismjs/components/prism-kotlin.min.js",
               "node_modules/prismjs/components/prism-rust.min.js",
               "node_modules/prismjs/components/prism-bash.min.js",
-              "node_modules/prismjs/components/prism-typescript.min.js",
+              "node_modules/prismjs/components/prism-typescript.min.js"
             ]
           },
           "configurations": {

@@ -18,7 +18,7 @@ import { PostEntity, PostQueryParam, Sort } from '../../interfaces/posts';
 import { PostsService } from '../../services/posts.service';
 import { Options } from '../../config/site-options';
 import { STORAGE_POSTS_SORTING_KEY } from '../../config/constants';
-import { faSort } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDownShortWide, faArrowUpShortWide, faSort } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-post-list',
@@ -38,7 +38,8 @@ export class PostListComponent extends PageComponent implements OnInit, OnDestro
   paginatorData: PaginatorEntity | null = null;
   pageUrl = '';
   pageUrlParam: Params = {};
-  sortIcon = faSort;
+  sortNewestIcon = faArrowDownShortWide;
+  sortOldestIcon = faArrowUpShortWide;
 
   private paramListener!: Subscription;
 

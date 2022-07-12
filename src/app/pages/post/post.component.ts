@@ -22,7 +22,7 @@ import { Options } from '../../config/site-options';
 import { Tag } from '../../interfaces/tag';
 import { MarkdownService } from 'ngx-markdown';
 import { STORAGE_COMMENTS_SORTING_KEY } from '../../config/constants';
-import { faHashtag, faQrcode, faSort } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDownShortWide, faArrowUpShortWide, faHashtag, faQrcode } from '@fortawesome/free-solid-svg-icons';
 import { PaginatorEntity } from '../../interfaces/paginator';
 import { PaginatorService } from '../../core/paginator.service';
 import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
@@ -77,13 +77,14 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
   paginatorData: PaginatorEntity | null = null;
   pageUrl = '';
   pageUrlParam: Params = {};
-  sortIcon = faSort;
   comments: Map<number, Comment> | undefined = undefined;
   commentValues: Comment[] | undefined = undefined;
   commentsLoading = false;
   qrCodeIcon = faQrcode;
   linkedinIcon = faLinkedin;
   twitterIcon = faHashtag;
+  sortNewestIcon = faArrowDownShortWide;
+  sortOldestIcon = faArrowUpShortWide;
   shareUrl = '';
 
   private id: number = -0;
@@ -368,9 +369,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
   }
 
   private generateShareQrcode() {
-    const siteUrl = this.options['site_url'].replace(/\/$/i, '');
-    const postGuid = this.post.slug.replace(/^\//i, '');
-    this.shareUrl = siteUrl + '/' + postGuid + '?ref=qrcode';
+    this.shareUrl = this.shareUrl + '?ref=qrcode';
 
     QRCode.toCanvas(this.shareUrl, {
       width: 320,

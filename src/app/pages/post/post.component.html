@@ -31,12 +31,12 @@
         </div>
       </div>
       <div class='post-actions'>
-          <button (click)='showShareQrcode()' *ngIf='!isMobile'>
-            <fa-icon [icon]='qrCodeIcon'></fa-icon>
-          </button>
-          <button (click)='shareButton("linkedin")' *ngIf='!isMobile'>
-            <fa-icon [icon]='linkedinIcon'></fa-icon>
-          </button>
+        <button (click)='showShareQrcode()' *ngIf='!isMobile'>
+          <fa-icon [icon]='qrCodeIcon'></fa-icon>
+        </button>
+        <button (click)='shareButton("linkedin")' *ngIf='!isMobile'>
+          <fa-icon [icon]='linkedinIcon'></fa-icon>
+        </button>
         <button (click)='shareButton("twitter")' *ngIf='!isMobile'>
           <fa-icon [icon]='twitterIcon'></fa-icon>
         </button>
@@ -176,25 +176,17 @@
       <div *ngIf='post?.commentaries_open && commentValues?.length ?? 0 > 0' class='divider'></div>
       <ng-container *ngTemplateOutlet='commentFormTpl; context: { $implicit: actionForm }'></ng-container>
     </ng-container>
-    <app-page-bar [paginator]='paginatorData' [param]='pageUrlParam' [url]='pageUrl'>
-      <div class='sort-button-dropdown' *ngIf='commentValues?.length ?? 0 > 0'>
-        <a nz-dropdown [nzDropdownMenu]='menu'>
-          <fa-icon [icon]='sortIcon'></fa-icon>
-        </a>
-        <nz-dropdown-menu #menu='nzDropdownMenu'>
-          <ul nz-menu nzSelectable>
-            <li nz-menu-item>
-              <button class='sort-button' (click)="changeSort('newest')" [disabled]='this.commentarySort === "newest"'>
-                Newest
-              </button>
-            </li>
-            <li nz-menu-item>
-              <button class='sort-button' (click)="changeSort('oldest')" [disabled]='this.commentarySort === "oldest"'>
-                Oldest
-              </button>
-            </li>
-          </ul>
-        </nz-dropdown-menu>
+    <app-page-bar [paginator]='paginatorData' [param]='pageUrlParam' [url]='pageUrl'
+                  *ngIf='commentValues?.length ?? 0 > 0'>
+      <div class='sort-buttons'>
+        <button class='sort-button' (click)="changeSort('newest')" *ngIf='commentarySort === "oldest"'
+                title='Sort by newest'>
+          <fa-icon [icon]='sortNewestIcon'></fa-icon>
+        </button>
+        <button class='sort-button' (click)="changeSort('oldest')" *ngIf='commentarySort === "newest"'
+                title='Sort by oldest'>
+          <fa-icon [icon]='sortOldestIcon'></fa-icon>
+        </button>
       </div>
     </app-page-bar>
   </div>

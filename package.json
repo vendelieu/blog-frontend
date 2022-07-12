@@ -46,7 +46,6 @@
     "helmet": "^5.1.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.3",
-    "ng-zorro-antd": "^13.3.2",
     "ngx-cookie-service": "^14.0.0",
     "ngx-markdown": "^14.0.1",
     "prism-themes": "^1.9.0",

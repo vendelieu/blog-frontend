@@ -17,7 +17,7 @@
       </div>
     </header>
     <article class='post-content'>
-      <markdown [data]='post?.content'></markdown>
+      <markdown lineNumbers clipboard [data]='post?.content'></markdown>
     </article>
     <footer class='post-footer'>
       <div class='related' *ngIf='relatedPosts?.length ?? 0 > 0'>

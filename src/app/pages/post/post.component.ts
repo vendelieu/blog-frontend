@@ -1,7 +1,7 @@
 import { DOCUMENT, ViewportScroller } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { uniq } from 'lodash';
 import * as QRCode from 'qrcode';
 import { combineLatestWith, Subscription } from 'rxjs';
@@ -20,20 +20,13 @@ import { PostsService } from '../../services/posts.service';
 import { UsersService } from '../../services/users.service';
 import { Options } from '../../config/site-options';
 import { Tag } from '../../interfaces/tag';
-import { MarkdownService } from 'ngx-markdown';
 import { STORAGE_COMMENTS_SORTING_KEY } from '../../config/constants';
-import {
-  faAnglesLeft,
-  faAnglesRight,
-  faArrowDownShortWide,
-  faArrowUpShortWide,
-  faHashtag,
-  faQrcode
-} from '@fortawesome/free-solid-svg-icons';
+import { faAnglesLeft, faAnglesRight, faHashtag, faQrcode } from '@fortawesome/free-solid-svg-icons';
 import { PaginatorEntity } from '../../interfaces/paginator';
 import { PaginatorService } from '../../core/paginator.service';
 import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { tap } from 'rxjs/operators';
+import { PaginationService } from '../../services/pagination.service';
 
 type actionType = 'reply' | 'update';
 type shareType = 'twitter' | 'linkedin';
@@ -80,19 +73,15 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
   });
   actionForm: FormGroup = this.formGroupConfig;
   commentsLoad = false;
-  commentsPage = 0;
+  commentsPage = 1;
   total = 0;
   paginatorData: PaginatorEntity | null = null;
-  commentsPageUrl = '';
-  pageUrlParam: Params = {};
   comments: Map<number, Comment> | undefined = undefined;
   commentValues: Comment[] | undefined = undefined;
   commentsLoading = false;
   qrCodeIcon = faQrcode;
   linkedinIcon = faLinkedin;
   twitterIcon = faHashtag;
-  sortNewestIcon = faArrowDownShortWide;
-  sortOldestIcon = faArrowUpShortWide;
   nextIcon = faAnglesRight;
   prevIcon = faAnglesLeft;
   shareUrl = '';
@@ -118,8 +107,8 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private message: MessageService,
     private scroller: ViewportScroller,
-    private markdownService: MarkdownService,
     private paginator: PaginatorService,
+    private paginationService: PaginationService,
     @Inject(DOCUMENT) private document: Document
   ) {
     super();
@@ -135,7 +124,6 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
       combineLatestWith(this.route.queryParamMap),
       tap(([params, queryParams]) => {
         this.postSlug = params.get('postSlug')?.trim() ?? '';
-        this.commentsPage = Number(queryParams.get('page')) || 1;
       })
     ).subscribe(() => {
       this.fetchPost();
@@ -147,20 +135,23 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
       this.isLoggedIn = this.usersService.isLoggedIn;
       this.user = user;
     });
+    this.paginationService.pageChanged.subscribe((newPage) => {
+      this.commentsPage = newPage;
+      this.fetchComments();
+    });
+    this.paginationService.sortingChanged.subscribe((newSort) => {
+      this.commentarySort = newSort;
+      localStorage.setItem(STORAGE_COMMENTS_SORTING_KEY, newSort);
+      this.fetchComments(() => {
+        this.scroller.scrollToAnchor('comments');
+      });
+    });
   }
 
   ngOnDestroy() {
     this.urlListener.unsubscribe();
     this.paramListener.unsubscribe();
     this.userListener?.unsubscribe();
-  }
-
-  changeSort(newSort: string) {
-    this.commentarySort = newSort;
-    this.fetchComments(() => {
-      this.scroller.scrollToAnchor('comments');
-    });
-    localStorage.setItem(STORAGE_COMMENTS_SORTING_KEY, newSort);
   }
 
   saveComment(form: FormGroup | undefined) {

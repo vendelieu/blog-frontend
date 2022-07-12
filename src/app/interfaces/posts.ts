@@ -23,6 +23,8 @@ export enum Sort {
   newest = 'newest', oldest = 'oldest'
 }
 
+export type SortType = 'newest' | 'oldest';
+
 export interface PostQueryParam {
   title?: string;
   text?: string;

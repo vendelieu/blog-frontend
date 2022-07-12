@@ -2,15 +2,15 @@
   <div *ngIf='!isMobile' class='paginator paginator-desktop'>
     <ul>
       <li *ngIf='paginator.curPage > 1' class='paginator-page'>
-        <a [queryParams]='param' [routerLink]='[url + paginator.prevPage]' title='Previous page'>
-          <fa-icon [icon]="prevIcon"></fa-icon>
+        <a (click)='changePage(paginator.prevPage)' title='Previous page'>
+          <fa-icon [icon]='prevIcon'></fa-icon>
         </a>
       </li>
       <ng-container *ngIf='paginator.totalPage < 10'>
         <ng-container *ngFor='let v of counter(paginator.totalPage); let i = index'>
           <li *ngIf='i + 1 === paginator.curPage' class='paginator-page active'><span>{{i + 1}}</span></li>
           <li *ngIf='i + 1 !== paginator.curPage' class='paginator-page'>
-            <a [queryParams]='param' [routerLink]='[url + (i + 1)]' title='#{{i + 1}} page'>{{i + 1}}</a>
+            <a (click)='changePage(i + 1)' title='#{{i + 1}} page'>{{i + 1}}</a>
           </li>
         </ng-container>
       </ng-container>
@@ -18,72 +18,77 @@
         <ng-container *ngFor='let v of counter(5); let i = index'>
           <li *ngIf='i + 1 === paginator.curPage' class='paginator-page active'><span>{{i + 1}}</span></li>
           <li *ngIf='i + 1 !== paginator.curPage' class='paginator-page'>
-            <a [queryParams]='param' [routerLink]='[url + (i + 1)]' title='#{{i + 1}} page'>{{i + 1}}</a>
+            <a (click)='changePage(i + 1)' title='#{{i + 1}} page'>{{i + 1}}</a>
           </li>
         </ng-container>
         <li><span>...</span></li>
         <li class='paginator-page'>
-          <a [queryParams]='param'
-             [routerLink]='[url + paginator.totalPage]'
-             title='#{{paginator.totalPage}} page'>{{paginator.totalPage}}</a>
+          <a (click)='changePage(paginator.totalPage)' title='#{{paginator.totalPage}} page'>{{paginator.totalPage}}</a>
         </li>
       </ng-container>
       <ng-container *ngIf='paginator.totalPage >= 10 && paginator.curPage >= paginator.totalPage - 4'>
-        <li class='paginator-page'><a [queryParams]='param' [routerLink]='[url + 1]' title='Page 1'>1</a></li>
+        <li class='paginator-page'><a (click)='changePage(1)' title='Page 1'>1</a></li>
         <li><span>...</span></li>
         <ng-container *ngFor='let v of counter(5); let i = index'>
           <li *ngIf='paginator.totalPage - 4 + i === paginator.curPage' class='paginator-page active'>
             <span>{{paginator.totalPage - 4 + i}}</span></li>
           <li *ngIf='paginator.totalPage - 4 + i !== paginator.curPage' class='paginator-page'>
-            <a [queryParams]='param'
-               [routerLink]='[url + (paginator.totalPage - 4 + i)]'
+            <a (click)='changePage(paginator.totalPage - 4 + i)'
                title='{{paginator.totalPage - 4 + i}} page'>{{paginator.totalPage - 4 + i}}</a>
           </li>
         </ng-container>
       </ng-container>
       <ng-container
         *ngIf='paginator.totalPage >= 10 && paginator.curPage > 5 && paginator.curPage < paginator.totalPage - 4'>
-        <li class='paginator-page'><a [queryParams]='param' [routerLink]='[url + 1]' title='Page 1'>1</a></li>
+        <li class='paginator-page'><a (click)='changePage(1)' title='Page 1'>1</a></li>
         <li><span>...</span></li>
         <ng-container *ngFor='let v of counter(5); let i = index'>
           <li *ngIf='paginator.curPage - 2 + i === paginator.curPage' class='paginator-page active'>
             <span>{{paginator.curPage - 2 + i}}</span></li>
           <li *ngIf='paginator.curPage - 2 + i !== paginator.curPage' class='paginator-page'>
-            <a [queryParams]='param'
-               [routerLink]='[url + (paginator.curPage - 2 + i)]'
+            <a (click)='changePage(paginator.curPage - 2 + i)'
                title='#{{paginator.curPage - 2 + i}} page'>{{paginator.curPage - 2 + i}}</a>
           </li>
         </ng-container>
         <li><span>...</span></li>
         <li class='paginator-page'>
-          <a [queryParams]='param'
-             [routerLink]='[url + paginator.totalPage]'
-             title='#{{paginator.totalPage}} page'>{{paginator.totalPage}}</a>
+          <a (click)='changePage(paginator.totalPage)' title='#{{paginator.totalPage}} page'>{{paginator.totalPage}}</a>
         </li>
       </ng-container>
       <li *ngIf='paginator.curPage < paginator.endPage' class='paginator-page'>
-        <a [queryParams]='param' [routerLink]='[url + paginator.nextPage]' title='Next page'>
-          <fa-icon [icon]="nextIcon"></fa-icon>
+        <a (click)='changePage(paginator.nextPage)' title='Next page'>
+          <fa-icon [icon]='nextIcon'></fa-icon>
         </a>
       </li>
     </ul>
     <ul>
-    <li>
-      <ng-content></ng-content>
-    </li>
+      <li>
+        <div class='sort-buttons'>
+          <button class='sort-button' (click)="changeSort('newest')" *ngIf='curSort === "oldest"'
+                  title='Sort by newest'>
+            <fa-icon [icon]='sortNewestIcon'></fa-icon>
+          </button>
+          <button class='sort-button' (click)="changeSort('oldest')" *ngIf='curSort === "newest"'
+                  title='Sort by oldest'>
+            <fa-icon [icon]='sortOldestIcon'></fa-icon>
+          </button>
+        </div>
+      </li>
     </ul>
   </div>
   <div *ngIf='isMobile && paginator.totalPage > 1' class='paginator paginator-mobile'>
     <div>
       <a *ngIf='paginator.curPage > 1'
-         [queryParams]='param' [routerLink]='[url + paginator.prevPage]' title='Previous page'>
-        <fa-icon [icon]="prevIcon"></fa-icon><span>Previous page</span>
+         (click)='changePage(paginator.prevPage)' title='Previous page'>
+        <fa-icon [icon]='prevIcon'></fa-icon>
+        <span>Previous page</span>
       </a>
     </div>
     <div>
       <a *ngIf='paginator.curPage < paginator.endPage'
-         [queryParams]='param' [routerLink]='[url + paginator.nextPage]' title='Next page'>
-        <span>Next page</span><fa-icon [icon]="nextIcon"></fa-icon>
+         (click)='changePage(paginator.nextPage)' title='Next page'>
+        <span>Next page</span>
+        <fa-icon [icon]='nextIcon'></fa-icon>
       </a>
     </div>
   </div>

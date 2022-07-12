@@ -1,8 +1,14 @@
 import { Component, Input } from '@angular/core';
-import { Params } from '@angular/router';
 import { UserAgentService } from '../../core/user-agent.service';
 import { PaginatorEntity } from '../../interfaces/paginator';
-import { faAnglesLeft, faAnglesRight } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAnglesLeft,
+  faAnglesRight,
+  faArrowDownShortWide,
+  faArrowUpShortWide
+} from '@fortawesome/free-solid-svg-icons';
+import { SortType } from '../../interfaces/posts';
+import { PaginationService } from '../../services/pagination.service';
 
 @Component({
   selector: 'app-page-bar',
@@ -10,16 +16,25 @@ import { faAnglesLeft, faAnglesRight } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./page-bar.component.less']
 })
 export class PageBarComponent {
+  @Input() curSort: string | undefined;
   @Input() paginator: PaginatorEntity | null = null;
-  @Input() url: string = '';
-  @Input() param: Params = {};
 
   isMobile = false;
   prevIcon = faAnglesLeft;
   nextIcon = faAnglesRight;
+  sortNewestIcon = faArrowDownShortWide;
+  sortOldestIcon = faArrowUpShortWide;
 
-  constructor(private userAgentService: UserAgentService) {
+  constructor(private userAgentService: UserAgentService, private paginationService: PaginationService) {
     this.isMobile = this.userAgentService.isMobile();
+  }
+
+  changeSort(newSort: SortType) {
+    this.paginationService.changeSort(newSort);
+  }
+
+  changePage(newPage: number) {
+    this.paginationService.changePage(newPage);
   }
 
   counter(size: number) {

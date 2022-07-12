@@ -53,6 +53,7 @@
           width: 100%;
           height: 100%;
           color: var(--color-text-secondary);
+          cursor: pointer;
 
           &:hover {
             color: var(--color-text);
@@ -71,4 +72,26 @@
       margin-right: 0.8rem;
     }
   }
+}
+
+
+.sort-buttons {
+  display: flex;
+  justify-content: flex-end;
+  height: 30px;
+  position: absolute;
+  right: 0;
+  margin-right: 20px;
+}
+
+.sort-button {
+  background: inherit;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.sort-button:hover {
+  color: @action-color;
+  transition: 0.1s;
 }

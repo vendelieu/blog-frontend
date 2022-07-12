@@ -54,12 +54,14 @@
       <div class='post-link' *ngIf='prevPost || nextPost'>
         <div class='post-link-prev'>
           <a *ngIf='prevPost' [routerLink]="['/' + prevPost.slug]" title='{{prevPost.title}}'>
-            <span class='post-link-text'><fa-icon [icon]='prevIcon'></fa-icon> {{prevPost.title}}</span>
+            <span class='post-link-text'><fa-icon [icon]='prevIcon'></fa-icon>
+              {{prevPost.title}}</span>
           </a>
         </div>
         <div class='post-link-next'>
           <a *ngIf='nextPost' [routerLink]="['/' + nextPost.slug]" title='{{nextPost.title}}'>
-            <span class='post-link-text'>{{nextPost.title}} <fa-icon [icon]='nextIcon'></fa-icon></span>
+            <span class='post-link-text'>{{nextPost.title}}
+              <fa-icon [icon]='nextIcon'></fa-icon></span>
           </a>
         </div>
       </div>
@@ -175,21 +177,11 @@
       <div *ngIf='post?.commentaries_open && commentValues?.length ?? 0 > 0' class='divider'></div>
       <ng-container *ngTemplateOutlet='commentFormTpl; context: { $implicit: actionForm }'></ng-container>
     </ng-container>
-    <app-page-bar [paginator]='paginatorData' [param]='pageUrlParam' [url]='commentsPageUrl'
-                  *ngIf='commentValues?.length ?? 0 > 0'>
-      <div class='sort-buttons'>
-        <button class='sort-button' (click)="changeSort('newest')" *ngIf='commentarySort === "oldest"'
-                title='Sort by newest'>
-          <fa-icon [icon]='sortNewestIcon'></fa-icon>
-        </button>
-        <button class='sort-button' (click)="changeSort('oldest')" *ngIf='commentarySort === "newest"'
-                title='Sort by oldest'>
-          <fa-icon [icon]='sortOldestIcon'></fa-icon>
-        </button>
-      </div>
+    <app-page-bar [paginator]='paginatorData' curSort='{{commentarySort}}' *ngIf='commentValues?.length ?? 0 > 0'>
     </app-page-bar>
   </div>
-  <div class='btn' *ngIf='post?.commentaries_open' (click)='!commentsLoad ? loadComments() : hideComments()'>{{!commentsLoad ? 'View comments' : 'Hide comments'}}</div>
+  <div class='btn' *ngIf='post?.commentaries_open'
+       (click)='!commentsLoad ? loadComments() : hideComments()'>{{!commentsLoad ? 'View comments' : 'Hide comments'}}</div>
   <app-modal (toggleModal)='toggleImgModal($event)'
              *ngIf='showImgModal' [imgEle]='clickedImage' [padding]='imgModalPadding'></app-modal>
 </div>

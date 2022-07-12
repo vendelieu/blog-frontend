@@ -18,7 +18,7 @@ import { PostEntity, PostQueryParam, Sort } from '../../interfaces/posts';
 import { PostsService } from '../../services/posts.service';
 import { Options } from '../../config/site-options';
 import { STORAGE_POSTS_SORTING_KEY } from '../../config/constants';
-import { faArrowDownShortWide, faArrowUpShortWide, faSort } from '@fortawesome/free-solid-svg-icons';
+import { PaginationService } from '../../services/pagination.service';
 
 @Component({
   selector: 'app-post-list',
@@ -38,21 +38,18 @@ export class PostListComponent extends PageComponent implements OnInit, OnDestro
   paginatorData: PaginatorEntity | null = null;
   pageUrl = '';
   pageUrlParam: Params = {};
-  sortNewestIcon = faArrowDownShortWide;
-  sortOldestIcon = faArrowUpShortWide;
 
   private paramListener!: Subscription;
 
   constructor(
-    @Inject(PLATFORM_ID) protected platform: Object,
-    @Optional() @Inject(RESPONSE) protected response: Response,
     private route: ActivatedRoute,
     private postsService: PostsService,
     private commonService: CommonService,
     private paginator: PaginatorService,
     private metaService: MetaService,
     private userAgentService: UserAgentService,
-    private scroller: ViewportScroller
+    private scroller: ViewportScroller,
+    private paginationService: PaginationService
   ) {
     super();
     this.isMobile = this.userAgentService.isMobile();
@@ -64,7 +61,6 @@ export class PostListComponent extends PageComponent implements OnInit, OnDestro
       .pipe(
         combineLatestWith(this.route.queryParamMap),
         tap(([params, queryParams]) => {
-          this.page = Number(params.get('page')) || 1;
           this.tag = params.get('tag')?.trim() || '';
           this.keyword = queryParams.get('keyword')?.trim() || '';
         })
@@ -73,16 +69,21 @@ export class PostListComponent extends PageComponent implements OnInit, OnDestro
         this.fetchPosts();
         this.scroller.scrollToPosition([0, 0]);
       });
+    this.paginationService.pageChanged.subscribe((newPage) => {
+      this.page = newPage;
+      this.fetchPosts();
+      this.scroller.scrollToPosition([0, 0]);
+    });
+    this.paginationService.sortingChanged.subscribe((newSort) => {
+      this.sort = newSort;
+      localStorage.setItem(STORAGE_POSTS_SORTING_KEY, newSort);
+      this.fetchPosts();
+      this.scroller.scrollToPosition([0, 0]);
+    });
   }
 
   ngOnDestroy() {
     this.paramListener.unsubscribe();
-  }
-
-  changeSort(newSort: string) {
-    this.sort = newSort;
-    this.fetchPosts();
-    localStorage.setItem(STORAGE_POSTS_SORTING_KEY, newSort);
   }
 
   protected updateActivePage(): void {

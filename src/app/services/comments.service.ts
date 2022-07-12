@@ -15,10 +15,10 @@ export class CommentsService {
   ) {
   }
 
-  getCommentsByPostSlug(slug: string, sortParam: Sort): Observable<PaginatedHttpResponse<Comment[]> | undefined> {
+  getCommentsByPostSlug(slug: string, sortParam: Sort, page: number = 1): Observable<PaginatedHttpResponse<Comment[]> | undefined> {
     return this.apiService.httpGetCustomResponse<PaginatedHttpResponse<Comment[]>>(
       this.apiService.getApiUrl(ApiUrl.GET_COMMENTS).replace(':slug', slug),
-      { sort_by: sortParam }
+      { sort_by: sortParam, page: page }
     );
   }
 

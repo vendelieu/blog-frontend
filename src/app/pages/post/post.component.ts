@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { uniq } from 'lodash';
 import * as QRCode from 'qrcode';
-import { Subscription } from 'rxjs';
+import { combineLatestWith, Subscription } from 'rxjs';
 import { MessageService } from '../../components/message/message.service';
 import { CommonService } from '../../core/common.service';
 import { MetaService } from '../../core/meta.service';
@@ -33,6 +33,7 @@ import {
 import { PaginatorEntity } from '../../interfaces/paginator';
 import { PaginatorService } from '../../core/paginator.service';
 import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { tap } from 'rxjs/operators';
 
 type actionType = 'reply' | 'update';
 type shareType = 'twitter' | 'linkedin';
@@ -82,7 +83,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
   commentsPage = 0;
   total = 0;
   paginatorData: PaginatorEntity | null = null;
-  pageUrl = '';
+  commentsPageUrl = '';
   pageUrlParam: Params = {};
   comments: Map<number, Comment> | undefined = undefined;
   commentValues: Comment[] | undefined = undefined;
@@ -130,8 +131,13 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     this.urlListener = this.urlService.urlInfo$.subscribe((url) => {
       this.referer = url.previous;
     });
-    this.paramListener = this.route.params.subscribe((params) => {
-      this.postSlug = params['postSlug']?.trim();
+    this.paramListener = this.route.paramMap.pipe(
+      combineLatestWith(this.route.queryParamMap),
+      tap(([params, queryParams]) => {
+        this.postSlug = params.get('postSlug')?.trim() ?? '';
+        this.commentsPage = Number(queryParams.get('page')) || 1;
+      })
+    ).subscribe(() => {
       this.fetchPost();
       this.scroller.scrollToPosition([0, 0]);
       this.fetchRelated();
@@ -347,11 +353,11 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     if (this.commentarySort === 'oldest') sortParam = Sort.oldest;
     else sortParam = Sort.newest;
 
-    this.commentsService.getCommentsByPostSlug(this.postSlug, sortParam).subscribe((res) => {
+    this.commentsService.getCommentsByPostSlug(this.postSlug, sortParam, this.commentsPage).subscribe((res) => {
       res?.data?.forEach((i) => this.comments?.set(i.id, i));
       this.commentValues = res?.data;
       this.total = res?.total_elements ?? 0;
-      this.commentsPage = res?.page_num ?? 0;
+      this.commentsPage = res?.page_num ?? 1;
       this.paginator.setPageSize(res?.page_size ?? 9);
       this.paginatorData = this.paginator.getPaginator(this.commentsPage, this.total);
     });

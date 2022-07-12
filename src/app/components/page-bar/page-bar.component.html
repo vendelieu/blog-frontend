@@ -37,7 +37,7 @@
           <li *ngIf='paginator.totalPage - 4 + i !== paginator.curPage' class='paginator-page'>
             <a [queryParams]='param'
                [routerLink]='[url + (paginator.totalPage - 4 + i)]'
-               title='{{paginator.totalPage - 4 + i}}页'>{{paginator.totalPage - 4 + i}}</a>
+               title='{{paginator.totalPage - 4 + i}} page'>{{paginator.totalPage - 4 + i}}</a>
           </li>
         </ng-container>
       </ng-container>

@@ -135,7 +135,6 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
       this.fetchPost();
       this.scroller.scrollToPosition([0, 0]);
       this.fetchRelated();
-      this.resetCommentForm(this.actionForm);
     });
     this.commentarySort = localStorage.getItem(STORAGE_COMMENTS_SORTING_KEY) || 'newest';
     this.userListener = this.usersService.loginUser$.subscribe((user) => {
@@ -340,6 +339,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     this.commentsLoading = true;
     this.fetchComments();
     this.commentsLoading = false;
+    this.resetCommentForm(this.actionForm);
   }
 
   private fetchComments(cb?: Function) {

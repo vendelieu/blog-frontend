@@ -28,8 +28,6 @@ export class CommentsService {
       reply_to: comment?.reply_to
     };
 
-    console.log(comment);
-    console.log(body);
     return this.apiService.httpPost<any>(
       this.apiService.getApiUrl(ApiUrl.SAVE_COMMENTS).replace(':slug', comment?.post_slug ?? ''),
       body

@@ -69,6 +69,9 @@
   </div>
   <div [ngClass]="{'comment-desktop': !isMobile, 'comment-mobile': isMobile}" class='comment'
        *ngIf='post?.commentaries_open && commentsLoad'>
+    <div class='no-comments' *ngIf='!commentValues?.length'>
+      No comments yet
+    </div>
     <i *ngIf='commentsLoading' class='icon icon-loading'></i>
     <ng-container *ngIf='commentValues?.length ?? 0 > 0'>
       <div class='comment-list' id='comments'>
@@ -98,7 +101,7 @@
               </div>
               <div>{{comment.text}}</div>
             </div>
-            <div *ngIf='this.isLoggedIn' class='actions'>
+            <div *ngIf='isLoggedIn' class='actions'>
               <a (click)='replyComment(comment, actionForm)' *ngIf='actionTrigger[comment.id] !== "reply"'>
                 <i class='icon icon-chat'></i><span>Reply</span>
               </a>
@@ -106,14 +109,14 @@
                 <i class='icon icon-close'></i><span>Cancel</span>
               </a>
               <a (click)='turnUpdateMode(comment, actionForm)'
-                 *ngIf='actionTrigger[comment.id] !== "update" && this.user?.username === comment.username'>
+                 *ngIf='actionTrigger[comment.id] !== "update" && user?.username === comment.username'>
                 <i class='icon icon-write'></i><span>Update</span>
               </a>
               <a (click)='cancelUpdateMode(actionForm)'
-                 *ngIf='actionTrigger[comment.id] === "update" && this.user?.username === comment.username'>
+                 *ngIf='actionTrigger[comment.id] === "update" && user?.username === comment.username'>
                 <i class='icon icon-close'></i><span>Cancel</span>
               </a>
-              <a (click)='deleteComment(comment)' *ngIf='this.user?.username === comment.username'>
+              <a (click)='deleteComment(comment)' *ngIf='user?.username === comment.username'>
                 <i class='icon icon-del'></i><span>Delete</span>
               </a>
             </div>
@@ -153,7 +156,7 @@
       </div>
     </ng-container>
     <ng-template #commentFormTpl let-form>
-      <div *ngIf='post?.commentaries_open && this.isLoggedIn' class='comment-form'>
+      <div *ngIf='post?.commentaries_open && isLoggedIn' class='comment-form'>
         <form (ngSubmit)='updateCommentId ? updateComment(form) : saveComment(form)' [formGroup]='form'>
           <div class='form-row'>
           <span class='flex'>

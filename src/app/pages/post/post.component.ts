@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { uniq } from 'lodash';
 import * as QRCode from 'qrcode';
-import { combineLatestWith, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MessageService } from '../../components/message/message.service';
 import { CommonService } from '../../core/common.service';
 import { MetaService } from '../../core/meta.service';
@@ -13,7 +13,7 @@ import { UrlService } from '../../core/url.service';
 import { UserAgentService } from '../../core/user-agent.service';
 import { Comment, CommentDTO } from '../../interfaces/comments';
 import { OptionEntity } from '../../interfaces/options';
-import { NavPost, PostEntity, Sort } from '../../interfaces/posts';
+import { NavPost, NodeEl, PostEntity, Sort, TocElement } from '../../interfaces/posts';
 import { UserModel } from '../../interfaces/users';
 import { CommentsService } from '../../services/comments.service';
 import { PostsService } from '../../services/posts.service';
@@ -25,7 +25,6 @@ import { faAnglesLeft, faAnglesRight, faHashtag, faQrcode } from '@fortawesome/f
 import { PaginatorEntity } from '../../interfaces/paginator';
 import { PaginatorService } from '../../core/paginator.service';
 import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { tap } from 'rxjs/operators';
 import { PaginationService } from '../../services/pagination.service';
 
 type actionType = 'reply' | 'update';
@@ -85,6 +84,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
   nextIcon = faAnglesRight;
   prevIcon = faAnglesLeft;
   shareUrl = '';
+  tocList: TocElement[] = [];
 
   private id: number = -0;
   private postSlug = '';
@@ -116,16 +116,28 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     this.headerHeight = this.isMobile ? 56 : 60;
   }
 
+  collectToc() {
+    const elements = this.document.getElementById('toc-target')?.childNodes;
+
+    elements?.forEach((el) => {
+      const cur = (el as unknown as NodeEl);
+      if (!cur.localName) {
+        return;
+      }
+
+      if (cur?.localName.startsWith('h')) this.tocList.push({
+          id: cur.id, lvl: cur.localName.charAt(1), name: cur.textContent ?? ''
+        }
+      );
+    });
+  }
+
   ngOnInit(): void {
     this.urlListener = this.urlService.urlInfo$.subscribe((url) => {
       this.referer = url.previous;
     });
-    this.paramListener = this.route.paramMap.pipe(
-      combineLatestWith(this.route.queryParamMap),
-      tap(([params, queryParams]) => {
-        this.postSlug = params.get('postSlug')?.trim() ?? '';
-      })
-    ).subscribe(() => {
+    this.paramListener = this.route.params.subscribe((params) => {
+      this.postSlug = params['postSlug']?.trim();
       this.fetchPost();
       this.scroller.scrollToPosition([0, 0]);
       this.fetchRelated();

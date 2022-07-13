@@ -28,7 +28,7 @@ export class ApiService {
   }
 
   getApiUrl(path: string): string {
-    return `${Options.site_url}${this.apiUrlPrefix}${path}`;
+    return `${Options.api_url}${this.apiUrlPrefix}${path}`;
   }
 
   httpGet<T>(url: string, param: Record<string, any> = {}): Observable<HttpResponseEntity<T>> {

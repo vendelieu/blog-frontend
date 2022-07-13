@@ -15,7 +15,7 @@ export class ApiRequestInterceptor implements HttpInterceptor {
   }
 
   intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const isApiRequest = httpRequest.url.startsWith(Options.site_url + '/api');
+    const isApiRequest = httpRequest.url.startsWith(Options.api_url + '/api');
     if (isApiRequest) {
       if (this.request && this.request.headers.cookie) {
         httpRequest = httpRequest.clone({

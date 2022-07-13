@@ -797,6 +797,57 @@
   }
 }
 
+.toc-section {
+  border: 1px solid;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 50%;
+}
+
+.toc-wrap {
+  position: fixed;
+  top: 70px;
+  background-color: var(--color-background);
+  border: 1px solid;
+  border-color: var(--color-border);
+  z-index: 10;
+  padding: 20px;
+  height: calc(100vh - 45rem);
+  overflow: scroll;
+  right: calc(100vw - 90%);
+}
+@media (max-width: 1800px) {
+  .toc-wrap {
+    display: none;
+  }
+}
+.toc-wrap ol,
+.toc-wrap li {
+  list-style: none;
+}
+.toc-wrap .toc-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-left: calc(1rem + 3px);
+}
+.toc-wrap .toc {
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+.toc-wrap .toc .toc-link {
+  display: block;
+  padding: 4px 1rem;
+  border-left: 3px solid transparent;
+}
+.toc-wrap .toc .toc-link.active {
+  color: #ff3b00;
+  font-weight: bold;
+}
+.toc-wrap .toc .toc-child {
+  padding-left: 1rem;
+}
+
 
 @keyframes pre-icon {
   0% {

@@ -17,7 +17,7 @@
       </div>
     </header>
     <article class='article-content'>
-      <markdown lineNumbers clipboard [data]='post?.content'></markdown>
+      <markdown id='toc-target' lineNumbers clipboard [data]='post?.content' (ready)='collectToc()'></markdown>
     </article>
     <footer class='post-footer'>
       <div class='related' *ngIf='relatedPosts?.length ?? 0 > 0'>
@@ -66,6 +66,18 @@
         </div>
       </div>
     </footer>
+    <aside class='toc-wrap' *ngIf='tocList.length > 0 && !isMobile'>
+      <h3 class='toc-title'>Table of contents：</h3>
+      <ol class='toc'>
+        <ng-container *ngFor='let toc of tocList'>
+          <li class='toc-item toc-level-{{toc.lvl}}'>
+            <a class='toc-link' href='{{shareUrl}}#{{toc.id}}'>
+              <span class='toc-text'>{{toc.name}}</span>
+            </a>
+          </li>
+        </ng-container>
+      </ol>
+    </aside>
   </div>
   <div [ngClass]="{'comment-desktop': !isMobile, 'comment-mobile': isMobile}" class='comment'
        *ngIf='post?.commentaries_open && commentsLoad'>

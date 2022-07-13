@@ -35,3 +35,15 @@ export interface PostQueryParam {
   sort_by?: Sort;
   date?: number;
 }
+
+export interface NodeEl {
+  localName: string;
+  id: string;
+  textContent: string;
+}
+
+export interface TocElement {
+  name: string;
+  id: string;
+  lvl: string;
+}

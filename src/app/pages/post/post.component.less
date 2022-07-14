@@ -42,6 +42,7 @@
 }
 
 .post-content {
+  position: relative;
   box-shadow: @content-shadow;
 
   .btn {
@@ -798,15 +799,14 @@
 }
 
 .toc-section {
-  border: 1px solid;
-  display: inline-block;
-  box-sizing: border-box;
-  width: 50%;
+  height: 100%;
+  position: absolute;
+  right: -5px;
 }
 
 .toc-wrap {
   position: fixed;
-  top: 70px;
+  top: 72px;
   background-color: var(--color-background);
   border: 1px solid;
   border-color: var(--color-border);
@@ -814,10 +814,9 @@
   padding: 20px;
   height: calc(100vh - 45rem);
   overflow: scroll;
-  right: calc(100vw - 90%);
 }
-@media (max-width: 1800px) {
-  .toc-wrap {
+@media (max-width: 1600px) {
+  .toc-section {
     display: none;
   }
 }

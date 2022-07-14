@@ -84,7 +84,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
   nextIcon = faAnglesRight;
   prevIcon = faAnglesLeft;
   shareUrl = '';
-  tocList: TocElement[] = [];
+  tocList: TocElement[] | undefined = undefined;
 
   private id: number = -0;
   private postSlug = '';
@@ -117,6 +117,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
   }
 
   collectToc() {
+    this.tocList = [];
     const elements = this.document.getElementById('toc-target')?.childNodes;
 
     elements?.forEach((el) => {
@@ -125,7 +126,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
         return;
       }
 
-      if (cur?.localName.startsWith('h')) this.tocList.push({
+      if (cur?.localName.startsWith('h')) this.tocList?.push({
           id: cur.id, lvl: cur.localName.charAt(1), name: cur.textContent ?? ''
         }
       );
@@ -133,6 +134,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.tocList = undefined;
     this.urlListener = this.urlService.urlInfo$.subscribe((url) => {
       this.referer = url.previous;
     });

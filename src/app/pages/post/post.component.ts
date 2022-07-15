@@ -116,7 +116,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     this.headerHeight = this.isMobile ? 56 : 60;
   }
 
-  collectToc() {
+  collectAndObserveToc() {
     this.tocList = [];
     const elements = this.document.getElementById('toc-target')?.childNodes;
 
@@ -130,6 +130,18 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
           id: cur.id, lvl: cur.localName.charAt(1), name: cur.textContent ?? ''
         }
       );
+    });
+
+    const intersectionObserver = new IntersectionObserver(entries => {
+      entries.forEach((el) => {
+        if (el.intersectionRatio > 0)
+          this.document.getElementById('toc-' + el.target.id)?.classList.add('toc-active');
+        else this.document.getElementById('toc-' + el.target.id)?.classList.remove('toc-active');
+      });
+    });
+
+    document.querySelectorAll('markdown#toc-target *[id]').forEach((section) => {
+      intersectionObserver.observe(section);
     });
   }
 

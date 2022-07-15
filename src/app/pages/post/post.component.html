@@ -17,7 +17,7 @@
       </div>
     </header>
     <article class='article-content'>
-      <markdown id='toc-target' lineNumbers clipboard [data]='post?.content' (ready)='collectToc()'></markdown>
+      <markdown id='toc-target' lineNumbers clipboard [data]='post?.content' (ready)='collectAndObserveToc()'></markdown>
     </article>
     <footer class='post-footer'>
       <div class='related' *ngIf='relatedPosts?.length ?? 0 > 0'>
@@ -192,7 +192,7 @@
       <h3 class='toc-title'>Table of contents：</h3>
       <ol class='toc'>
         <ng-container *ngFor='let toc of tocList'>
-          <li class='toc-item toc-level-{{toc.lvl}}'>
+          <li class='toc-item toc-level-{{toc.lvl}}' id='toc-{{toc.id}}'>
             <a class='toc-link' href='{{shareUrl}}#{{toc.id}}'>
               <span class='toc-text'>{{toc.name}}</span>
             </a>

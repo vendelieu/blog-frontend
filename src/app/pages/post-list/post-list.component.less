@@ -4,6 +4,7 @@
   border-radius: @border-radius;
   background-color: var(--color-background-secondary);
   box-shadow: @content-box-shadow;
+  margin-top: 53px;
 
   ul {
     margin-bottom: 0;
@@ -21,15 +22,19 @@
 
     img {
       width: 100%;
+      margin-top: 52px;
     }
   }
 }
 
 .article-list-desktop {
   margin: 0 @box-shadow-width;
-  display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  align-items: start;
+  display: grid;
+  grid-gap: 4.2rem;
+  grid-template-columns: repeat(auto-fit, 30rem);
+  justify-content: center;
 }
 
 .article-link {

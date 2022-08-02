@@ -10,7 +10,6 @@ import { Options } from '../../config/site-options';
   styleUrls: ['./projects.component.less']
 })
 export class ProjectsComponent implements OnInit {
-  tabOption = 0;
   loading = false;
   githubProjects: GithubRepo[] | undefined = undefined;
   projectIcon = faCode;

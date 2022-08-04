@@ -22,9 +22,17 @@
   }
 
   .search-icon {
-    display: block;
+    display: flex;
     border-radius: 100%;
-    box-shadow: 0 5px 10px 0 var(--color-text-third);
+    box-shadow: 0 0 5px 0 var(--color-text-third) inset;
+    width: 25px;
+    height: 25px;
+    justify-content: center;
+    align-items: center;
+  }
+  .search-icon:hover {
+    box-shadow: 0 0 10px 0 var(--color-text-third) inset;
+    cursor: pointer;
   }
 }
 

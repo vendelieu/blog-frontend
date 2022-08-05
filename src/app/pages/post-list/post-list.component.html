@@ -3,6 +3,9 @@
     <li><img alt="{{options['site_name']}}" src='/assets/images/banner.png' /></li>
   </ul>
 </div>
+<div *ngIf='postList?.length === 0' class='not-found'>
+  no posts found
+</div>
 <div [ngClass]="{'article-list-desktop': !isMobile}">
   <article
     *ngFor='let post of postList'
@@ -43,7 +46,6 @@
       </div>
     </div>
   </article>
-  <div *ngIf='postList?.length === 0'>test</div>
 </div>
 <app-page-bar [paginator]='paginatorData' curSort='{{sort}}' *ngIf='postList?.length ?? 0 > 0'>
 </app-page-bar>

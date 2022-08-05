@@ -1,11 +1,8 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, Optional, PLATFORM_ID } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import { Response } from 'express';
 import { uniq } from 'lodash';
-import { combineLatestWith, Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { CommonService } from '../../core/common.service';
 import { MetaService } from '../../core/meta.service';
 import { PageComponent } from '../../core/page.component';
@@ -57,18 +54,13 @@ export class PostListComponent extends PageComponent implements OnInit, OnDestro
 
   ngOnInit(): void {
     this.sort = localStorage.getItem(STORAGE_POSTS_SORTING_KEY) || 'newest';
-    this.paramListener = this.route.paramMap
-      .pipe(
-        combineLatestWith(this.route.queryParamMap),
-        tap(([params, queryParams]) => {
-          this.tag = params.get('tag')?.trim() || '';
-          this.keyword = queryParams.get('keyword')?.trim() || '';
-        })
-      )
-      .subscribe(() => {
-        this.fetchPosts();
-        this.scroller.scrollToPosition([0, 0]);
-      });
+    this.paramListener = this.route.params.subscribe((params) => {
+      this.tag = params['tag']?.trim() || '';
+      this.keyword = params['keyword']?.trim() || '';
+      this.page = params['page']?.trim() || this.page
+      this.fetchPosts();
+      this.scroller.scrollToPosition([0, 0]);
+    });
     this.paginationService.pageChanged.subscribe((newPage) => {
       this.page = newPage;
       this.fetchPosts();

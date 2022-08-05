@@ -13,13 +13,15 @@ export class SearchModalComponent {
   keyword = '';
   searchIcon = faSearch;
 
-  constructor(private postsService: PostsService, private router: Router, @Inject(DOCUMENT) private document: Document) {}
+  constructor(private postsService: PostsService, private router: Router, @Inject(DOCUMENT) private document: Document) {
+  }
 
   search() {
     this.keyword = this.keyword.trim();
     if (this.keyword) {
-      this.router.navigate(['/'], { queryParams: { keyword: this.keyword } });
-      this.hideModal();
+      this.router.navigate(['/search/' + this.keyword]).then(() => {
+        this.hideModal();
+      });
     }
   }
 

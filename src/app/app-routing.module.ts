@@ -10,6 +10,7 @@ import { PostListComponent } from './pages/post-list/post-list.component';
 import { PostComponent } from './pages/post/post.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
 import { AboutComponent } from './pages/about/about.component';
+import { searchMatcher } from './config/search.matcher';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
     }, {
       /* tag/:tag, tag/:tag/page-:page */
       matcher: tagUrlMatcher,
+      component: PostListComponent
+    }, {
+      /* search/:query */
+      matcher: searchMatcher,
       component: PostListComponent
     }, {
       /* :postSlug */

@@ -43,6 +43,7 @@
       </div>
     </div>
   </article>
+  <div *ngIf='postList?.length === 0'>test</div>
 </div>
 <app-page-bar [paginator]='paginatorData' curSort='{{sort}}' *ngIf='postList?.length ?? 0 > 0'>
 </app-page-bar>

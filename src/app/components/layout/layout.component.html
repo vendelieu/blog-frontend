@@ -1,4 +1,4 @@
-<ng-container *ngIf='!isMobile'>
+<ng-container>
   <app-header></app-header>
   <main class='main main-desktop'>
     <div class='content'>
@@ -7,14 +7,5 @@
     <app-search-modal></app-search-modal>
   </main>
   <app-footer></app-footer>
-</ng-container>
-<ng-container *ngIf='isMobile'>
-  <main [ngClass]="{'open': siderOpen}" class='main main-mobile'>
-    <div (click)='toggleSiderOpen()' *ngIf='siderOpen' class='mask mask-sider'></div>
-    <section class='content'>
-      <router-outlet></router-outlet>
-    </section>
-    <app-footer></app-footer>
-  </main>
 </ng-container>
 <app-scroll-top></app-scroll-top>

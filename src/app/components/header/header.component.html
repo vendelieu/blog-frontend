@@ -1,4 +1,4 @@
-<ng-container *ngIf='!isMobile'>
+<ng-container>
   <header class='header header-desktop'>
     <nav class='nav'>
       <a [routerLink]="['/']" class='logo' title="{{options['site_name']}}">
@@ -19,7 +19,7 @@
           </a>
         </li>
         <li>
-          <a (click)='toggleSiderOpen()' target='_blank' title='Search'>
+          <a (click)='toggleSearchOpen()' target='_blank' title='Search'>
             <fa-icon [icon]='searchIcon'></fa-icon>
           </a>
         </li>
@@ -40,26 +40,5 @@
         </li>
       </ul>
     </nav>
-  </header>
-</ng-container>
-<ng-container *ngIf='isMobile'>
-  <header class='header'>
-    <div class='header-mobile'>
-      <ng-container *ngIf='!showSearch'>
-        <i (click)='toggleSiderOpen()' class='icon icon-menu'></i>
-        <a [routerLink]="['/']" class='logo' title="{{options['site_name']}}">
-          <img alt="{{options['site_name']}}" class='logo' src='/assets/images/logo.png' />
-        </a>
-        <i (click)='toggleSearchStatus()' class='icon icon-search'></i>
-      </ng-container>
-      <ng-container *ngIf='showSearch'>
-        <form (submit)='search()' action='/' method='get'>
-          <input [(ngModel)]='keyword' [autofocus]='focusSearch' autocomplete='off' class='header-input'
-                 name='keyword' placeholder='Search...' type='text' />
-          <input class='header-button' type='submit' value='Search' />
-        </form>
-        <div (click)='toggleSearchStatus()' class='mask mask-search'></div>
-      </ng-container>
-    </div>
   </header>
 </ng-container>

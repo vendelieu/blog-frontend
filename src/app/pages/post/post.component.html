@@ -1,5 +1,5 @@
 <div class='post-content'>
-  <div [ngClass]="{'post-desktop': !isMobile, 'post-mobile': isMobile}" class='post'>
+  <div class='post-desktop post'>
     <header class='post-header'>
       <img src='{{post.image}}' alt='Article image'>
       <div class='post-card'>
@@ -17,7 +17,8 @@
       </div>
     </header>
     <article class='article-content'>
-      <markdown id='toc-target' lineNumbers clipboard [data]='post?.content' (ready)='collectAndObserveToc()'></markdown>
+      <markdown id='toc-target' lineNumbers clipboard [data]='post?.content'
+                (ready)='collectAndObserveToc()'></markdown>
     </article>
     <footer class='post-footer'>
       <div class='related' *ngIf='relatedPosts?.length ?? 0 > 0'>
@@ -31,13 +32,13 @@
         </div>
       </div>
       <div class='post-actions'>
-        <button (click)='showShareQrcode()' *ngIf='!isMobile'>
+        <button (click)='showShareQrcode()'>
           <fa-icon [icon]='qrCodeIcon'></fa-icon>
         </button>
-        <button (click)='shareButton("linkedin")' *ngIf='!isMobile'>
+        <button (click)='shareButton("linkedin")'>
           <fa-icon [icon]='linkedinIcon'></fa-icon>
         </button>
-        <button (click)='shareButton("twitter")' *ngIf='!isMobile'>
+        <button (click)='shareButton("twitter")'>
           <fa-icon [icon]='twitterIcon'></fa-icon>
         </button>
       </div>
@@ -67,8 +68,7 @@
       </div>
     </footer>
   </div>
-  <div [ngClass]="{'comment-desktop': !isMobile, 'comment-mobile': isMobile}" class='comment'
-       *ngIf='post?.commentaries_open && commentsLoad'>
+  <div class='comment-desktop comment' *ngIf='post?.commentaries_open && commentsLoad'>
     <div class='no-comments' *ngIf='!commentValues?.length'>
       No comments yet
     </div>
@@ -76,7 +76,7 @@
     <ng-container *ngIf='commentValues?.length ?? 0 > 0'>
       <div class='comment-list' id='comments'>
         <ng-container *ngFor='let comment of commentValues'>
-          <div *ngIf='!isMobile' class='comment-item comment-item-desktop' id='{{comment.id}}'>
+          <div class='comment-item comment-item-desktop' id='{{comment.id}}'>
             <div class='meta'>
               <div class='info'>
                 <div class='author'>
@@ -86,7 +86,7 @@
                   <span class='time'>{{comment.created_at | date:'yyyy-MM-dd HH:mm'}}</span>
                 </div>
               </div>
-              <div *ngIf='!isMobile' class='hash'>
+              <div class='hash'>
                 <a [fragment]='comment.id | numberToString'
                    [routerLink]="['.']">#{{comment.id}}</a>
               </div>
@@ -119,34 +119,6 @@
               <a (click)='deleteComment(comment)' *ngIf='user?.username === comment.username'>
                 <i class='icon icon-del'></i><span>Delete</span>
               </a>
-            </div>
-          </div>
-          <div *ngIf='isMobile' class='comment-item comment-item-mobile' id='{{comment.id}}'>
-            <div class='body'>
-              <div class='from'>
-                <span class='name'>{{comment.username}}</span>
-              </div>
-              <div class='content'>
-                <div *ngIf='comment.reply_to' class='parent'>
-                  <span class='text'>Reply to</span>
-                  <a (click)='scrollToComment($event)'
-                     [attr.data-hash]='comments?.get(comment.reply_to)?.id'
-                     class='author'
-                  >#{{comments?.get(comment.reply_to)?.id}} @{{comments?.get(comment.reply_to)?.username}}</a>
-                </div>
-                <div>{{comment.text}}</div>
-              </div>
-              <div class='meta'>
-                <span class='time'>{{comment.created_at | date:'yy-MM-dd HH:mm'}}</span>
-                <div class='actions'>
-                  <a (click)='replyComment(comment, actionForm)' *ngIf='actionTrigger[comment.id] !== "reply"'>
-                    <i class='icon icon-chat'></i>
-                  </a>
-                  <a (click)='cancelReply()' *ngIf='actionTrigger[comment.id] === "update"'>
-                    <i class='icon icon-close'></i>
-                  </a>
-                </div>
-              </div>
             </div>
           </div>
           <div *ngIf='actionTrigger[comment.id]'>
@@ -187,7 +159,7 @@
        (click)='!commentsLoad ? loadComments() : hideComments()'>{{!commentsLoad ? 'View comments' : 'Hide comments'}}</div>
   <app-modal (toggleModal)='toggleImgModal($event)'
              *ngIf='showImgModal' [imgEle]='clickedImage' [padding]='imgModalPadding'></app-modal>
-  <div class='toc-section' *ngIf='tocList?.length ?? 0 > 0 && !isMobile'>
+  <div class='toc-section' *ngIf='tocList?.length ?? 0 > 0'>
     <aside class='toc-wrap'>
       <h3 class='toc-title'>Table of contents：</h3>
       <ol class='toc'>

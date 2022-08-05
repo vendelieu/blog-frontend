@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ResponseCode } from '../../config/response-code.enum';
 import { CommonService } from '../../core/common.service';
-import { UserAgentService } from '../../core/user-agent.service';
 import { OptionEntity } from '../../interfaces/options';
 import { UserModel } from '../../interfaces/users';
 import { AuthService } from '../../services/auth.service';
@@ -18,10 +17,9 @@ import { faMoon, faSearch, faSun } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./header.component.less']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  @Input() siderOpen = false;
-  @Output() siderOpenChange = new EventEmitter<boolean>();
+  @Input() searchOpen = false;
+  @Output() searchOpenChange = new EventEmitter<boolean>();
 
-  isMobile = false;
   activePage = '';
   options: OptionEntity = Options;
   showSearch = false;
@@ -40,13 +38,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private commonService: CommonService,
-    private userAgentService: UserAgentService,
     private usersService: UsersService,
     private authService: AuthService,
     private router: Router,
     @Inject(DOCUMENT) private document: Document
   ) {
-    this.isMobile = this.userAgentService.isMobile();
     this.currentTheme = this.document.getElementsByTagName('html').item(0)?.getAttribute('color-mode') ?? undefined;
   }
 
@@ -64,11 +60,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.logoutListener?.unsubscribe();
   }
 
-  toggleSearchStatus() {
-    this.showSearch = !this.showSearch;
-    this.focusSearch = this.showSearch;
-  }
-
   search() {
     this.keyword = this.keyword.trim();
     if (this.keyword) {
@@ -77,9 +68,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleSiderOpen() {
-    this.siderOpen = !this.siderOpen;
-    this.siderOpenChange.emit(this.siderOpen);
+  toggleSearchOpen() {
+    this.searchOpen = !this.searchOpen;
+    this.searchOpenChange.emit(this.searchOpen);
     this.document.body.style.overflow = 'hidden';
     this.document.body.getElementsByClassName('search')?.item(0)?.classList.remove('hide-search');
   }

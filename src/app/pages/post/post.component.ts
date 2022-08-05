@@ -10,7 +10,6 @@ import { CommonService } from '../../core/common.service';
 import { MetaService } from '../../core/meta.service';
 import { PageComponent } from '../../core/page.component';
 import { UrlService } from '../../core/url.service';
-import { UserAgentService } from '../../core/user-agent.service';
 import { Comment, CommentDTO } from '../../interfaces/comments';
 import { OptionEntity } from '../../interfaces/options';
 import { NavPost, NodeEl, PostEntity, Sort, TocElement } from '../../interfaces/posts';
@@ -37,7 +36,6 @@ type shareType = 'twitter' | 'linkedin';
   styleUrls: ['./post.component.less']
 })
 export class PostComponent extends PageComponent implements OnInit, OnDestroy {
-  isMobile = false;
   isLoggedIn = false;
   user: UserModel | undefined;
   pageIndex: string = '';
@@ -93,7 +91,6 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
   private urlListener!: Subscription;
   private paramListener!: Subscription;
   private userListener!: Subscription;
-  private readonly headerHeight!: number;
 
   constructor(
     private postsService: PostsService,
@@ -103,7 +100,6 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private metaService: MetaService,
     private urlService: UrlService,
-    private userAgentService: UserAgentService,
     private fb: FormBuilder,
     private message: MessageService,
     private scroller: ViewportScroller,
@@ -112,8 +108,6 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     @Inject(DOCUMENT) private document: Document
   ) {
     super();
-    this.isMobile = this.userAgentService.isMobile();
-    this.headerHeight = this.isMobile ? 56 : 60;
   }
 
   collectAndObserveToc() {
@@ -273,7 +267,7 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     const hash = (e.target as HTMLElement).dataset['hash'] || '';
     const offsetTop = this.document.getElementById(hash)?.offsetTop || 0;
     if (offsetTop > 0) {
-      this.scroller.scrollToPosition([0, offsetTop - this.headerHeight]);
+      this.scroller.scrollToPosition([0, offsetTop - 53]);
     }
   }
 

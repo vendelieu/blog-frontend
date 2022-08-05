@@ -7,7 +7,6 @@ import { CommonService } from '../../core/common.service';
 import { MetaService } from '../../core/meta.service';
 import { PageComponent } from '../../core/page.component';
 import { PaginatorService } from '../../core/paginator.service';
-import { UserAgentService } from '../../core/user-agent.service';
 import { HTMLMetaData } from '../../interfaces/meta';
 import { OptionEntity } from '../../interfaces/options';
 import { PaginatorEntity } from '../../interfaces/paginator';
@@ -23,7 +22,6 @@ import { PaginationService } from '../../services/pagination.service';
   styleUrls: ['./post-list.component.less']
 })
 export class PostListComponent extends PageComponent implements OnInit, OnDestroy {
-  isMobile = false;
   pageIndex = 'index';
   options: OptionEntity = Options;
   page = 1;
@@ -44,12 +42,10 @@ export class PostListComponent extends PageComponent implements OnInit, OnDestro
     private commonService: CommonService,
     private paginator: PaginatorService,
     private metaService: MetaService,
-    private userAgentService: UserAgentService,
     private scroller: ViewportScroller,
     private paginationService: PaginationService
   ) {
     super();
-    this.isMobile = this.userAgentService.isMobile();
   }
 
   ngOnInit(): void {
@@ -57,7 +53,7 @@ export class PostListComponent extends PageComponent implements OnInit, OnDestro
     this.paramListener = this.route.params.subscribe((params) => {
       this.tag = params['tag']?.trim() || '';
       this.keyword = params['keyword']?.trim() || '';
-      this.page = params['page']?.trim() || this.page
+      this.page = params['page']?.trim() || this.page;
       this.fetchPosts();
       this.scroller.scrollToPosition([0, 0]);
     });

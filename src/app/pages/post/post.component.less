@@ -12,12 +12,6 @@
       margin: 0 20px;
     }
   }
-
-  &-mobile {
-    .divider {
-      margin: 0 @m-primary-margin;
-    }
-  }
 }
 
 .markdown-clipboard-button {
@@ -105,20 +99,6 @@
 
     .post-footer {
       padding: 0 @content-margin @content-margin;
-    }
-  }
-
-  &-mobile {
-    .post-header {
-      padding: @m-content-header-margin @m-primary-margin 4px;
-    }
-
-    .post-content {
-      padding: @m-primary-margin;
-    }
-
-    .post-footer {
-      padding: 0 @m-primary-margin @m-primary-margin;
     }
   }
 
@@ -562,26 +542,6 @@
           > * {
             width: 100%;
             padding: 0 (@form-item-margin / 2);
-          }
-        }
-      }
-    }
-  }
-
-  &-mobile {
-    margin-top: @m-primary-margin;
-
-    .comment-list, .comment-form {
-      padding: @m-primary-margin;
-    }
-
-    .comment-form {
-      .form-row {
-        &:not(.form-btns) {
-          flex-direction: column;
-
-          > :not(:last-child) {
-            margin-bottom: @form-row-margin;
           }
         }
       }

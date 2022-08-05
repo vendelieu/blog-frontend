@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { UserAgentService } from '../../core/user-agent.service';
 import { PaginatorEntity } from '../../interfaces/paginator';
 import {
   faAnglesLeft,
@@ -19,14 +18,12 @@ export class PageBarComponent {
   @Input() curSort: string | undefined;
   @Input() paginator: PaginatorEntity | null = null;
 
-  isMobile = false;
   prevIcon = faAnglesLeft;
   nextIcon = faAnglesRight;
   sortNewestIcon = faArrowDownShortWide;
   sortOldestIcon = faArrowUpShortWide;
 
-  constructor(private userAgentService: UserAgentService, private paginationService: PaginationService) {
-    this.isMobile = this.userAgentService.isMobile();
+  constructor(private paginationService: PaginationService) {
   }
 
   changeSort(newSort: SortType) {

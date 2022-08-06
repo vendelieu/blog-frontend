@@ -6,8 +6,8 @@
 <div *ngIf='postList?.length === 0' class='not-found'>
   no posts found
 </div>
-<div class='article-list-desktop'>
-  <article *ngFor='let post of postList' class='article-desktop article'>
+<div class='article-list'>
+  <article *ngFor='let post of postList' class='article'>
     <header>
       <a class='article-link'
          [routerLink]="['/' + post.slug]" rel='bookmark'

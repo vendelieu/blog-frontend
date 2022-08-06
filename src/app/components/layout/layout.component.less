@@ -1,26 +1,19 @@
 @import "../../../styles/variables";
 
 .main {
-  &-desktop {
+  display: flex;
+  flex: auto;
+  flex-direction: row;
+  max-width: @body-width;
+  min-height: 100vh;
+  margin: 53px auto 0;
+  justify-content: space-between;
+
+  .content {
     display: flex;
     flex: auto;
-    flex-direction: row;
-    max-width: @body-width;
-    min-height: 100vh;
-    margin: 53px auto 0;
-    justify-content: space-between;
-
-    .content {
-      display: flex;
-      flex: auto;
-      max-width: 100%;
-      flex-direction: column;
-    }
-
-    .sider {
-      flex: 0 0 @sider-width;
-      width: @sider-width;
-    }
+    max-width: 100%;
+    flex-direction: column;
   }
 }
 

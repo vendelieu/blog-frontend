@@ -9,55 +9,53 @@
   background-color: var(--color-background-secondary);
   box-shadow: @content-box-shadow;
 
-  &-desktop {
-    margin: @primary-margin @box-shadow-width @box-shadow-width @box-shadow-width;
+  margin: @primary-margin @box-shadow-width @box-shadow-width @box-shadow-width;
 
-    > ul {
-      @item-size: 32px;
+  > ul {
+    @item-size: 32px;
+    text-align: center;
+
+    > li {
+      box-sizing: border-box;
+      display: inline-block;
+      width: @item-size;
+      height: @item-size;
+      border-radius: 2px;
+      line-height: @item-size - 2px;
       text-align: center;
+      vertical-align: middle;
 
-      > li {
-        box-sizing: border-box;
-        display: inline-block;
-        width: @item-size;
-        height: @item-size;
-        border-radius: 2px;
-        line-height: @item-size - 2px;
-        text-align: center;
-        vertical-align: middle;
+      &:not(:last-child) {
+        margin-right: 12px;
+      }
 
-        &:not(:last-child) {
-          margin-right: 12px;
-        }
+      &.paginator-page {
+        border: solid 1px var(--color-background-secondary);
+        background-color: var(--color-background);
 
-        &.paginator-page {
-          border: solid 1px var(--color-background-secondary);
-          background-color: var(--color-background);
-
-          &:hover {
-            border: solid 1px var(--color-text);
-            background-color: var(--color-background-secondary);
-            color: var(--color-text);
-          }
-        }
-
-        &.active {
-          border: solid 1px var(--color-background-secondary);
+        &:hover {
+          border: solid 1px var(--color-text);
           background-color: var(--color-background-secondary);
           color: var(--color-text);
-          font-weight: bold;
         }
+      }
 
-        a {
-          display: inline-block;
-          width: 100%;
-          height: 100%;
-          color: var(--color-text-secondary);
-          cursor: pointer;
+      &.active {
+        border: solid 1px var(--color-background-secondary);
+        background-color: var(--color-background-secondary);
+        color: var(--color-text);
+        font-weight: bold;
+      }
 
-          &:hover {
-            color: var(--color-text);
-          }
+      a {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        color: var(--color-text-secondary);
+        cursor: pointer;
+
+        &:hover {
+          color: var(--color-text);
         }
       }
     }

@@ -7,11 +7,8 @@
   font-size: @minor-font-size;
   background: var(--color-background-secondary);
   color: @footer-color;
-
-  &-desktop {
-    margin-top: @content-margin;
-    padding: 16px 0;
-  }
+  margin-top: @content-margin;
+  padding: 16px 0;
 
   .footer-link {
     li:not(:last-child) {
@@ -23,12 +20,10 @@
     display: flex;
     justify-content: center;
 
-    &-desktop {
-      li:not(:last-child):after {
-        content: '';
-        margin: 0 12px;
-        border-right: 1px solid @footer-color;
-      }
+    li:not(:last-child):after {
+      content: '';
+      margin: 0 12px;
+      border-right: 1px solid @footer-color;
     }
   }
 

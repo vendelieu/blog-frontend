@@ -105,7 +105,6 @@
 
     .post-title {
       line-height: 32px;
-      font-size: 30px;
       font-weight: normal;
       display: flex;
       color: var(--color-text);
@@ -117,6 +116,13 @@
           color: @action-color;
         }
       }
+    }
+
+    @media (max-width: 1000px) {
+      font-size: 1em;
+    }
+    @media (min-width: 1001px) {
+      font-size: 1.2em;
     }
 
     .icon, .icon-custom {

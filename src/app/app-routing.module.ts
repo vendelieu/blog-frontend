@@ -4,13 +4,13 @@ import { postListUrlMatcher } from './config/post-list.matcher';
 import { postPageUrlMatcher } from './config/post-page.matcher';
 import { tagUrlMatcher } from './config/tags.matcher';
 import { LayoutComponent } from './components/layout/layout.component';
-import { LoginComponent } from './pages/login/login.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { PostListComponent } from './pages/post-list/post-list.component';
 import { PostComponent } from './pages/post/post.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
 import { AboutComponent } from './pages/about/about.component';
 import { searchMatcher } from './config/search.matcher';
+import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes = [
   {
@@ -26,6 +26,9 @@ const routes: Routes = [
     }, {
       path: 'about',
       component: AboutComponent
+    }, {
+      path: 'user/login',
+      component: LoginComponent
     }, {
       /* post/page-:page */
       matcher: postListUrlMatcher,
@@ -43,9 +46,6 @@ const routes: Routes = [
       matcher: postPageUrlMatcher,
       component: PostComponent
     }]
-  }, {
-    path: 'user/login',
-    component: LoginComponent
   }, {
     path: '**',
     component: NotFoundComponent

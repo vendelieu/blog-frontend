@@ -3,9 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { uniq } from 'lodash';
 import { Subscription } from 'rxjs';
-import { CommonService } from '../../core/common.service';
 import { MetaService } from '../../core/meta.service';
-import { PageComponent } from '../../core/page.component';
 import { PaginatorService } from '../../core/paginator.service';
 import { HTMLMetaData } from '../../interfaces/meta';
 import { OptionEntity } from '../../interfaces/options';
@@ -21,7 +19,7 @@ import { PaginationService } from '../../services/pagination.service';
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.less']
 })
-export class PostListComponent extends PageComponent implements OnInit, OnDestroy {
+export class PostListComponent implements OnInit, OnDestroy {
   pageIndex = 'index';
   options: OptionEntity = Options;
   page = 1;
@@ -39,13 +37,11 @@ export class PostListComponent extends PageComponent implements OnInit, OnDestro
   constructor(
     private route: ActivatedRoute,
     private postsService: PostsService,
-    private commonService: CommonService,
     private paginator: PaginatorService,
     private metaService: MetaService,
     private scroller: ViewportScroller,
     private paginationService: PaginationService
   ) {
-    super();
   }
 
   ngOnInit(): void {
@@ -72,10 +68,6 @@ export class PostListComponent extends PageComponent implements OnInit, OnDestro
 
   ngOnDestroy() {
     this.paramListener.unsubscribe();
-  }
-
-  protected updateActivePage(): void {
-    this.commonService.updateActivePage(this.pageIndex);
   }
 
   private fetchPosts() {
@@ -138,8 +130,6 @@ export class PostListComponent extends PageComponent implements OnInit, OnDestro
         keywords: uniq(keywords).join(',')
       };
       this.metaService.updateHTMLMeta(metaData);
-
-      this.updateActivePage();
 
       this.paginatorData = this.paginator.getPaginator(this.page, this.total);
       const urlSegments = this.route.snapshot.url.map((url) => url.path);

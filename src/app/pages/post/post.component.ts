@@ -6,9 +6,7 @@ import { uniq } from 'lodash';
 import * as QRCode from 'qrcode';
 import { Subscription } from 'rxjs';
 import { MessageService } from '../../components/message/message.service';
-import { CommonService } from '../../core/common.service';
 import { MetaService } from '../../core/meta.service';
-import { PageComponent } from '../../core/page.component';
 import { UrlService } from '../../core/url.service';
 import { Comment, CommentDTO } from '../../interfaces/comments';
 import { OptionEntity } from '../../interfaces/options';
@@ -35,7 +33,7 @@ type shareType = 'twitter' | 'linkedin';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.less']
 })
-export class PostComponent extends PageComponent implements OnInit, OnDestroy {
+export class PostComponent implements OnInit, OnDestroy {
   isLoggedIn = false;
   user: UserModel | undefined;
   pageIndex: string = '';
@@ -94,7 +92,6 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
 
   constructor(
     private postsService: PostsService,
-    private commonService: CommonService,
     private commentsService: CommentsService,
     private usersService: UsersService,
     private route: ActivatedRoute,
@@ -107,7 +104,6 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     private paginationService: PaginationService,
     @Inject(DOCUMENT) private document: Document
   ) {
-    super();
   }
 
   collectAndObserveToc() {
@@ -286,10 +282,6 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected updateActivePage(): void {
-    this.commonService.updateActivePage(this.pageIndex);
-  }
-
   private checkForm(form: FormGroup) {
     const formLabels: Record<string, string> = {
       content: 'Content'
@@ -348,7 +340,6 @@ export class PostComponent extends PageComponent implements OnInit, OnDestroy {
     this.commentsLoad = false;
     this.comments = undefined;
     this.commentValues = undefined;
-    this.updateActivePage();
     this.initMeta();
     this.shareUrl = Options.site_url + '/' + this.post.slug;
   }

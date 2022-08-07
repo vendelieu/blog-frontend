@@ -3,7 +3,6 @@ import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } fro
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ResponseCode } from '../../config/response-code.enum';
-import { CommonService } from '../../core/common.service';
 import { OptionEntity } from '../../interfaces/options';
 import { UserModel } from '../../interfaces/users';
 import { AuthService } from '../../services/auth.service';
@@ -20,7 +19,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input() searchOpen = false;
   @Output() searchOpenChange = new EventEmitter<boolean>();
 
-  activePage = '';
   options: OptionEntity = Options;
   showSearch = false;
   keyword = '';
@@ -37,7 +35,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private logoutListener!: Subscription;
 
   constructor(
-    private commonService: CommonService,
     private usersService: UsersService,
     private authService: AuthService,
     private router: Router,
@@ -47,7 +44,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.commonListener = this.commonService.pageIndex$.subscribe((pageIndex) => (this.activePage = pageIndex));
     this.userListener = this.usersService.loginUser$.subscribe((user) => {
       this.user = user;
       this.isLoggedIn = this.usersService.isLoggedIn;
@@ -68,6 +64,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
+  toggleOverflow() {
+    if (this.document.body.style.overflow === 'hidden') this.document.body.style.overflow = '';
+    else this.document.body.style.overflow = 'hidden';
+  }
+
+  hideMenu() {
+    if (this.document.body.style.overflow === 'hidden') this.document.getElementById('ham')?.click();
+  }
+
   toggleSearchOpen() {
     this.searchOpen = !this.searchOpen;
     this.searchOpenChange.emit(this.searchOpen);
@@ -76,12 +81,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   toggleTheme() {
+    this.hideMenu();
     const newTheme = this.currentTheme == 'dark' ? 'light' : 'dark';
     this.document.getElementsByTagName('html').item(0)?.setAttribute('color-mode', newTheme);
     this.currentTheme = newTheme;
   }
 
   logout() {
+    this.hideMenu();
     this.logoutListener = this.authService.logout().subscribe((res) => {
       if (res.code === ResponseCode.SUCCESS) {
         location.reload();

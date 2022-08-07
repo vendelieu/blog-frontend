@@ -4,25 +4,17 @@
       <a [routerLink]="['/']" class='logo' title="{{options['site_name']}}">
         <img alt="{{options['site_name']}}" class='logo' src='/assets/images/logo.png' />
       </a>
-      <ul class='nav-list'>
-        <li [ngClass]="{'active': activePage == 'projects'}">
-          <a [routerLink]="['/projects']" title="{{options['site_name']}} projects">Projects</a>
-        </li>
-        <li [ngClass]="{'active': activePage == 'about'}">
-          <a [routerLink]="['/about']" title="{{options['site_name']}} about">About</a>
-        </li>
+      <ul class='nav-list main-menu'>
+        <li><a [routerLink]="['/projects']" title="{{options['site_name']}} projects">Projects</a></li>
+        <li><a [routerLink]="['/about']" title="{{options['site_name']}} about">About</a></li>
       </ul>
-      <ul class='link-list'>
-        <li>
-          <a (click)='toggleTheme()'>
-            <fa-icon [icon]='currentTheme === "dark" ? lightThemeIcon : darkThemeIcon'></fa-icon>
-          </a>
-        </li>
-        <li>
-          <a (click)='toggleSearchOpen()' target='_blank' title='Search'>
-            <fa-icon [icon]='searchIcon'></fa-icon>
-          </a>
-        </li>
+      <ul class='link-list main-menu'>
+        <li><a (click)='toggleTheme()'>
+          <fa-icon [icon]='currentTheme === "dark" ? lightThemeIcon : darkThemeIcon'></fa-icon>
+        </a></li>
+        <li><a (click)='toggleSearchOpen()' target='_blank' title='Search'>
+          <fa-icon [icon]='searchIcon'></fa-icon>
+        </a></li>
         <li>
           <a *ngIf='!isLoggedIn' routerLink='/user/login' title='Login'>
             <i class='icon icon-login'></i><span>Login</span>
@@ -32,13 +24,38 @@
               <i class='icon icon-user'></i><span>{{user?.username}}</span>
             </a>
             <ul class='sub-nav-list'>
-              <li>
-                <a (click)='logout()'><i class='icon icon-logout'></i><span>Logout</span></a>
-              </li>
+              <li><a (click)='logout()'><i class='icon icon-logout'></i><span>Logout</span></a></li>
             </ul>
           </ng-container>
         </li>
       </ul>
+      <div class='navbar'>
+        <div class='nav-container'>
+          <input class='checkbox hamburger-action-button' type='checkbox' (click)='toggleOverflow()' id='ham' />
+          <div class='hamburger-lines hamburger-action-button'>
+            <span class='line line1'></span>
+            <span class='line line2'></span>
+            <span class='line line3'></span>
+          </div>
+          <div class='menu-items'>
+            <li><a [routerLink]="['/']" title="{{options['site_name']}}" (click)='hideMenu()'>Home</a></li>
+            <li><a [routerLink]="['/projects']" title="{{options['site_name']}} projects"
+                   (click)='hideMenu()'>Projects</a></li>
+            <li><a [routerLink]="['/about']" title="{{options['site_name']}} about" (click)='hideMenu()'>About</a></li>
+            <li>
+              <a *ngIf='!isLoggedIn' routerLink='/user/login' title='Login' (click)='hideMenu()'>
+                <span>Login</span>
+              </a>
+              <ng-container *ngIf='isLoggedIn'>
+                  <li><a (click)='logout()'>{{user?.username}} <i class='icon icon-logout'></i></a></li>
+              </ng-container>
+            </li>
+            <li><a (click)='toggleTheme()'>
+              <fa-icon [icon]='currentTheme === "dark" ? lightThemeIcon : darkThemeIcon'></fa-icon>
+            </a></li>
+          </div>
+        </div>
+      </div>
     </nav>
   </header>
 </ng-container>

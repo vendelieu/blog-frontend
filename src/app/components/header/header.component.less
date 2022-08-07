@@ -125,3 +125,130 @@
   left: 0;
   z-index: 0;
 }
+
+
+.navbar {
+  display: none;
+  width: 100%;
+  box-shadow: 0 1px 4px rgb(146 161 176 / 15%);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 62px;
+}
+
+.navbar .menu-items {
+  display: flex;
+}
+
+.navbar .nav-container li {
+  list-style: none;
+}
+
+.navbar .nav-container a {
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 500;
+  font-size: 1.2rem;
+  padding: 0.7rem;
+  cursor: pointer;
+}
+
+.nav-container {
+  display: block;
+  position: relative;
+  height: 53px;
+}
+
+.nav-container .checkbox {
+  z-index: 5;
+  opacity: 0;
+  cursor: pointer;
+}
+.hamburger-action-button {
+  height: 26px;
+  width: 32px;
+  position: absolute;
+  top: 17px;
+  right: 7%;
+  cursor: pointer;
+}
+.nav-container .hamburger-lines {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.nav-container .hamburger-lines .line {
+  display: block;
+  height: 4px;
+  width: 100%;
+  border-radius: 10px;
+  background: var(--color-background-third);
+}
+
+.nav-container .hamburger-lines .line1 {
+  transform-origin: 0 0;
+  transition: transform 0.2s ease-in-out;
+}
+
+.nav-container .hamburger-lines .line2 {
+  transition: transform 0.1s ease-in-out;
+}
+
+.nav-container .hamburger-lines .line3 {
+  transform-origin: 0 100%;
+  transition: transform 0.2s ease-in-out;
+}
+
+.navbar .menu-items {
+  visibility: hidden;
+  padding-top: 120px;
+  -webkit-backdrop-filter: saturate(180%) blur(10px);
+  backdrop-filter: saturate(180%) blur(10px);
+  height: 100vh;
+  width: 100vw;
+  transform: translate(-150%);
+  display: flex;
+  flex-direction: column;
+  margin-left: -40px;
+  padding-left: 50px;
+  text-align: center;
+  font-size: 3em;
+}
+
+.navbar .menu-items li {
+  margin-bottom: 1.2rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.nav-container input[type="checkbox"]:checked ~ .menu-items {
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.nav-container input[type="checkbox"]:checked ~ .hamburger-lines .line1 {
+  transform: rotate(45deg);
+}
+
+.nav-container input[type="checkbox"]:checked ~ .hamburger-lines .line2 {
+  transform: scaleY(0);
+}
+
+.nav-container input[type="checkbox"]:checked ~ .hamburger-lines .line3 {
+  transform: rotate(-45deg);
+}
+
+@media screen and (max-width: 500px) {
+  .main-menu {
+    display: none;
+  }
+  .navbar {
+    display: inline;
+  }
+}

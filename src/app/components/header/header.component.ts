@@ -81,7 +81,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   toggleTheme() {
-    this.hideMenu();
     const newTheme = this.currentTheme == 'dark' ? 'light' : 'dark';
     this.document.getElementsByTagName('html').item(0)?.setAttribute('color-mode', newTheme);
     this.currentTheme = newTheme;

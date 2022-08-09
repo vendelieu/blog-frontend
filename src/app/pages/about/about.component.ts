@@ -3,6 +3,7 @@ import { MetaService } from '../../core/meta.service';
 import { HTMLMetaData } from '../../interfaces/meta';
 import { OptionEntity } from '../../interfaces/options';
 import { Options } from '../../config/site-options';
+import { CUR_YEAR } from '../../config/constants';
 
 @Component({
   selector: 'app-about',
@@ -10,6 +11,7 @@ import { Options } from '../../config/site-options';
   styleUrls: ['./about.component.less']
 })
 export class AboutComponent implements OnInit {
+  curYear = CUR_YEAR;
   private options: OptionEntity = Options;
 
   constructor(private metaService: MetaService) {

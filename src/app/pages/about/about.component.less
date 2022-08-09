@@ -1,0 +1,24 @@
+.title {
+  display: flex;
+  margin-bottom: 21px;
+  margin-left: 1em;
+  color: var(--color-text);
+}
+
+.title-gradient {
+  font-size: 29px;
+  position: relative;
+}
+
+.title-gradient::before {
+  content: '';
+  width: 120%;
+  display: block;
+  height: 0.5em;
+  border-radius: 100px;
+  background: linear-gradient(90deg, #FF4AA8 0%, #F95D66 22%, #FE9C76 100%);
+  position: absolute;
+  z-index: -1;
+  bottom: 0;
+  left: -5%;
+}

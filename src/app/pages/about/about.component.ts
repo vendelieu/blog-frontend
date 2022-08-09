@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MetaService } from '../../core/meta.service';
+import { HTMLMetaData } from '../../interfaces/meta';
+import { OptionEntity } from '../../interfaces/options';
+import { Options } from '../../config/site-options';
 
 @Component({
   selector: 'app-about',
@@ -6,11 +10,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./about.component.less']
 })
 export class AboutComponent implements OnInit {
+  private options: OptionEntity = Options;
 
-  constructor() {
+  constructor(private metaService: MetaService) {
   }
 
   ngOnInit(): void {
+    this.initMeta();
   }
 
+  private initMeta() {
+    const metaData: HTMLMetaData = {
+      title: this.options['site_name'] + ' - ' + 'About',
+      description: this.options['site_description'],
+      author: this.options['site_author'],
+      keywords: this.options['site_keywords']
+    };
+    this.metaService.updateHTMLMeta(metaData);
+  }
 }

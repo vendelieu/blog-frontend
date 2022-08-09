@@ -3,7 +3,6 @@ import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { Response } from 'express';
-import { uniq } from 'lodash';
 import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from '../../components/message/message.service';
 import { HTMLMetaData } from '../../interfaces/meta';
@@ -127,13 +126,11 @@ export class LoginComponent implements OnInit {
   }
 
   private initMeta() {
-    const titles = ['Login', this.options['site_name']];
-    const keywords: string[] = (this.options['site_keywords'] || '').split(',');
     const metaData: HTMLMetaData = {
-      title: titles.join(' - '),
+      title: this.options['site_name'] + ' - ' + 'Login',
       description: this.options['site_description'],
       author: this.options['site_author'],
-      keywords: uniq(keywords).join(',')
+      keywords: this.options['site_keywords']
     };
     this.metaService.updateHTMLMeta(metaData);
   }

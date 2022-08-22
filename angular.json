@@ -64,7 +64,7 @@
           },
           "configurations": {
             "production": {
-              "baseHref": "https://cdn.vendeli.eu/",
+              "baseHref": "https://vendeli.eu/",
               "budgets": [
                 {
                   "type": "initial",

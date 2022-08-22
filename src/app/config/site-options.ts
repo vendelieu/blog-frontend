@@ -6,7 +6,7 @@ export const Options = {
   site_slogan: '',
   copyright_notice: 'Vendelieu',
   api_url: 'https://vendeli.eu:8080',
-  site_url: 'http://localhost:4200',
+  site_url: 'https://vendeli.eu',
   githubUrl: 'https://github.com/vendelieu',
   telegramUrl: 'https://t.me/vendelieu',
   email: 'vendelieu@gmail.com'

@@ -5,6 +5,9 @@ export function postPageUrlMatcher(url: UrlSegment[], group: UrlSegmentGroup, ro
   if (url.length > 1 || url.length < 1) {
     return null;
   }
+  if (/\./.test(url[0].path)) {
+    return null;
+  }
   if (url.length === 1 && (!nameReg.test(url[0].path) || /^\d+$/i.test(url[0].path))) {
     return null;
   }

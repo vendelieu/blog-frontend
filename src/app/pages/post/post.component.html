@@ -116,7 +116,7 @@
                  *ngIf='actionTrigger[comment.id] === "update" && user?.username === comment.username'>
                 <i class='icon icon-close'></i><span>Cancel</span>
               </a>
-              <a (click)='deleteComment(comment)' *ngIf='user?.username === comment.username'>
+              <a (click)='deleteComment(comment)' *ngIf='user?.username === comment.username || user?.is_admin'>
                 <i class='icon icon-del'></i><span>Delete</span>
               </a>
             </div>

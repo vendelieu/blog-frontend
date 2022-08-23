@@ -90,9 +90,9 @@ export class ApiService {
         return of(error.error as T);
       }
       if (this.platform.isBrowser) {
-        this.router.navigate(['404']);
+        this.router.navigate(['/']);
       } else {
-        this.response.redirect('/404');
+        this.response.redirect('/');
       }
       return EMPTY;
     };

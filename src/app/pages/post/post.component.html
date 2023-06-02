@@ -4,11 +4,11 @@
       <img src='{{post.image}}' alt='Article image' src-fallback='/assets/images/blank_image.webp'>
       <div class='post-card'>
         <h1 class='post-title'>
-          {{post?.title}}
+          {{post.title}}
         </h1>
         <div class='post-meta post-meta-top'>
             <span title='Date of article creation.'>
-              <i class='icon icon-calendar'></i><span>{{post?.updated_at | date:'EEE, MMMM d, y, HH:mm'}}</span>
+              <i class='icon icon-calendar'></i><span>{{post.updated_at | date:'EEE, MMMM d, y, HH:mm'}}</span>
             </span>
           <span title='Read time'>
               <i class='icon icon-book'></i> {{post.content | readingTime}} min
@@ -17,7 +17,7 @@
       </div>
     </header>
     <article class='article-content'>
-      <markdown id='toc-target' lineNumbers clipboard [data]='post?.content'
+      <markdown id='toc-target' lineNumbers clipboard [data]='post.content'
                 (ready)='collectAndObserveToc()'></markdown>
     </article>
     <footer class='post-footer'>
@@ -68,9 +68,9 @@
       </div>
     </footer>
   </div>
-  <div class='btn' *ngIf='post?.commentaries_open'
+  <div class='btn' *ngIf='post.commentaries_open'
        (click)='toggleComments()'>{{!commentsShow ? 'View comments' : 'Hide comments'}}</div>
-  <div class='comment' *ngIf='post?.commentaries_open && commentsShow'>
+  <div class='comment' *ngIf='post.commentaries_open && commentsShow'>
     <div class='comment-list'>
       <div id='vuukle-comments'></div>
     </div>

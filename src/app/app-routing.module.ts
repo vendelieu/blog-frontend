@@ -10,7 +10,6 @@ import { PostComponent } from './pages/post/post.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
 import { AboutComponent } from './pages/about/about.component';
 import { searchMatcher } from './config/search.matcher';
-import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes = [
   {
@@ -26,9 +25,6 @@ const routes: Routes = [
     }, {
       path: 'about',
       component: AboutComponent
-    }, {
-      path: 'user/login',
-      component: LoginComponent
     }, {
       /* post/page-:page */
       matcher: postListUrlMatcher,
@@ -47,7 +43,7 @@ const routes: Routes = [
       component: PostComponent
     }]
   }, {
-    path: '**',
+    path: '404',
     component: NotFoundComponent
   }
 ];

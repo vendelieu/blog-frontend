@@ -1,16 +1,16 @@
-import { HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode } from '@angular/common/http';
-import { Inject, Injectable, Optional } from '@angular/core';
-import { Router } from '@angular/router';
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import { Response } from 'express';
-import { EMPTY, Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { MessageService } from '../components/message/message.service';
-import { ApiUrl } from '../config/api-url';
-import { Message } from '../config/message.enum';
-import { HttpResponseEntity } from '../interfaces/http-response';
-import { PlatformService } from './platform.service';
-import { Options } from '../config/site-options';
+import {HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode} from '@angular/common/http';
+import {Inject, Injectable, Optional} from '@angular/core';
+import {Router} from '@angular/router';
+import {RESPONSE} from '@nguniversal/express-engine/tokens';
+import {Response} from 'express';
+import {EMPTY, Observable, of} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {MessageService} from '../components/message/message.service';
+import {ApiUrl} from '../config/api-url';
+import {Message} from '../config/message.enum';
+import {HttpResponseEntity} from '../interfaces/http-response';
+import {PlatformService} from './platform.service';
+import {Options} from '../config/site-options';
 
 @Injectable({
   providedIn: 'root'
@@ -36,10 +36,9 @@ export class ApiService {
       params: new HttpParams({
         fromObject: param
       }),
-      observe: 'body',
-      withCredentials: true
+      observe: 'body'
     }).pipe(
-      catchError(this.handleError<T>())
+      catchError(this.handleError<HttpResponseEntity<T>>())
     );
   }
 
@@ -48,37 +47,33 @@ export class ApiService {
       params: new HttpParams({
         fromObject: param
       }),
-      observe: 'body',
-      withCredentials: true
+      observe: 'body'
     }).pipe(
       catchError(this.handleError<T>())
     );
   }
 
   httpPost<T>(url: string, body: Record<string, any> | FormData = {}): Observable<HttpResponseEntity<T>> {
-    return this.http.post<T>(url, body, {
-      observe: 'body',
-      withCredentials: true
+    return this.http.post<HttpResponseEntity<T>>(url, body, {
+      observe: 'body'
     }).pipe(
-      catchError(this.handleError<T>())
+      catchError(this.handleError<HttpResponseEntity<T>>())
     );
   }
 
   httpDelete<T>(url: string): Observable<HttpResponseEntity<T>> {
-    return this.http.delete<T>(url, {
-      observe: 'body',
-      withCredentials: true
+    return this.http.delete<HttpResponseEntity<T>>(url, {
+      observe: 'body'
     }).pipe(
-      catchError(this.handleError<T>())
+      catchError(this.handleError<HttpResponseEntity<T>>())
     );
   }
 
   httpPut<T>(url: string, body: Record<string, any> | FormData = {}): Observable<HttpResponseEntity<T>> {
-    return this.http.put<T>(url, body, {
-      observe: 'body',
-      withCredentials: true
+    return this.http.put<HttpResponseEntity<T>>(url, body, {
+      observe: 'body'
     }).pipe(
-      catchError(this.handleError<T>())
+      catchError(this.handleError<HttpResponseEntity<T>>())
     );
   }
 

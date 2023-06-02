@@ -1,28 +1,23 @@
-import { DOCUMENT, ViewportScroller } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { uniq } from 'lodash';
+import {DOCUMENT, ViewportScroller} from '@angular/common';
+import {AfterViewInit, Component, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {uniq} from 'lodash';
 import * as QRCode from 'qrcode';
-import { Subscription } from 'rxjs';
-import { MessageService } from '../../components/message/message.service';
-import { MetaService } from '../../core/meta.service';
-import { UrlService } from '../../core/url.service';
-import { Comment, CommentDTO } from '../../interfaces/comments';
-import { OptionEntity } from '../../interfaces/options';
-import { NavPost, NodeEl, PostEntity, Sort, TocElement } from '../../interfaces/posts';
-import { UserModel } from '../../interfaces/users';
-import { CommentsService } from '../../services/comments.service';
-import { PostsService } from '../../services/posts.service';
-import { UsersService } from '../../services/users.service';
-import { Options } from '../../config/site-options';
-import { Tag } from '../../interfaces/tag';
-import { STORAGE_COMMENTS_SORTING_KEY } from '../../config/constants';
-import { faAnglesLeft, faAnglesRight, faHashtag, faQrcode } from '@fortawesome/free-solid-svg-icons';
-import { PaginatorEntity } from '../../interfaces/paginator';
-import { PaginatorService } from '../../core/paginator.service';
-import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { PaginationService } from '../../services/pagination.service';
+import {Subscription} from 'rxjs';
+import {MessageService} from '../../components/message/message.service';
+import {MetaService} from '../../core/meta.service';
+import {UrlService} from '../../core/url.service';
+import {OptionEntity} from '../../interfaces/options';
+import {NavPost, NodeEl, PostEntity, TocElement} from '../../interfaces/posts';
+import {PostsService} from '../../services/posts.service';
+import {Options} from '../../config/site-options';
+import {Tag} from '../../interfaces/tag';
+import {faAnglesLeft, faAnglesRight, faHashtag, faQrcode} from '@fortawesome/free-solid-svg-icons';
+import {PaginatorService} from '../../core/paginator.service';
+import {faLinkedin} from '@fortawesome/free-brands-svg-icons';
+import {PaginationService} from '../../services/pagination.service';
+import {environment} from "../../../environments/environment";
 
 type actionType = 'reply' | 'update';
 type shareType = 'twitter' | 'linkedin';
@@ -33,9 +28,7 @@ type shareType = 'twitter' | 'linkedin';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.less']
 })
-export class PostComponent implements OnInit, OnDestroy {
-  isLoggedIn = false;
-  user: UserModel | undefined;
+export class PostComponent implements OnInit, OnDestroy, AfterViewInit {
   pageIndex: string = '';
   prevPost: NavPost | null = null;
   nextPost: NavPost | null = null;
@@ -57,23 +50,7 @@ export class PostComponent implements OnInit, OnDestroy {
   clickedImage!: HTMLImageElement | string;
   showImgModal = false;
   imgModalPadding = 0;
-  saveLoading = false;
-  replyMode = false;
-  updateCommentId: number | undefined = undefined;
-  actionTrigger: Record<number, actionType> = {};
-  commentarySort = 'newest';
-  formGroupConfig = this.fb.group({
-    content: ['', [Validators.required, Validators.maxLength(400)]],
-    reply_to: []
-  });
-  actionForm: FormGroup = this.formGroupConfig;
-  commentsLoad = false;
-  commentsPage = 1;
-  total = 0;
-  paginatorData: PaginatorEntity | null = null;
-  comments: Map<number, Comment> | undefined = undefined;
-  commentValues: Comment[] | undefined = undefined;
-  commentsLoading = false;
+  commentsShow = false;
   qrCodeIcon = faQrcode;
   linkedinIcon = faLinkedin;
   twitterIcon = faHashtag;
@@ -88,12 +65,9 @@ export class PostComponent implements OnInit, OnDestroy {
   private referer = '';
   private urlListener!: Subscription;
   private paramListener!: Subscription;
-  private userListener!: Subscription;
 
   constructor(
     private postsService: PostsService,
-    private commentsService: CommentsService,
-    private usersService: UsersService,
     private route: ActivatedRoute,
     private metaService: MetaService,
     private urlService: UrlService,
@@ -102,6 +76,7 @@ export class PostComponent implements OnInit, OnDestroy {
     private scroller: ViewportScroller,
     private paginator: PaginatorService,
     private paginationService: PaginationService,
+    private _renderer2: Renderer2,
     @Inject(DOCUMENT) private document: Document
   ) {
   }
@@ -146,125 +121,15 @@ export class PostComponent implements OnInit, OnDestroy {
       this.scroller.scrollToPosition([0, 0]);
       this.fetchRelated();
     });
-    this.commentarySort = localStorage.getItem(STORAGE_COMMENTS_SORTING_KEY) || 'newest';
-    this.userListener = this.usersService.loginUser$.subscribe((user) => {
-      this.isLoggedIn = this.usersService.isLoggedIn;
-      this.user = user;
-    });
-    this.paginationService.pageChanged.subscribe((newPage) => {
-      this.commentsPage = newPage;
-      this.fetchComments(() => {
-        this.scroller.scrollToAnchor('comments');
-      });
-    });
-    this.paginationService.sortingChanged.subscribe((newSort) => {
-      this.commentarySort = newSort;
-      localStorage.setItem(STORAGE_COMMENTS_SORTING_KEY, newSort);
-      this.fetchComments(() => {
-        this.scroller.scrollToAnchor('comments');
-      });
-    });
   }
 
   ngOnDestroy() {
     this.urlListener.unsubscribe();
     this.paramListener.unsubscribe();
-    this.userListener?.unsubscribe();
-  }
-
-  saveComment(form: FormGroup | undefined) {
-    if (form && !form.valid) {
-      this.checkForm(form);
-      return;
-    }
-
-    let commentDto: CommentDTO = {
-      post_slug: this.postSlug,
-      text: form?.get('content')?.value ?? '',
-      reply_to: form?.get('reply_to')?.value ?? null
-    };
-
-    this.saveLoading = true;
-    this.commentsService.saveComment(commentDto).subscribe((res) => {
-      this.saveLoading = false;
-      if (res.code == 200) {
-        this.message.success('Successfully added');
-        const cachedReplyMode = this.replyMode;
-        this.resetCommentForm(form);
-        this.fetchComments(() => {
-          !cachedReplyMode && this.scroller.scrollToAnchor('comments');
-        });
-      }
-    });
-  }
-
-  deleteComment(comment: Comment) {
-    this.saveLoading = true;
-    this.commentsService.deleteComment(comment).subscribe((res) => {
-      this.saveLoading = false;
-      if (res.code == 200) {
-        this.message.success('Successfully deleted');
-        this.fetchComments(() => {
-          this.scroller.scrollToAnchor('comments');
-        });
-      }
-    });
-  }
-
-  updateComment(form: FormGroup) {
-    if (form && !form.valid) {
-      this.checkForm(form);
-      return;
-    }
-
-    this.saveLoading = true;
-    this.commentsService.updateComment(this.updateCommentId ?? 0, form?.get('content')?.value ?? '').subscribe((res) => {
-      this.saveLoading = false;
-      if (res.code == 200) {
-        this.cancelUpdateMode(form);
-        this.message.success('Successfully updated');
-        this.fetchComments(() => {
-          this.scroller.scrollToAnchor('comments');
-        });
-      }
-    });
-  }
-
-  turnUpdateMode(comment: Comment, form: FormGroup) {
-    this.resetVisible();
-    this.actionTrigger[comment.id] = 'update';
-    this.updateCommentId = comment.id;
-
-    form.markAsUntouched();
-    form.markAsPristine();
-    form.get('content')?.setValue(comment.text);
-  }
-
-  cancelUpdateMode(form: FormGroup) {
-    this.resetCommentForm(form);
   }
 
   toggleImgModal(status: boolean) {
     this.showImgModal = status;
-  }
-
-  replyComment(comment: Comment, form: FormGroup) {
-    this.resetCommentForm(form);
-    this.actionTrigger[comment.id] = 'reply';
-    this.replyMode = true;
-    form.get('reply_to')?.setValue(comment.id);
-  }
-
-  cancelReply() {
-    this.resetVisible();
-  }
-
-  scrollToComment(e: MouseEvent) {
-    const hash = (e.target as HTMLElement).dataset['hash'] || '';
-    const offsetTop = this.document.getElementById(hash)?.offsetTop || 0;
-    if (offsetTop > 0) {
-      this.scroller.scrollToPosition([0, offsetTop - 53]);
-    }
   }
 
   showShareQrcode() {
@@ -290,7 +155,7 @@ export class PostComponent implements OnInit, OnDestroy {
     Object.keys(form.controls).forEach((key) => {
       const ctrl = form.get(key);
       const errors = ctrl?.errors;
-      errors && ctrl?.markAsTouched({ onlySelf: true });
+      errors && ctrl?.markAsTouched({onlySelf: true});
       errors &&
       Object.keys(errors).forEach((type) => {
         switch (type) {
@@ -337,54 +202,12 @@ export class PostComponent implements OnInit, OnDestroy {
     this.id = this.post.id;
     this.postTags = post.tags;
     this.pageIndex = post.title;
-    this.commentsLoad = false;
-    this.comments = undefined;
-    this.commentValues = undefined;
     this.initMeta();
     this.shareUrl = Options.site_url + '/' + this.post.slug;
   }
 
-  loadComments() {
-    this.commentsLoad = true;
-    this.commentsLoading = true;
-    this.fetchComments();
-    this.commentsLoading = false;
-    this.resetCommentForm(this.actionForm);
-  }
-
-  hideComments() {
-    this.commentsLoad = false;
-    this.resetCommentForm(this.actionForm);
-  }
-
-  private fetchComments(cb?: Function) {
-    let sortParam: Sort;
-    if (this.commentarySort === 'oldest') sortParam = Sort.oldest;
-    else sortParam = Sort.newest;
-
-    this.commentsService.getCommentsByPostSlug(this.postSlug, sortParam, this.commentsPage).subscribe((res) => {
-      res?.data?.forEach((i) => this.comments?.set(i.id, i));
-      this.commentValues = res?.data;
-      this.total = res?.total_elements ?? 0;
-      this.commentsPage = res?.page_num ?? 1;
-      this.paginator.setPageSize(res?.page_size ?? 9);
-      this.paginatorData = this.paginator.getPaginator(this.commentsPage, this.total);
-    });
-    cb && cb();
-  }
-
-  private resetCommentForm = (form: FormGroup | undefined) => {
-    if (!form) return;
-    this.resetVisible();
-    form.markAsUntouched();
-    form.markAsPristine();
-    form.get('content')?.setValue('');
-  };
-
-  private resetVisible() {
-    this.actionTrigger = {};
-    this.replyMode = false;
-    this.updateCommentId = undefined;
+  toggleComments() {
+    this.commentsShow = !this.commentsShow;
   }
 
   private generateShareQrcode() {
@@ -401,5 +224,22 @@ export class PostComponent implements OnInit, OnDestroy {
       .catch((err) => {
         this.message.error(err);
       });
+  }
+
+  ngAfterViewInit(): void {
+    let script = this._renderer2.createElement('script');
+    script.text = `
+      var VUUKLE_CONFIG = {
+        apiKey: '${environment.comments_key}',
+        articleId: '${this.postSlug}'
+      };
+      (function() {
+        var d = document,
+          s = d.createElement('script');
+        s.src = 'https://cdn.vuukle.com/platform.js';
+        (d.head || d.body).appendChild(s);
+      })();
+      `;
+    this._renderer2.appendChild(this.document.body, script);
   }
 }

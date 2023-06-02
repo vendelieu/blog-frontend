@@ -1,7 +1,7 @@
 <div class='post-content'>
   <div class='post'>
     <header class='post-header'>
-      <img src='{{post.image}}' alt='Article image'>
+      <img src='{{post.image}}' alt='Article image' src-fallback='/assets/images/blank_image.webp'>
       <div class='post-card'>
         <h1 class='post-title'>
           {{post?.title}}
@@ -68,95 +68,13 @@
       </div>
     </footer>
   </div>
-  <div class='comment' *ngIf='post?.commentaries_open && commentsLoad'>
-    <div class='no-comments' *ngIf='!commentValues?.length'>
-      No comments yet
-    </div>
-    <i *ngIf='commentsLoading' class='icon icon-loading'></i>
-    <ng-container *ngIf='commentValues?.length ?? 0 > 0'>
-      <div class='comment-list' id='comments'>
-        <ng-container *ngFor='let comment of commentValues'>
-          <div class='comment-item comment-item' id='{{comment.id}}'>
-            <div class='meta'>
-              <div class='info'>
-                <div class='author'>
-                  <span class='from'>
-                    <span class='name'>{{comment.username}}</span>
-                  </span>
-                  <span class='time'>{{comment.created_at | date:'yyyy-MM-dd HH:mm'}}</span>
-                </div>
-              </div>
-              <div class='hash'>
-                <a [fragment]='comment.id | numberToString'
-                   [routerLink]="['.']">#{{comment.id}}</a>
-              </div>
-            </div>
-            <div class='content'>
-              <div *ngIf='comment.reply_to' class='parent'>
-                <span class='text'>Reply to</span>
-                <a (click)='scrollToComment($event)'
-                   [attr.data-hash]='comments?.get(comment.reply_to)?.id'
-                   class='author'
-                >#{{comments?.get(comment.reply_to)?.id}} @{{comments?.get(comment.reply_to)?.username}}</a>
-              </div>
-              <div>{{comment.text}}</div>
-            </div>
-            <div *ngIf='isLoggedIn' class='actions'>
-              <a (click)='replyComment(comment, actionForm)' *ngIf='actionTrigger[comment.id] !== "reply"'>
-                <i class='icon icon-chat'></i><span>Reply</span>
-              </a>
-              <a (click)='cancelReply()' *ngIf='actionTrigger[comment.id] === "reply"'>
-                <i class='icon icon-close'></i><span>Cancel</span>
-              </a>
-              <a (click)='turnUpdateMode(comment, actionForm)'
-                 *ngIf='actionTrigger[comment.id] !== "update" && user?.username === comment.username'>
-                <i class='icon icon-write'></i><span>Update</span>
-              </a>
-              <a (click)='cancelUpdateMode(actionForm)'
-                 *ngIf='actionTrigger[comment.id] === "update" && user?.username === comment.username'>
-                <i class='icon icon-close'></i><span>Cancel</span>
-              </a>
-              <a (click)='deleteComment(comment)' *ngIf='user?.username === comment.username || user?.is_admin'>
-                <i class='icon icon-del'></i><span>Delete</span>
-              </a>
-            </div>
-          </div>
-          <div *ngIf='actionTrigger[comment.id]'>
-            <ng-container *ngTemplateOutlet='commentFormTpl; context: { $implicit: actionForm }'></ng-container>
-          </div>
-        </ng-container>
-      </div>
-    </ng-container>
-    <ng-template #commentFormTpl let-form>
-      <div *ngIf='post?.commentaries_open && isLoggedIn' class='comment-form'>
-        <form (ngSubmit)='updateCommentId ? updateComment(form) : saveComment(form)' [formGroup]='form'>
-          <div class='form-row'>
-          <span class='flex'>
-            <textarea class='input input-textarea' formControlName='content'
-                      maxlength='400' placeholder='Comment content*' rows='4'></textarea>
-          </span>
-          </div>
-          <div class='form-row form-btns'>
-            <input formControlName='reply_to' type='hidden' />
-            <button [disabled]='saveLoading' [ngClass]='{loading: saveLoading}' class='button button-submit'
-                    type='submit'>
-              <i *ngIf='saveLoading' class='icon icon-loading'></i>
-              <span>Submit</span>
-            </button>
-            <button class='button' type='reset'>Reset</button>
-          </div>
-        </form>
-      </div>
-    </ng-template>
-    <ng-container *ngIf='!replyMode && !updateCommentId'>
-      <div *ngIf='post?.commentaries_open && commentValues?.length ?? 0 > 0' class='divider'></div>
-      <ng-container *ngTemplateOutlet='commentFormTpl; context: { $implicit: actionForm }'></ng-container>
-    </ng-container>
-    <app-page-bar [paginator]='paginatorData' curSort='{{commentarySort}}' *ngIf='commentValues?.length ?? 0 > 0'>
-    </app-page-bar>
-  </div>
   <div class='btn' *ngIf='post?.commentaries_open'
-       (click)='!commentsLoad ? loadComments() : hideComments()'>{{!commentsLoad ? 'View comments' : 'Hide comments'}}</div>
+       (click)='toggleComments()'>{{!commentsShow ? 'View comments' : 'Hide comments'}}</div>
+  <div class='comment' *ngIf='post?.commentaries_open && commentsShow'>
+    <div class='comment-list'>
+      <div id='vuukle-comments'></div>
+    </div>
+  </div>
   <app-modal (toggleModal)='toggleImgModal($event)'
              *ngIf='showImgModal' [imgEle]='clickedImage' [padding]='imgModalPadding'></app-modal>
   <div class='toc-section' *ngIf='tocList?.length ?? 0 > 0'>

@@ -2,7 +2,7 @@
   <header class='header'>
     <nav class='nav'>
       <a [routerLink]="['/']" class='logo' title="{{options['site_name']}}">
-        <img alt="{{options['site_name']}}" class='logo' src='/assets/images/logo.png' />
+        <img alt="{{options['site_name']}}" class='logo' src='/assets/images/logo{{isBlack ? "_b" : ""}}.png' />
       </a>
       <ul class='nav-list main-menu'>
         <li><a [routerLink]="['/projects']" title="{{options['site_name']}} projects">Projects</a></li>
@@ -15,19 +15,6 @@
         <li><a (click)='toggleSearchOpen()' target='_blank' title='Search'>
           <fa-icon [icon]='searchIcon'></fa-icon>
         </a></li>
-        <li>
-          <a *ngIf='!isLoggedIn' routerLink='/user/login' title='Login'>
-            <i class='icon icon-login'></i><span>Login</span>
-          </a>
-          <ng-container *ngIf='isLoggedIn'>
-            <a href='javascript:'>
-              <i class='icon icon-user'></i><span>{{user?.username}}</span>
-            </a>
-            <ul class='sub-nav-list'>
-              <li><a (click)='logout()'><i class='icon icon-logout'></i><span>Logout</span></a></li>
-            </ul>
-          </ng-container>
-        </li>
       </ul>
       <div class='navbar'>
         <div class='nav-container'>
@@ -42,14 +29,6 @@
             <li><a [routerLink]="['/projects']" title="{{options['site_name']}} projects"
                    (click)='hideMenu()'>Projects</a></li>
             <li><a [routerLink]="['/about']" title="{{options['site_name']}} about" (click)='hideMenu()'>About</a></li>
-            <li>
-              <a *ngIf='!isLoggedIn' routerLink='/user/login' title='Login' (click)='hideMenu()'>
-                <span>Login</span>
-              </a>
-            </li>
-            <ng-container *ngIf='isLoggedIn'>
-              <li><a (click)='logout()'>{{user?.username}} <i class='icon icon-logout'></i></a></li>
-            </ng-container>
             <li><a (click)='toggleSearchOpen()' target='_blank' title='Search'>
               <fa-icon [icon]='searchIcon' (click)='hideMenu()'></fa-icon>
             </a></li>

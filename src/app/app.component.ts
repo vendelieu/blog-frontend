@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
-import { UrlService } from './core/url.service';
-import { UsersService } from './services/users.service';
+import {Component, OnInit} from '@angular/core';
+import {NavigationEnd, Router} from '@angular/router';
+import {filter} from 'rxjs';
+import {UrlService} from './core/url.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +11,8 @@ import { UsersService } from './services/users.service';
 export class AppComponent implements OnInit {
   private currentUrl: string = '';
 
-  constructor(private router: Router, private urlService: UrlService, private usersService: UsersService) {}
+  constructor(private router: Router, private urlService: UrlService) {
+  }
 
   ngOnInit(): void {
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event) => {
@@ -22,6 +22,5 @@ export class AppComponent implements OnInit {
       });
       this.currentUrl = (event as NavigationEnd).url;
     });
-    this.usersService.getLoginUser().subscribe();
   }
 }

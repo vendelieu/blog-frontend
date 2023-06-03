@@ -36,7 +36,6 @@ export class ProjectsComponent implements OnInit {
     const metaData: HTMLMetaData = {
       title: this.options['site_name'] + ' - ' + 'Projects',
       description: this.options['site_description'],
-      author: this.options['site_author'],
       keywords: this.options['site_keywords']
     };
     this.metaService.updateHTMLMeta(metaData);

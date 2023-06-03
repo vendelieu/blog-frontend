@@ -126,7 +126,6 @@ export class PostListComponent implements OnInit, OnDestroy {
       const metaData: HTMLMetaData = {
         title: titles.join(' - '),
         description,
-        author: this.options['site_author'],
         keywords: uniq(keywords).join(',')
       };
       this.metaService.updateHTMLMeta(metaData);

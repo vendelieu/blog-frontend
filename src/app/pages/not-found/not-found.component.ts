@@ -30,7 +30,6 @@ export class NotFoundComponent implements OnInit {
     this.metaService.updateHTMLMeta({
       title: `404 - ${Options.site_name}`,
       description: Options.site_description,
-      author: Options.site_author,
       keywords: Options.site_keywords
     });
   }

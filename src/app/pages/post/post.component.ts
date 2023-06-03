@@ -149,7 +149,6 @@ export class PostComponent implements OnInit, OnDestroy {
     this.metaService.updateHTMLMeta({
       title: `${this.post.title} - ${this.options['site_name']}`,
       description: this.post.description,
-      author: this.options['site_author'],
       keywords: uniq(this.postTags?.map((item) => item.name).concat(keywords)).join(',')
     });
   }

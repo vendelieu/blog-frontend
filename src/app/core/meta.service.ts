@@ -23,13 +23,6 @@ export class MetaService {
         content: metaData.description
       });
     }
-    if (metaData.author) {
-      const authorTag = this.meta.getTag('name="author"');
-      this.meta[authorTag ? 'updateTag' : 'addTag']({
-        name: 'author',
-        content: metaData.author
-      });
-    }
     if (metaData.keywords) {
       const keywordsTag = this.meta.getTag('name="keywords"');
       this.meta[keywordsTag ? 'updateTag' : 'addTag']({

@@ -1,6 +1,5 @@
 import {DOCUMENT, ViewportScroller} from '@angular/common';
 import {AfterViewInit, Component, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {uniq} from 'lodash';
 import * as QRCode from 'qrcode';
@@ -19,7 +18,6 @@ import {faLinkedin} from '@fortawesome/free-brands-svg-icons';
 import {PaginationService} from '../../services/pagination.service';
 import {environment} from "../../../environments/environment";
 
-type actionType = 'reply' | 'update';
 type shareType = 'twitter' | 'linkedin';
 
 @Component({
@@ -71,7 +69,6 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewInit {
     private route: ActivatedRoute,
     private metaService: MetaService,
     private urlService: UrlService,
-    private fb: FormBuilder,
     private message: MessageService,
     private scroller: ViewportScroller,
     private paginator: PaginatorService,
@@ -145,30 +142,6 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewInit {
     } else if (type === 'linkedin') {
       location.href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + this.shareUrl;
     }
-  }
-
-  private checkForm(form: FormGroup) {
-    const formLabels: Record<string, string> = {
-      content: 'Content'
-    };
-    const msgs: string[] = [];
-    Object.keys(form.controls).forEach((key) => {
-      const ctrl = form.get(key);
-      const errors = ctrl?.errors;
-      errors && ctrl?.markAsTouched({onlySelf: true});
-      errors &&
-      Object.keys(errors).forEach((type) => {
-        switch (type) {
-          case 'required':
-            msgs.push(`Please enter ${formLabels[key]}`);
-            break;
-          case 'maxlength':
-            msgs.push(`${formLabels[key]} length should be no greater than ${errors[type].requiredLength} character, currently ${errors[type].actualLength}`);
-            break;
-        }
-      });
-    });
-    msgs.length > 0 && this.message.error(msgs[0]);
   }
 
   private initMeta() {

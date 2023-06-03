@@ -1,5 +1,5 @@
 import {DOCUMENT, ViewportScroller} from '@angular/common';
-import {AfterViewInit, Component, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {uniq} from 'lodash';
 import * as QRCode from 'qrcode';
@@ -26,7 +26,7 @@ type shareType = 'twitter' | 'linkedin';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.less']
 })
-export class PostComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PostComponent implements OnInit, OnDestroy {
   pageIndex: string = '';
   prevPost: NavPost | null = null;
   nextPost: NavPost | null = null;
@@ -177,6 +177,8 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pageIndex = post.title;
     this.initMeta();
     this.shareUrl = Options.site_url + '/' + this.post.slug;
+
+    this.initComments();
   }
 
   toggleComments() {
@@ -199,12 +201,18 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  ngAfterViewInit(): void {
+  initComments(): void {
+    if (!this.post.commentaries_open) {
+      this.document.getElementById("comments")?.remove();
+      return
+    }
+
     let script = this._renderer2.createElement('script');
+    script.type = 'text/javascript'
     script.text = `
       var VUUKLE_CONFIG = {
         apiKey: '${environment.comments_key}',
-        articleId: '${this.postSlug}'
+        articleId: '${this.postSlug}',
       };
       (function() {
         var d = document,

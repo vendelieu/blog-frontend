@@ -69,9 +69,9 @@
     </footer>
   </div>
   <div class='btn' *ngIf='post.commentaries_open'
-       (click)='toggleComments()'>{{commentsShow ? 'View comments' : 'Hide comments'}}</div>
-  <div class='comment' [hidden]='post.commentaries_open && commentsShow'>
-    <div class='comment-list'>
+       (click)='toggleComments()'>{{!commentsShow ? 'View comments' : 'Hide comments'}}</div>
+  <div class='comment' [hidden]='!post.commentaries_open || !commentsShow'>
+    <div class='comment-list' id='comments'>
       <div id='vuukle-comments'></div>
     </div>
   </div>

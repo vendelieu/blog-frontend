@@ -1,10 +1,10 @@
-import {HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpParams, HttpResponse, HttpStatusCode} from '@angular/common/http';
 import {Inject, Injectable, Optional} from '@angular/core';
 import {Router} from '@angular/router';
 import {RESPONSE} from '@nguniversal/express-engine/tokens';
 import {Response} from 'express';
 import {EMPTY, Observable, of} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {MessageService} from '../components/message/message.service';
 import {ApiUrl} from '../config/api-url';
 import {Message} from '../config/message.enum';
@@ -29,6 +29,13 @@ export class ApiService {
 
   getApiUrl(path: string): string {
     return `${Options.api_url}${this.apiUrlPrefix}${path}`;
+  }
+
+  checkAccess(url: string): Observable<boolean> {
+    return this.http.get(url, { observe: 'response' }).pipe(
+      map((response: HttpResponse<any>) => response.status !== 403),
+      catchError(() => of(false))
+    );
   }
 
   httpGet<T>(url: string, param: Record<string, any> = {}): Observable<HttpResponseEntity<T>> {

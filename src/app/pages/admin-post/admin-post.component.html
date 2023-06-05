@@ -1,0 +1,61 @@
+<div class='content'>
+  <div [formGroup]='postForm' class='post post-form form-control'>
+    <div class='form-row'>
+      <div class='post-item'>Title:</div>
+      <span class='flex'>
+        <input name='title' formControlName='title' [value]='post.title'>
+      </span>
+    </div>
+    <div class='form-row'>
+      <div class='post-item'>Image:</div>
+      <span class='flex'>
+        <input name='image' formControlName='image' [value]='post.image'>
+      </span>
+    </div>
+    <div class='form-row'>
+      <div class='post-item'>Text:</div>
+      <span class='flex'>
+        <ckeditor [editor]='Editor' data='{{post.content}}' formControlName='content'></ckeditor>
+      </span>
+    </div>
+    <div class='form-row'>
+      <div class='post-item'>Description:</div>
+      <span class='flex'>
+          <textarea class='input input-textarea' formControlName='description' maxlength='400'
+                    placeholder='Short description' rows='3' [value]='post.description'></textarea>
+        </span>
+    </div>
+    <div class='form-row'>
+      <div class='post-item'>Tags:</div>
+      <span class='flex'>
+        <tag-input [ngModel]='post.tags' displayBy='name' (onAdd)='onTagAdd($event)'
+                   (onRemove)='onTagRemove($event)'
+                   [ngModelOptions]='{standalone: true}'>
+          <tag-input-dropdown [autocompleteObservable]='requestAutocompleteItems' displayBy='name'></tag-input-dropdown>
+      </tag-input>
+      </span>
+    </div>
+    <div class='form-row'>
+      <div class='post-item'>
+        <span class='flex'>
+          <input type='checkbox' formControlName='commentaries_open' [checked]='post.commentaries_open'> Commentaries
+        </span>
+      </div>
+    </div>
+    <div class='form-row'>
+      <div class='post-item'>Slug:</div>
+      <span class='flex'>
+        <input name='slug' formControlName='slug' [value]='post.slug' (change)='onSlugChange()'>
+      </span>
+    </div>
+    <div class='form-row form-btns'>
+      <button class='button button-submit' type='submit' (click)='send()'>
+        <span>Save</span>
+      </button>
+      <button class='button' type='reset' (click)='this.postForm.reset()'>Reset</button>
+    </div>
+    <div class='form-row form-btns' *ngIf="post.id > 0" (click)="delete()">
+      <button class='button'>Delete</button>
+    </div>
+  </div>
+</div>

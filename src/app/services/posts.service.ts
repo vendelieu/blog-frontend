@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ApiService } from '../core/api.service';
-import { ApiUrl } from '../config/api-url';
-import { NavPost, PostEntity, PostQueryParam } from '../interfaces/posts';
-import { PaginatedHttpResponse } from '../interfaces/http-response';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {ApiService} from '../core/api.service';
+import {ApiUrl} from '../config/api-url';
+import {NavPost, PostEntity, PostQueryParam} from '../interfaces/posts';
+import {PaginatedHttpResponse} from '../interfaces/http-response';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +36,32 @@ export class PostsService {
       this.apiService.getApiUrl(ApiUrl.GET_RELATED_POST_BY_SLUG).replace(':slug', slug)
     ).pipe(
       map((res) => res?.data || undefined)
+    );
+  }
+
+  updatePostById(id: number, body: Record<string, any>): Observable<boolean> {
+    return this.apiService.httpPost<string>(
+      this.apiService.getApiUrl(ApiUrl.ADMIN_POST_UPDATE).replace(':id', id.toString()),
+      body
+    ).pipe(
+      map((res) => res.code === 200)
+    );
+  }
+
+  createPost(body: Record<string, any>): Observable<boolean> {
+    return this.apiService.httpPost<string>(
+      this.apiService.getApiUrl(ApiUrl.ADMIN_CREATE_POST),
+      body
+    ).pipe(
+      map((res) => res.code === 200)
+    );
+  }
+
+  deletePost(id: number) {
+    return this.apiService.httpPost<string>(
+      this.apiService.getApiUrl(ApiUrl.ADMIN_DELETE_POST).replace(':id', id.toString()),
+    ).pipe(
+      map((res) => res.code === 200)
     );
   }
 }

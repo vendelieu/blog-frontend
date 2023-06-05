@@ -10,6 +10,10 @@ import {PostComponent} from './pages/post/post.component';
 import {ProjectsComponent} from './pages/projects/projects.component';
 import {AboutComponent} from './pages/about/about.component';
 import {searchMatcher} from './config/search.matcher';
+import {adminPostEditMatcher} from "./config/admin-post-edit.matcher";
+import {AdminPostComponent} from "./pages/admin-post/admin-post.component";
+import {adminGuard} from "./core/admin.guard";
+import {adminPostCreateMatcher} from "./config/admin-post-create.matcher";
 
 const routes: Routes = [
   {
@@ -40,6 +44,16 @@ const routes: Routes = [
       /* search/:query */
       matcher: searchMatcher,
       component: PostListComponent
+    }, {
+      /* admin/post/:postSlug */
+      matcher: adminPostEditMatcher,
+      component: AdminPostComponent,
+      canActivate: [adminGuard]
+    }, {
+      /* admin/post */
+      matcher: adminPostCreateMatcher,
+      component: AdminPostComponent,
+      canActivate: [adminGuard]
     }, {
       /* :postSlug */
       matcher: postPageUrlMatcher,

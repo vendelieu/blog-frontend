@@ -29,6 +29,9 @@ import en from '@angular/common/locales/en';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ScrollTopComponent} from './components/scroll-top/scroll-top.component';
 import {ImgFallbackModule} from "ngx-img-fallback";
+import {AdminPostComponent} from "./pages/admin-post/admin-post.component";
+import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
+import {TagInputModule} from "ngx-chips";
 
 registerLocaleData(en);
 
@@ -47,6 +50,7 @@ registerLocaleData(en);
     AutofocusDirective,
     ProjectsComponent,
     AboutComponent,
+    AdminPostComponent,
     ScrollTopComponent
   ],
   imports: [
@@ -63,6 +67,8 @@ registerLocaleData(en);
     FontAwesomeModule,
     ClipboardModule,
     ImgFallbackModule,
+    CKEditorModule,
+    TagInputModule,
     MarkdownModule.forRoot({
       sanitize: SecurityContext.NONE,
       clipboardOptions: {

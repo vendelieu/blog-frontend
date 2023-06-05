@@ -27,7 +27,6 @@ type shareType = 'twitter' | 'linkedin';
   styleUrls: ['./post.component.less']
 })
 export class PostComponent implements OnInit, OnDestroy {
-  pageIndex: string = '';
   prevPost: NavPost | null = null;
   nextPost: NavPost | null = null;
   relatedPosts: NavPost[] | undefined = undefined;
@@ -57,7 +56,6 @@ export class PostComponent implements OnInit, OnDestroy {
   shareUrl = '';
   tocList: TocElement[] | undefined = undefined;
 
-  private id: number = -0;
   private postSlug = '';
   private options: OptionEntity = Options;
   private referer = '';
@@ -171,9 +169,7 @@ export class PostComponent implements OnInit, OnDestroy {
 
   private initData(post: PostEntity) {
     this.post = post;
-    this.id = this.post.id;
     this.postTags = post.tags;
-    this.pageIndex = post.title;
     this.initMeta();
     this.shareUrl = Options.site_url + '/' + this.post.slug;
 

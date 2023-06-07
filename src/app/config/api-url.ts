@@ -8,6 +8,5 @@ export enum ApiUrl {
 
   ADMIN_STATUS_URL = '/admin/check',
   ADMIN_CREATE_POST = '/admin/post',
-  ADMIN_POST_UPDATE = '/admin/post/:id',
-  ADMIN_DELETE_POST = '/admin/post/delete/:id'
+  ADMIN_POST_ACTION = '/admin/post/:id',
 }

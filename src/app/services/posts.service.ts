@@ -40,8 +40,8 @@ export class PostsService {
   }
 
   updatePostById(id: number, body: Record<string, any>): Observable<boolean> {
-    return this.apiService.httpPost<string>(
-      this.apiService.getApiUrl(ApiUrl.ADMIN_POST_UPDATE).replace(':id', id.toString()),
+    return this.apiService.httpPut<string>(
+      this.apiService.getApiUrl(ApiUrl.ADMIN_POST_ACTION).replace(':id', id.toString()),
       body
     ).pipe(
       map((res) => res.code === 200)
@@ -58,8 +58,8 @@ export class PostsService {
   }
 
   deletePost(id: number) {
-    return this.apiService.httpPost<string>(
-      this.apiService.getApiUrl(ApiUrl.ADMIN_DELETE_POST).replace(':id', id.toString()),
+    return this.apiService.httpDelete<string>(
+      this.apiService.getApiUrl(ApiUrl.ADMIN_POST_ACTION).replace(':id', id.toString()),
     ).pipe(
       map((res) => res.code === 200)
     );

@@ -58,6 +58,9 @@ const routes: Routes = [
       /* :postSlug */
       matcher: postPageUrlMatcher,
       component: PostComponent
+    }, {
+      path: '**',
+      component: NotFoundComponent
     }]
   }
 ];

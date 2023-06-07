@@ -13,9 +13,6 @@ import { CUR_YEAR } from '../../config/constants';
   styleUrls: ['./not-found.component.less']
 })
 export class NotFoundComponent implements OnInit {
-  options: OptionEntity = Options;
-  curYear = CUR_YEAR;
-
   constructor(
     private platform: PlatformService,
     private response: ResponseService,

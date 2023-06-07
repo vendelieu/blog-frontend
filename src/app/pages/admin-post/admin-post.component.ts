@@ -32,8 +32,10 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     title: '',
     updated_at: Date.now() as unknown as Date
   };
-  private tags: string[] | undefined
+  private tags: string[] = []
   private newTags: NewTag[] = []
+  private addTags: string[] = []
+  private removeTags: string[] = []
   postForm = this.fb.group({
     title: [''],
     image: [''],
@@ -59,7 +61,7 @@ export class AdminPostComponent implements OnInit, OnDestroy {
       if (this.postSlug) this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
         if (post) {
           this.post = post
-          this.tags = post.tags?.map((tag) => tag.slug)
+          this.tags = post.tags?.map((tag) => tag.slug) || [];
           this.postForm.setValue({
             title: post.title,
             image: post.image,
@@ -79,30 +81,46 @@ export class AdminPostComponent implements OnInit, OnDestroy {
 
   onTagAdd($event: TagModel): void {
     let tag = $event as UpdatableTag;
-
-    if (tag.slug) this.tags?.push(tag.slug);
-    else if (tag.value != null) {
+    if (tag.value != null) {
       this.newTags.push({
         name: tag.name,
         slug: this.slugify(tag.value),
       });
+    } else {
+      this.addTags.push(tag.slug);
+      this.removeTags = this.removeTags.filter(t => t !== tag.slug)
     }
   }
 
   onTagRemove($event: TagModel): void {
     let tag = $event as UpdatableTag;
-    if (!tag.value) this.tags = this.tags?.filter(t => t !== tag.slug);
+    if (tag.slug) this.removeTags.push(tag.slug)
     else this.newTags = this.newTags.filter(t => t.name !== tag.value);
   }
 
+  handleTags(postSlug: string) {
+    this.newTags.forEach((i) => {
+      this.tagService.create(i).subscribe();
+      this.tagService.link(postSlug, i.slug).subscribe();
+    });
+    this.addTags.forEach((t) => {
+      if (this.tags.includes(t)) return
+      this.tagService.link(postSlug, t).subscribe();
+    });
+    this.removeTags.forEach((t) => {
+      this.tagService.unlink(postSlug, t).subscribe();
+    });
+  }
+
   send() {
-    // todo handle tags
     if (this.postSlug) this.postsService.updatePostById(this.post.id, this.postForm.value)
-      .subscribe((res) => {
+      .subscribe((_) => {
+        this.handleTags(this.postSlug);
         this.message.success("Post updated.");
       });
-    else this.postsService.createPost(this.postForm.value).subscribe((res) => {
+    else this.postsService.createPost(this.postForm.value).subscribe((_) => {
       this.postForm.reset();
+      this.handleTags(this.postForm.value.slug!);
       this.message.success("Post created.");
     })
   }

@@ -7,6 +7,10 @@ export enum ApiUrl {
   GET_TAG_BY_NAME = '/tag/:name',
 
   ADMIN_STATUS_URL = '/admin/check',
+
   ADMIN_CREATE_POST = '/admin/post',
   ADMIN_POST_ACTION = '/admin/post/:id',
+
+  ADMIN_TAG_ACTION = '/admin/tag',
+  ADMIN_TAG_UNLINK = '/admin/tag/:slug/:post_slug',
 }

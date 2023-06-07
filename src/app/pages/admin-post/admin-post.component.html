@@ -30,6 +30,7 @@
       <span class='flex'>
         <tag-input [ngModel]='post.tags' displayBy='name' (onAdd)='onTagAdd($event)'
                    (onRemove)='onTagRemove($event)'
+                   [allowDupes]="true"
                    [ngModelOptions]='{standalone: true}'>
           <tag-input-dropdown [autocompleteObservable]='requestAutocompleteItems' displayBy='name'></tag-input-dropdown>
       </tag-input>

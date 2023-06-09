@@ -13,12 +13,11 @@ import { OptionEntity } from '../../interfaces/options';
   styleUrls: ['./projects.component.less']
 })
 export class ProjectsComponent implements OnInit {
-  private options: OptionEntity = Options;
   loading = false;
   githubProjects: GithubRepo[] | undefined = undefined;
   projectIcon = faCode;
   langIcon = faTerminal;
-  email = this.options['email'];
+  email = Options.email;
 
   constructor(private githubService: GithubService, private metaService: MetaService) {
   }
@@ -34,9 +33,9 @@ export class ProjectsComponent implements OnInit {
 
   private initMeta() {
     const metaData: HTMLMetaData = {
-      title: this.options['site_name'] + ' - ' + 'Projects',
-      description: this.options['site_description'],
-      keywords: this.options['site_keywords']
+      title: Options.site_name + ' - ' + 'Projects',
+      description: Options.site_description,
+      keywords: Options.site_keywords
     };
     this.metaService.updateHTMLMeta(metaData);
   }

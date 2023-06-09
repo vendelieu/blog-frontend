@@ -1,18 +1,16 @@
-import { ViewportScroller } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { uniq } from 'lodash';
-import { Subscription } from 'rxjs';
-import { MetaService } from '../../core/meta.service';
-import { PaginatorService } from '../../core/paginator.service';
-import { HTMLMetaData } from '../../interfaces/meta';
-import { OptionEntity } from '../../interfaces/options';
-import { PaginatorEntity } from '../../interfaces/paginator';
-import { PostEntity, PostQueryParam, Sort } from '../../interfaces/posts';
-import { PostsService } from '../../services/posts.service';
-import { Options } from '../../config/site-options';
-import { STORAGE_POSTS_SORTING_KEY } from '../../config/constants';
-import { PaginationService } from '../../services/pagination.service';
+import {ViewportScroller} from '@angular/common';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Params} from '@angular/router';
+import {uniq} from 'lodash';
+import {Subscription} from 'rxjs';
+import {MetaService} from '../../core/meta.service';
+import {PaginatorService} from '../../core/paginator.service';
+import {HTMLMetaData} from '../../interfaces/meta';
+import {PaginatorEntity} from '../../interfaces/paginator';
+import {PostEntity, PostQueryParam, Sort} from '../../interfaces/posts';
+import {PostsService} from '../../services/posts.service';
+import {Options} from '../../config/site-options';
+import {PaginationService} from '../../services/pagination.service';
 
 @Component({
   selector: 'app-post-list',
@@ -21,7 +19,7 @@ import { PaginationService } from '../../services/pagination.service';
 })
 export class PostListComponent implements OnInit, OnDestroy {
   pageIndex = 'index';
-  options: OptionEntity = Options;
+  siteName = Options.site_name
   page = 1;
   keyword = '';
   tag = '';
@@ -45,7 +43,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sort = localStorage.getItem(STORAGE_POSTS_SORTING_KEY) || 'newest';
+    this.sort = localStorage.getItem(Options.STORAGE_POSTS_SORTING_KEY) || 'newest';
     this.paramListener = this.route.params.subscribe((params) => {
       this.tag = params['tag']?.trim() || '';
       this.keyword = params['keyword']?.trim() || '';
@@ -60,7 +58,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     });
     this.paginationService.sortingChanged.subscribe((newSort) => {
       this.sort = newSort;
-      localStorage.setItem(STORAGE_POSTS_SORTING_KEY, newSort);
+      localStorage.setItem(Options.STORAGE_POSTS_SORTING_KEY, newSort);
       this.fetchPosts();
       this.scroller.scrollToPosition([0, 0]);
     });
@@ -92,11 +90,10 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.total = res?.total_elements || 0;
       this.paginator.setPageSize(res?.page_size ?? 9);
 
-      const siteName: string = this.options['site_name'] || '';
       let description: string = '';
-      const titles: string[] = [siteName, Options.site_description];
+      const titles: string[] = [Options.site_name, Options.site_description];
       const tags: string[] = [];
-      const keywords: string[] = (this.options['site_keywords'] || '').split(',');
+      const keywords: string[] = Options.site_keywords.split(',');
       if (this.tag) {
         titles.unshift(this.tag);
         tags.push(this.tag);
@@ -119,9 +116,9 @@ export class PostListComponent implements OnInit, OnDestroy {
       } else {
         description += '。';
       }
-      description += `${this.options['site_description']}`;
+      description += `${Options.site_description}`;
       if (titles.length === 1) {
-        titles.unshift(this.options['site_slogan']);
+        titles.unshift(Options.site_slogan);
       }
       const metaData: HTMLMetaData = {
         title: titles.join(' - '),
@@ -141,7 +138,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         urlSegments.push('page-');
       }
       this.pageUrl = `/${urlSegments.join('/')}`;
-      this.pageUrlParam = { ...this.route.snapshot.queryParams };
+      this.pageUrlParam = {...this.route.snapshot.queryParams};
     });
   }
 }

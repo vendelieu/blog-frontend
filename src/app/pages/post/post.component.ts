@@ -57,7 +57,6 @@ export class PostComponent implements OnInit, OnDestroy {
   tocList: TocElement[] | undefined = undefined;
 
   private postSlug = '';
-  private options: OptionEntity = Options;
   private referer = '';
   private urlListener!: Subscription;
   private paramListener!: Subscription;
@@ -143,9 +142,9 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   private initMeta() {
-    const keywords: string[] = (this.options['site_keywords'] || '').split(',');
+    const keywords: string[] = Options.site_keywords.split(',');
     this.metaService.updateHTMLMeta({
-      title: `${this.post.title} - ${this.options['site_name']}`,
+      title: `${this.post.title} - ${Options.site_name}`,
       description: this.post.description,
       keywords: uniq(this.postTags?.map((item) => item.name).concat(keywords)).join(',')
     });

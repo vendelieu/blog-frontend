@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
-import { NumberToStringPipe } from './number-to-string.pipe';
-import { ReadingTimePipePipe } from './reading-time.pipe';
+import {NgModule} from '@angular/core';
+import {ReadingTimePipePipe} from './reading-time.pipe';
 
 @NgModule({
-  declarations: [NumberToStringPipe, ReadingTimePipePipe],
+  declarations: [ReadingTimePipePipe],
   imports: [],
-  exports: [NumberToStringPipe, ReadingTimePipePipe]
+  exports: [ReadingTimePipePipe]
 })
-export class PipesModule {}
+export class PipesModule {
+}

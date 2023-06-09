@@ -99,15 +99,15 @@ export class AdminPostComponent implements OnInit, OnDestroy {
   }
 
   handleTags(postSlug: string) {
-    this.newTags.forEach((i) => {
+    new Set(this.newTags).forEach((i) => {
       this.tagService.create(i).subscribe();
       this.tagService.link(postSlug, i.slug).subscribe();
     });
-    this.addTags.forEach((t) => {
+    new Set(this.addTags).forEach((t) => {
       if (this.tags.includes(t)) return
       this.tagService.link(postSlug, t).subscribe();
     });
-    this.removeTags.forEach((t) => {
+    new Set(this.removeTags).forEach((t) => {
       this.tagService.unlink(postSlug, t).subscribe();
     });
   }

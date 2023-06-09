@@ -15,12 +15,10 @@ import {MessageModule} from './components/message/message.module';
 import {ModalComponent} from './components/modal/modal.component';
 import {PageBarComponent} from './components/page-bar/page-bar.component';
 import {SearchModalComponent} from './components/search-modal/search-modal.component';
-import {AutofocusDirective} from './directives/autofocus.directive';
 import {NotFoundComponent} from './pages/not-found/not-found.component';
 import {PostListComponent} from './pages/post-list/post-list.component';
 import {PostComponent} from './pages/post/post.component';
 import {PipesModule} from './pipes/pipes.module';
-import {httpInterceptorProviders} from './interceptors/http-interceptors';
 import {ClipboardButtonComponent, ClipboardOptions, MarkdownModule} from 'ngx-markdown';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import {ProjectsComponent} from './pages/projects/projects.component';
@@ -47,7 +45,6 @@ registerLocaleData(en);
     PostListComponent,
     PostComponent,
     NotFoundComponent,
-    AutofocusDirective,
     ProjectsComponent,
     AboutComponent,
     AdminPostComponent,
@@ -80,7 +77,7 @@ registerLocaleData(en);
     }),
     NgOptimizedImage
   ],
-  providers: [httpInterceptorProviders, {provide: APP_BASE_HREF, useValue: env.site}],
+  providers: [{provide: APP_BASE_HREF, useValue: env.site}],
   bootstrap: [AppComponent]
 })
 export class AppModule {

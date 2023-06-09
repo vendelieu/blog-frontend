@@ -1,13 +1,14 @@
 import { Injectable, OnInit } from '@angular/core';
 import { PaginatorEntity, PaginatorRange } from '../interfaces/paginator';
+import {Options} from "../config/site-options";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaginatorService {
   // todo: get from db:options
-  private pageSize: number = 10;
-  private paginationSize: number = 9;
+  private pageSize: number = Options.PAGINATOR_PAGE_SIZE;
+  private paginationSize: number = Options.PAGINATOR_PAGINATION_SIZE;
 
   setPageSize(size: number) {
     this.pageSize = size;

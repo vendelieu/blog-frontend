@@ -1,11 +1,9 @@
-import { HttpStatusCode } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { PlatformService } from '../../core/platform.service';
-import { ResponseService } from '../../core/response.service';
-import { MetaService } from '../../core/meta.service';
-import { Options } from '../../config/site-options';
-import { OptionEntity } from '../../interfaces/options';
-import { CUR_YEAR } from '../../config/constants';
+import {HttpStatusCode} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {PlatformService} from '../../core/platform.service';
+import {ResponseService} from '../../core/response.service';
+import {MetaService} from '../../core/meta.service';
+import {Options} from '../../config/site-options';
 
 @Component({
   selector: 'app-not-found',

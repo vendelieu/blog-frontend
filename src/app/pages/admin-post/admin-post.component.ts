@@ -1,14 +1,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {Observable, Subscription} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PostsService} from "../../services/posts.service";
-import {PostEntity} from "../../interfaces/posts";
+import {PostEntity, PostEntity_DefaultInst} from "../../interfaces/posts";
 import {TagsService} from "../../services/tags.service";
 import {NewTag, Tag, UpdatableTag} from "../../interfaces/tag";
 import {TagModel} from "ngx-chips/core/tag-model";
 import {FormBuilder} from "@angular/forms";
 import {MessageService} from "../../components/message/message.service";
+import {TinyMCEConfig} from "../../config/tiny-m-c-e-config";
+import {EventObj} from "@tinymce/tinymce-angular/editor/Events";
 
 @Component({
   selector: 'app-admin-post',
@@ -16,22 +17,9 @@ import {MessageService} from "../../components/message/message.service";
   styleUrls: ['./admin-post.component.less']
 })
 export class AdminPostComponent implements OnInit, OnDestroy {
-  public Editor = ClassicEditor;
   private paramListener!: Subscription;
   private postSlug = ''
-  post: PostEntity = {
-    commentaries_open: false,
-    content: '',
-    id: 0,
-    image: '',
-    next: null,
-    prev: null,
-    description: '',
-    slug: '',
-    tags: null,
-    title: '',
-    updated_at: Date.now() as unknown as Date
-  };
+  post: PostEntity = PostEntity_DefaultInst;
   private tags: string[] = []
   private newTags: NewTag[] = []
   private addTags: string[] = []
@@ -132,6 +120,13 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     this.postForm.get("slug")?.setValue(newSlug)
   }
 
+  delete() {
+    this.postsService.deletePost(this.post.id).subscribe((res) => {
+      this.message.success("Post deleted.");
+      this.router.navigate(['/'])
+    })
+  }
+
   private slugify(text: string) {
     return text
       .normalize('NFKD')            // normalize() using NFKD method returns the Unicode Normalization Form of a given string.
@@ -144,14 +139,9 @@ export class AdminPostComponent implements OnInit, OnDestroy {
       .replace(/-$/g, '');         // Remove trailing -
   }
 
-  delete() {
-    this.postsService.deletePost(this.post.id).subscribe((res) => {
-      this.message.success("Post deleted.");
-      this.router.navigate(['/'])
-    })
-  }
-
   ngOnDestroy() {
     this.paramListener.unsubscribe();
   }
+
+  protected readonly TinyMCEConfig = TinyMCEConfig;
 }

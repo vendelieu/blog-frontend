@@ -24,7 +24,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   keyword = '';
   tag = '';
   sort = 'newest';
-  postList: PostEntity[] | undefined = undefined;
+  postList: PostEntity[] | undefined;
   total = 0;
   paginatorData: PaginatorEntity | null = null;
   pageUrl = '';

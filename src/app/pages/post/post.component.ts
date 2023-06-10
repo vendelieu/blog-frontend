@@ -1,5 +1,5 @@
 import {DOCUMENT, ViewportScroller} from '@angular/common';
-import {Component, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation} from '@angular/core';
+import {AfterViewChecked, Component, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {uniq} from 'lodash';
 import * as QRCode from 'qrcode';
@@ -7,8 +7,7 @@ import {Subscription} from 'rxjs';
 import {MessageService} from '../../components/message/message.service';
 import {MetaService} from '../../core/meta.service';
 import {UrlService} from '../../core/url.service';
-import {OptionEntity} from '../../interfaces/options';
-import {NavPost, NodeEl, PostEntity, TocElement} from '../../interfaces/posts';
+import {NavPost, NodeEl, PostEntity, PostEntity_DefaultInst, TocElement} from '../../interfaces/posts';
 import {PostsService} from '../../services/posts.service';
 import {Options} from '../../config/site-options';
 import {Tag} from '../../interfaces/tag';
@@ -17,6 +16,7 @@ import {PaginatorService} from '../../core/paginator.service';
 import {faLinkedin} from '@fortawesome/free-brands-svg-icons';
 import {PaginationService} from '../../services/pagination.service';
 import {environment} from "../../../environments/environment";
+import {HighlightService} from "../../services/highlight.service";
 
 type shareType = 'twitter' | 'linkedin';
 
@@ -26,23 +26,11 @@ type shareType = 'twitter' | 'linkedin';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.less']
 })
-export class PostComponent implements OnInit, OnDestroy {
+export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
   prevPost: NavPost | null = null;
   nextPost: NavPost | null = null;
   relatedPosts: NavPost[] | undefined = undefined;
-  post: PostEntity = {
-    commentaries_open: false,
-    content: '',
-    id: 0,
-    image: '',
-    next: null,
-    prev: null,
-    description: '',
-    slug: '',
-    tags: null,
-    title: '',
-    updated_at: Date.now() as unknown as Date
-  };
+  post: PostEntity = PostEntity_DefaultInst;
   postTags: Tag[] | null = [];
   clickedImage!: HTMLImageElement | string;
   showImgModal = false;
@@ -60,48 +48,22 @@ export class PostComponent implements OnInit, OnDestroy {
   private referer = '';
   private urlListener!: Subscription;
   private paramListener!: Subscription;
+  private commentsInit = false
+  private codeHighlighted = false
 
   constructor(
-    private postsService: PostsService,
     private route: ActivatedRoute,
+    private postsService: PostsService,
+    private highlightService: HighlightService,
     private metaService: MetaService,
     private urlService: UrlService,
     private message: MessageService,
-    private scroller: ViewportScroller,
     private paginator: PaginatorService,
     private paginationService: PaginationService,
+    private scroller: ViewportScroller,
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private document: Document
   ) {
-  }
-
-  collectAndObserveToc() {
-    this.tocList = [];
-    const elements = this.document.getElementById('toc-target')?.childNodes;
-
-    elements?.forEach((el) => {
-      const cur = (el as unknown as NodeEl);
-      if (!cur.localName) {
-        return;
-      }
-
-      if (cur?.localName.startsWith('h')) this.tocList?.push({
-          id: cur.id, lvl: cur.localName.charAt(1), name: cur.textContent ?? ''
-        }
-      );
-    });
-
-    const intersectionObserver = new IntersectionObserver(entries => {
-      entries.forEach((el) => {
-        if (el.intersectionRatio > 0)
-          this.document.getElementById('toc-' + el.target.id)?.classList.add('toc-active');
-        else this.document.getElementById('toc-' + el.target.id)?.classList.remove('toc-active');
-      });
-    });
-
-    document.querySelectorAll('markdown#toc-target *[id]').forEach((section) => {
-      intersectionObserver.observe(section);
-    });
   }
 
   ngOnInit(): void {
@@ -120,6 +82,14 @@ export class PostComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.urlListener.unsubscribe();
     this.paramListener.unsubscribe();
+  }
+
+  ngAfterViewChecked() {
+    this.collectAndObserveToc();
+    if(this.post.id > 0 && !this.codeHighlighted) {
+      this.highlightService.highlightAll();
+      this.codeHighlighted = true;
+    }
   }
 
   toggleImgModal(status: boolean) {
@@ -180,9 +150,7 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   private generateShareQrcode() {
-    this.shareUrl = this.shareUrl + '?ref=qrcode';
-
-    QRCode.toCanvas(this.shareUrl, {
+    QRCode.toCanvas(this.shareUrl + '?ref=qrcode', {
       width: 320,
       margin: 0
     })
@@ -195,11 +163,12 @@ export class PostComponent implements OnInit, OnDestroy {
       });
   }
 
-  initComments(): void {
+  private initComments(): void {
     if (!this.post.commentaries_open) {
       this.document.getElementById("comments")?.remove();
       return
     }
+    if (this.commentsInit) return;
 
     let script = this._renderer2.createElement('script');
     script.type = 'text/javascript'
@@ -216,5 +185,35 @@ export class PostComponent implements OnInit, OnDestroy {
       })();
       `;
     this._renderer2.appendChild(this.document.body, script);
+    this.commentsInit = true;
+  }
+
+  private collectAndObserveToc() {
+    this.tocList = [];
+    const elements = this.document.getElementById('toc-target')?.childNodes;
+
+    elements?.forEach((el) => {
+      const cur = (el as unknown as NodeEl);
+      if (!cur.localName) {
+        return;
+      }
+
+      if (cur?.localName.startsWith('h')) this.tocList?.push({
+          id: cur.id, lvl: cur.localName.charAt(1), name: cur.textContent ?? ''
+        }
+      );
+    });
+
+    const intersectionObserver = new IntersectionObserver(entries => {
+      entries.forEach((el) => {
+        if (el.intersectionRatio > 0)
+          this.document.getElementById('toc-' + el.target.id)?.classList.add('toc-active');
+        else this.document.getElementById('toc-' + el.target.id)?.classList.remove('toc-active');
+      });
+    });
+
+    document.querySelectorAll('div#toc-target *[id]').forEach((section) => {
+      intersectionObserver.observe(section);
+    });
   }
 }

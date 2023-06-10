@@ -11,8 +11,9 @@
   }
 }
 
-.markdown-clipboard-button {
-  position: relative;
+
+.copy-to-clipboard-button {
+  position: absolute;
   padding: 0 5px;
   border: 1px solid var(--color-border);
   color: var(--color-text);
@@ -548,13 +549,9 @@
 .toc-wrap {
   position: fixed;
   top: 72px;
-  background-color: var(--color-background);
-  border: 1px solid;
-  border-color: var(--color-border);
   z-index: 10;
   padding: 20px;
   height: calc(100vh - 45rem);
-  overflow: scroll;
 }
 
 @media (max-width: 1600px) {
@@ -569,7 +566,6 @@
 }
 
 .toc-wrap .toc-title {
-  font-size: 1rem;
   font-weight: bold;
   margin-left: calc(1rem + 3px);
 }
@@ -604,6 +600,18 @@
     color: var(--color-text);
   }
 }
+
+//@media (min-width: 1800px) {
+//  .toc {
+//    left: 15vw;
+//  }
+//}
+//
+//@media (max-width: 1500px) {
+//  .toc {
+//    display: none;
+//  }
+//}
 
 
 @keyframes pre-icon {

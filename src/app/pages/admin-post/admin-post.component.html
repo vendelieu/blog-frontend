@@ -15,7 +15,7 @@
     <div class='form-row'>
       <div class='post-item'>Text:</div>
       <span class='flex'>
-        <ckeditor [editor]='Editor' data='{{post.content}}' formControlName='content'></ckeditor>
+        <editor [init]="TinyMCEConfig" [initialValue]="post.content" formControlName='content'></editor>
       </span>
     </div>
     <div class='form-row'>

@@ -19,6 +19,20 @@ export interface PostEntity {
   updated_at: Date;
 }
 
+export const PostEntity_DefaultInst: PostEntity = {
+  commentaries_open: false,
+  content: '',
+  id: 0,
+  image: '',
+  next: null,
+  prev: null,
+  description: '',
+  slug: '',
+  tags: null,
+  title: '',
+  updated_at: Date.now() as unknown as Date
+}
+
 export enum Sort {
   newest = 'newest', oldest = 'oldest'
 }

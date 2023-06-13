@@ -18,7 +18,7 @@
       </div>
     </header>
     <article class='article-content'>
-      <div id='toc-target' [innerHTML]="post.content | safeHtml"></div>
+      <div id='toc-target' class='line-numbers' [innerHTML]="post.content | safeHtml" ></div>
     </article>
     <footer class='post-footer'>
       <div class='related' *ngIf='relatedPosts?.length ?? 0 > 0'>

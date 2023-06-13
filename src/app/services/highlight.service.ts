@@ -1,5 +1,3 @@
-import 'clipboard';
-
 import 'prismjs';
 import 'prismjs/plugins/toolbar/prism-toolbar';
 import 'prismjs/plugins/line-numbers/prism-line-numbers';

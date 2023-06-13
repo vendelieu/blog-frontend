@@ -68,6 +68,7 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnInit(): void {
     this.tocList = undefined;
+    this.commentsInit = false;
     this.urlListener = this.urlService.urlInfo$.subscribe((url) => {
       this.referer = url.previous;
     });
@@ -86,9 +87,8 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngAfterViewChecked() {
     this.collectAndObserveToc();
-    if(this.post.id > 0 && !this.codeHighlighted) {
+    if (this.post.id > 0) {
       this.highlightService.highlightAll();
-      this.codeHighlighted = true;
     }
   }
 
@@ -212,7 +212,7 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
       });
     });
 
-    document.querySelectorAll('div#toc-target *[id]').forEach((section) => {
+    this.document.querySelectorAll('div#toc-target *[id]').forEach((section) => {
       intersectionObserver.observe(section);
     });
   }

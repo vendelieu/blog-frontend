@@ -54,9 +54,7 @@
         <span>Save</span>
       </button>
       <button class='button' type='reset' (click)='this.postForm.reset()'>Reset</button>
-    </div>
-    <div class='form-row form-btns' *ngIf="post.id > 0" (click)="delete()">
-      <button class='button'>Delete</button>
+      <button class='button delete-btn' *ngIf="post.id > 0" (click)="delete()">Delete</button>
     </div>
   </div>
 </div>

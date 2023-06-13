@@ -5,6 +5,9 @@ import {Subscription} from 'rxjs';
 import {OptionEntity} from '../../interfaces/options';
 import {Options} from '../../config/site-options';
 import {faMoon, faSearch, faSun} from '@fortawesome/free-solid-svg-icons';
+import {ThemeService} from "../../services/theme.service";
+
+type Theme = 'light' | 'dark'
 
 @Component({
   selector: 'app-header',
@@ -20,7 +23,7 @@ export class HeaderComponent implements OnDestroy {
   keyword = '';
   searchIcon = faSearch;
   currentTheme: string | undefined = undefined;
-  isBlack = true
+  isDark = true
   lightThemeIcon = faSun;
   darkThemeIcon = faMoon;
 
@@ -28,9 +31,16 @@ export class HeaderComponent implements OnDestroy {
 
   constructor(
     private router: Router,
+    private themeService: ThemeService,
     @Inject(DOCUMENT) private document: Document
   ) {
-    this.currentTheme = this.document.getElementsByTagName('html').item(0)?.getAttribute('color-mode') ?? undefined;
+    const localTheme = localStorage.getItem(Options.STORAGE_THEME_KEY);
+    if (localTheme) {
+      this.setTheme(<"light" | "dark">localTheme);
+    } else {
+      this.currentTheme = this.document.getElementsByTagName('html')
+        .item(0)?.getAttribute('color-mode') ?? undefined;
+    }
   }
 
   ngOnDestroy(): void {
@@ -62,9 +72,16 @@ export class HeaderComponent implements OnDestroy {
   }
 
   toggleTheme() {
-    const newTheme = this.currentTheme == 'dark' ? 'light' : 'dark';
-    this.isBlack = newTheme != "light";
-    this.document.getElementsByTagName('html').item(0)?.setAttribute('color-mode', newTheme);
-    this.currentTheme = newTheme;
+    const newTheme: Theme = this.currentTheme == 'dark' ? 'light' : 'dark';
+    this.setTheme(newTheme);
+  }
+
+  private setTheme(theme: Theme) {
+    this.document.getElementsByTagName('html')
+      .item(0)?.setAttribute('color-mode', theme);
+    this.currentTheme = theme;
+    this.isDark = theme != "light";
+    localStorage.setItem(Options.STORAGE_THEME_KEY, theme);
+    this.themeService.changeTheme(theme);
   }
 }

@@ -30,6 +30,7 @@ import {AdminPostComponent} from "./pages/admin-post/admin-post.component";
 import {TagInputModule} from "ngx-chips";
 import {EditorModule, TINYMCE_SCRIPT_SRC} from "@tinymce/tinymce-angular";
 import {HighlightService} from "./services/highlight.service";
+import {ThemeService} from "./services/theme.service";
 
 registerLocaleData(en);
 
@@ -71,7 +72,8 @@ registerLocaleData(en);
   providers: [
     {provide: APP_BASE_HREF, useValue: env.site},
     {provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js'},
-    HighlightService
+    HighlightService,
+    ThemeService
   ],
   bootstrap: [AppComponent]
 })

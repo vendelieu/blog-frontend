@@ -9,7 +9,10 @@ import {TagModel} from "ngx-chips/core/tag-model";
 import {FormBuilder} from "@angular/forms";
 import {MessageService} from "../../components/message/message.service";
 import {TinyMCEConfig} from "../../config/tiny-m-c-e-config";
-import {EventObj} from "@tinymce/tinymce-angular/editor/Events";
+import {ThemeService} from "../../services/theme.service";
+import {HTMLMetaData} from "../../interfaces/meta";
+import {Options} from "../../config/site-options";
+import {MetaService} from "../../core/meta.service";
 
 @Component({
   selector: 'app-admin-post',
@@ -24,6 +27,7 @@ export class AdminPostComponent implements OnInit, OnDestroy {
   private newTags: NewTag[] = []
   private addTags: string[] = []
   private removeTags: string[] = []
+  isDark = false;
   postForm = this.fb.group({
     title: [''],
     image: [''],
@@ -39,8 +43,20 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     private tagService: TagsService,
     private message: MessageService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private themeService: ThemeService,
+    private metaService: MetaService
   ) {
+    themeService.getFlow().subscribe(e => {
+      this.isDark = e === 'dark';
+      if (this.isDark) {
+        this.TinyMCEConfig.skin = 'oxide-dark';
+        this.TinyMCEConfig.content_css = 'dark'
+      } else {
+        this.TinyMCEConfig.skin = 'oxide'
+        this.TinyMCEConfig.content_css = 'default'
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -58,6 +74,7 @@ export class AdminPostComponent implements OnInit, OnDestroy {
             commentaries_open: post.commentaries_open,
             slug: post.slug
           })
+          this.initMeta();
         }
       });
     });
@@ -141,6 +158,15 @@ export class AdminPostComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.paramListener.unsubscribe();
+  }
+
+  private initMeta() {
+    const metaData: HTMLMetaData = {
+      title: Options.site_name + ' [ADM] - ' + this.post.title,
+      description: Options.site_description,
+      keywords: Options.site_keywords
+    };
+    this.metaService.updateHTMLMeta(metaData);
   }
 
   protected readonly TinyMCEConfig = TinyMCEConfig;

@@ -14,6 +14,7 @@ export const Options = {
   email: 'vendelieu@gmail.com',
   GITHUB_API_URL: 'https://api.github.com/users/vendelieu/repos?sort=pushed',
   STORAGE_POSTS_SORTING_KEY: 'posts_sorting',
+  STORAGE_THEME_KEY: 'cur_theme',
   CUR_YEAR: new Date().getFullYear().toString(),
   PAGINATOR_PAGE_SIZE: 10,
   PAGINATOR_PAGINATION_SIZE: 9,

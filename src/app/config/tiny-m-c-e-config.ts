@@ -21,4 +21,6 @@ export const TinyMCEConfig = {
     h5: {block: 'h5', attributes: {'id': '%value'}},
     h6: {block: 'h6', attributes: {'id': '%value'}},
   },
+  skin: '',
+  content_css: ''
 }

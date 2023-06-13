@@ -2,7 +2,7 @@
   <header class='header'>
     <nav class='nav'>
       <a [routerLink]="['/']" class='logo' title="{{options['site_name']}}">
-        <img alt="{{options['site_name']}}" class='logo' src='/assets/images/logo{{isBlack ? "_b" : ""}}.png' />
+        <img alt="{{options['site_name']}}" class='logo' src='/assets/images/logo{{isDark ? "_b" : ""}}.png' />
       </a>
       <ul class='nav-list main-menu'>
         <li><a [routerLink]="['/projects']" title="{{options['site_name']}} projects">Projects</a></li>
@@ -33,7 +33,7 @@
               <fa-icon [icon]='searchIcon' (click)='hideMenu()'></fa-icon>
             </a></li>
             <li><a (click)='toggleTheme()'>
-              <fa-icon [icon]='currentTheme === "dark" ? lightThemeIcon : darkThemeIcon' (click)='hideMenu()'></fa-icon>
+              <fa-icon [icon]='isDark ? lightThemeIcon : darkThemeIcon' (click)='hideMenu()'></fa-icon>
             </a></li>
           </div>
         </div>

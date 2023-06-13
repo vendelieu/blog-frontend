@@ -52,25 +52,6 @@ a, a:hover, a:focus {
     padding: 0;
   }
 
-  &.loading {
-    cursor: default;
-
-    &:before {
-      display: block;
-      position: absolute;
-      top: -1px;
-      right: -1px;
-      bottom: -1px;
-      left: -1px;
-      z-index: 1;
-      background: var(--color-background);
-      border-radius: inherit;
-      opacity: 0.35;
-      transition: opacity 0.2s;
-      content: '';
-      pointer-events: none;
-    }
-  }
 }
 
 .button-submit {
@@ -91,17 +72,6 @@ a, a:hover, a:focus {
   height:      75px;
   margin-top: -75px;
   visibility: hidden;
-}
-
-.mask {
-  position: fixed;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  background: var(--color-background-secondary);
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
-  touch-action: none;
 }
 
 .icon-loading {

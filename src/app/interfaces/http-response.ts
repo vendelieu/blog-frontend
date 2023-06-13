@@ -11,7 +11,3 @@ export interface PaginatedHttpResponse<T> extends HttpResponseEntity<T> {
   page_size: number;
   total_elements: number;
 }
-
-export interface ResponseWithHeaders<T> extends HttpResponseEntity<T> {
-  headers?: HttpHeaders;
-}

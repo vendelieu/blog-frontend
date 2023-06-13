@@ -40,10 +40,6 @@
         text-align: center;
         position: relative;
 
-        &:hover .sub-nav-list {
-          display: block;
-        }
-
         > a {
           display: inline-flex;
           align-items: center;
@@ -82,49 +78,17 @@
         }
       }
 
-      .sub-nav-list {
-        right: 0;
-      }
-
       .icon {
         display: inline-flex;
         margin-right: 4px;
       }
     }
 
-    .sub-nav-list {
-      display: none;
-      position: absolute;
-      border-bottom-left-radius: 2px;
-      border-bottom-right-radius: 2px;
-      background-color: var(--color-background);
-      box-shadow: @content-box-shadow;
-
-      > li > a {
-        display: inline-flex;
-        align-items: center;
-        min-width: 80px;
-        padding: 6px @primary-margin;
-        line-height: 24px;
-        font-size: @minor-font-size;
-        text-align: left;
-        cursor: pointer;
-      }
-
-      .icon {
-        margin-right: 8px;
-      }
-    }
   }
 
   .logo img {
     width: 100%;
   }
-}
-
-.mask-search {
-  left: 0;
-  z-index: 0;
 }
 
 

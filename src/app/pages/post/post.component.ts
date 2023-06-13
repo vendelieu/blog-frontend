@@ -49,7 +49,6 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
   private urlListener!: Subscription;
   private paramListener!: Subscription;
   private commentsInit = false
-  private codeHighlighted = false
 
   constructor(
     private route: ActivatedRoute,

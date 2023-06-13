@@ -1,7 +1,7 @@
 export const TinyMCEConfig = {
   plugins: ['lists', 'link', 'image', 'media', 'code', 'codesample', 'anchor', 'wordcount'],
   menubar: 'view insert format',
-  toolbar: 'codesample bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | image link media anchor',
+  toolbar: 'h1 h2 h3 | codesample bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | image link media anchor',
   codesample_global_prismjs: true,
   codesample_languages: [
     {text: 'Kotlin', value: 'kotlin'},
@@ -12,9 +12,6 @@ export const TinyMCEConfig = {
     {text: 'Java', value: 'java'},
     {text: 'Bash', value: 'bash'},
   ],
-  codesample_global_attrs: {
-    'class': 'line-numbers'
-  },
   browser_spellcheck: true,
   formats: {
     h1: {block: 'h1', attributes: {'id': '%value'}},

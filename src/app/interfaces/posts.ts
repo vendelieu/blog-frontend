@@ -51,13 +51,17 @@ export interface PostQueryParam {
 }
 
 export interface NodeEl {
-  localName: string;
   id: string;
+  localName: string;
   textContent: string;
+  offsetHeight: number;
+  offsetLeft: number;
+  offsetTop: number;
+  offsetWidth: number;
 }
 
 export interface TocElement {
   name: string;
   id: string;
-  lvl: string;
+  lvl: number;
 }

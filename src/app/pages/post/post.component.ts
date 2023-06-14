@@ -1,5 +1,5 @@
 import {DOCUMENT, ViewportScroller} from '@angular/common';
-import {AfterViewChecked, Component, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, Inject, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {uniq} from 'lodash';
 import * as QRCode from 'qrcode';
@@ -7,7 +7,7 @@ import {Subscription} from 'rxjs';
 import {MessageService} from '../../components/message/message.service';
 import {MetaService} from '../../core/meta.service';
 import {UrlService} from '../../core/url.service';
-import {NavPost, NodeEl, PostEntity, PostEntity_DefaultInst, TocElement} from '../../interfaces/posts';
+import {NavPost, NodeEl, PostEntity, PostEntity_DefaultInst} from '../../interfaces/posts';
 import {PostsService} from '../../services/posts.service';
 import {Options} from '../../config/site-options';
 import {Tag} from '../../interfaces/tag';
@@ -26,29 +26,27 @@ type shareType = 'twitter' | 'linkedin';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.less']
 })
-export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class PostComponent implements OnInit, OnDestroy {
   prevPost: NavPost | null = null;
   nextPost: NavPost | null = null;
-  relatedPosts: NavPost[] | undefined = undefined;
+  relatedPosts: NavPost[] | undefined;
   post: PostEntity = PostEntity_DefaultInst;
   postTags: Tag[] | null = [];
   clickedImage!: HTMLImageElement | string;
   showImgModal = false;
-  imgModalPadding = 0;
   commentsShow = false;
+  imgModalPadding = 0;
   qrCodeIcon = faQrcode;
   linkedinIcon = faLinkedin;
   twitterIcon = faHashtag;
   nextIcon = faAnglesRight;
   prevIcon = faAnglesLeft;
   shareUrl = '';
-  tocList: TocElement[] | undefined = undefined;
+  tocElements: NodeEl[] = [];
+  @ViewChild('tocTarget') tocTargetEl!: ElementRef;
 
   private postSlug = '';
-  private referer = '';
-  private urlListener!: Subscription;
   private paramListener!: Subscription;
-  private commentsInit = false
 
   constructor(
     private route: ActivatedRoute,
@@ -66,11 +64,6 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngOnInit(): void {
-    this.tocList = undefined;
-    this.commentsInit = false;
-    this.urlListener = this.urlService.urlInfo$.subscribe((url) => {
-      this.referer = url.previous;
-    });
     this.paramListener = this.route.params.subscribe((params) => {
       this.postSlug = params['postSlug']?.trim();
       this.fetchPost();
@@ -80,15 +73,7 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngOnDestroy() {
-    this.urlListener.unsubscribe();
     this.paramListener.unsubscribe();
-  }
-
-  ngAfterViewChecked() {
-    this.collectAndObserveToc();
-    if (this.post.id > 0) {
-      this.highlightService.highlightAll();
-    }
   }
 
   toggleImgModal(status: boolean) {
@@ -140,26 +125,31 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.postTags = post.tags;
     this.initMeta();
     this.shareUrl = Options.site_url + '/' + this.post.slug;
-
-    this.initComments();
+    setTimeout(() => this.prepareContent(), 0);
   }
 
   toggleComments() {
     this.commentsShow = !this.commentsShow;
   }
 
+  private prepareContent() {
+    if (this.post.id > 0) {
+      this.collectContentHeadings();
+      this.highlightService.highlightAll();
+      this.initComments();
+    }
+  }
+
   private generateShareQrcode() {
     QRCode.toCanvas(this.shareUrl + '?ref=qrcode', {
       width: 320,
       margin: 0
-    })
-      .then((canvas) => {
-        const modalEle = this.document.querySelector('.modal-content-body');
-        modalEle?.appendChild(canvas);
-      })
-      .catch((err) => {
-        this.message.error(err);
-      });
+    }).then((canvas) => {
+      const modalEle = this.document.querySelector('.modal-content-body');
+      modalEle?.appendChild(canvas);
+    }).catch((err) => {
+      this.message.error(err);
+    });
   }
 
   private initComments(): void {
@@ -167,10 +157,11 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.document.getElementById("comments")?.remove();
       return
     }
-    if (this.commentsInit) return;
+    if (this.document.getElementById('vuukle-js')) return;
 
     let script = this._renderer2.createElement('script');
     script.type = 'text/javascript'
+    script.id = 'vuukle-js'
     script.text = `
       var VUUKLE_CONFIG = {
         apiKey: '${environment.comments_key}',
@@ -184,35 +175,16 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
       })();
       `;
     this._renderer2.appendChild(this.document.body, script);
-    this.commentsInit = true;
   }
 
-  private collectAndObserveToc() {
-    this.tocList = [];
-    const elements = this.document.getElementById('toc-target')?.childNodes;
-
-    elements?.forEach((el) => {
-      const cur = (el as unknown as NodeEl);
+  private collectContentHeadings() {
+    const elements = this.tocTargetEl.nativeElement?.childNodes;
+    elements?.forEach((el: unknown) => {
+      const cur = (el as NodeEl);
       if (!cur.localName) {
         return;
       }
-
-      if (cur?.localName.startsWith('h')) this.tocList?.push({
-          id: cur.id, lvl: cur.localName.charAt(1), name: cur.textContent ?? ''
-        }
-      );
-    });
-
-    const intersectionObserver = new IntersectionObserver(entries => {
-      entries.forEach((el) => {
-        if (el.intersectionRatio > 0)
-          this.document.getElementById('toc-' + el.target.id)?.classList.add('toc-active');
-        else this.document.getElementById('toc-' + el.target.id)?.classList.remove('toc-active');
-      });
-    });
-
-    this.document.querySelectorAll('div#toc-target *[id]').forEach((section) => {
-      intersectionObserver.observe(section);
+      if (cur?.localName.startsWith('h')) this.tocElements?.push(cur)
     });
   }
 }

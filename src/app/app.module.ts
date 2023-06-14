@@ -31,6 +31,7 @@ import {TagInputModule} from "ngx-chips";
 import {EditorModule, TINYMCE_SCRIPT_SRC} from "@tinymce/tinymce-angular";
 import {HighlightService} from "./services/highlight.service";
 import {ThemeService} from "./services/theme.service";
+import {TocComponent} from "./components/toc/toc.component";
 
 registerLocaleData(en);
 
@@ -49,7 +50,8 @@ registerLocaleData(en);
     ProjectsComponent,
     AboutComponent,
     AdminPostComponent,
-    ScrollTopComponent
+    ScrollTopComponent,
+    TocComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'blogApp'}),

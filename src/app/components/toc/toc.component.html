@@ -1,0 +1,18 @@
+<div class='toc-section' *ngIf='tocList?.length ?? 0 > 0'>
+  <aside class='toc-wrap'>
+    <h3 class='toc-title'>Contents:</h3>
+    <ol class='toc'>
+      <ng-container *ngFor='let toc of tocList'>
+        <li class='toc-item' id='toc-{{toc.id}}' [ngStyle]="{'padding-left': toc.lvl / 3 + 'em'}" >
+          <a class='toc-link' href='{{baseUrl}}#{{toc.id}}'>
+            <span class='toc-text'>{{toc.name}}</span>
+          </a>
+        </li>
+      </ng-container>
+    </ol>
+    <svg class='toc-marker' id='toc-line' width='200' height='200' xmlns='http://www.w3.org/2000/svg'>
+      <path stroke='#444' stroke-width='3' fill='transparent' stroke-dasharray='0, 0, 0, 1000' stroke-linecap='round'
+            stroke-linejoin='round' transform='translate(-0.5, -0.5)' d='' #tocLine/>
+    </svg>
+  </aside>
+</div>

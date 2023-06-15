@@ -1,8 +1,8 @@
-import {APP_BASE_HREF, NgOptimizedImage, registerLocaleData} from '@angular/common';
+import {APP_BASE_HREF, registerLocaleData} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {BrowserModule, BrowserTransferStateModule} from '@angular/platform-browser';
+import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TransferHttpCacheModule} from '@nguniversal/common';
 import {environment as env} from '../environments/environment';
@@ -55,7 +55,6 @@ registerLocaleData(en);
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'blogApp'}),
-    BrowserTransferStateModule,
     TransferHttpCacheModule,
     AppRoutingModule,
     HttpClientModule,
@@ -68,8 +67,7 @@ registerLocaleData(en);
     ClipboardModule,
     ImgFallbackModule,
     EditorModule,
-    TagInputModule,
-    NgOptimizedImage
+    TagInputModule
   ],
   providers: [
     {provide: APP_BASE_HREF, useValue: env.site},

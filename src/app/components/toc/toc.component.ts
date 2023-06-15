@@ -14,13 +14,10 @@ export class TocComponent implements AfterViewInit {
   @Input("baseUrl") baseUrl!: string
 
   private intersectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const id = entry.target.getAttribute("id");
-        if(!id) return
-        const rect = entry.target.getBoundingClientRect();
-        this.drawPath(id, rect);
-      }
+    entries.forEach((el) => {
+      if (el.isIntersecting)
+        this.document.getElementById('toc-' + el.target.id)?.classList.add('toc-active');
+      else this.document.getElementById('toc-' + el.target.id)?.classList.remove('toc-active');
     });
   }, {
     root: null,
@@ -45,19 +42,5 @@ export class TocComponent implements AfterViewInit {
     this.document.querySelectorAll('div#toc-target *[id]').forEach((section) => {
       this.intersectionObserver.observe(section);
     });
-  }
-
-  drawPath(id: string, rect: DOMRect) {
-    const svg = this.tocLine.nativeElement;
-    const path = this.document.getElementById(id);
-    if (!path) return;
-
-    // Calculate the starting and ending points of the path
-    const start = this.currentPath ? this.currentPath.end : 0;
-    const end = rect.top - svg.getBoundingClientRect().top;
-
-    // Update the current path
-    this.currentPath = { start, end };
-    // todo complete
   }
 }

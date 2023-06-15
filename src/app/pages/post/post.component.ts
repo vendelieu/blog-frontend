@@ -153,10 +153,6 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   private initComments(): void {
-    if (!this.post.commentaries_open) {
-      this.document.getElementById("comments")?.remove();
-      return
-    }
     if (this.document.getElementById('vuukle-js')) return;
 
     let script = this._renderer2.createElement('script');
@@ -184,7 +180,7 @@ export class PostComponent implements OnInit, OnDestroy {
       if (!cur.localName) {
         return;
       }
-      if (cur?.localName.startsWith('h')) this.tocElements?.push(cur)
+      if (cur?.localName.startsWith('h')) this.tocElements.push(cur)
     });
   }
 }

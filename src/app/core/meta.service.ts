@@ -1,16 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { HTMLMetaData } from '../interfaces/meta';
+import { HTMLExtendedData, HTMLMetaData } from '../interfaces/meta';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MetaService {
-  constructor(
-    private meta: Meta,
-    private title: Title
-  ) {
-  }
+  constructor(private meta: Meta, private title: Title) {}
 
   updateHTMLMeta(metaData: HTMLMetaData) {
     if (metaData.title) {
@@ -28,6 +24,41 @@ export class MetaService {
       this.meta[keywordsTag ? 'updateTag' : 'addTag']({
         name: 'keywords',
         content: metaData.keywords
+      });
+    }
+  }
+
+  updateExtendedHTMLMeta(metaData: HTMLExtendedData) {
+    this.updateHTMLMeta(metaData);
+    if (metaData.title) {
+      const titleTag = this.meta.getTag('property="og:title"');
+      this.meta[titleTag ? 'updateTag' : 'addTag']({
+        property: 'og:title',
+        content: metaData.title
+      });
+    }
+
+    if (metaData.description) {
+      const descriptionTag = this.meta.getTag('property="og:description"');
+      this.meta[descriptionTag ? 'updateTag' : 'addTag']({
+        property: 'og:description',
+        content: metaData.description
+      });
+    }
+
+    if (metaData.url) {
+      const urlTag = this.meta.getTag('property="og:url"');
+      this.meta[urlTag ? 'updateTag' : 'addTag']({
+        property: 'og:url',
+        content: metaData.url
+      });
+    }
+
+    if (metaData.image) {
+      const imageTag = this.meta.getTag('property="og:image"');
+      this.meta[imageTag ? 'updateTag' : 'addTag']({
+        property: 'og:image',
+        content: metaData.image
       });
     }
   }

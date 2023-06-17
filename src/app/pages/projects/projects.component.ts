@@ -5,7 +5,6 @@ import { faCode, faTerminal } from '@fortawesome/free-solid-svg-icons';
 import { Options } from '../../config/site-options';
 import { MetaService } from '../../core/meta.service';
 import { HTMLMetaData } from '../../interfaces/meta';
-import { OptionEntity } from '../../interfaces/options';
 
 @Component({
   selector: 'app-projects',
@@ -19,8 +18,7 @@ export class ProjectsComponent implements OnInit {
   langIcon = faTerminal;
   email = Options.email;
 
-  constructor(private githubService: GithubService, private metaService: MetaService) {
-  }
+  constructor(private githubService: GithubService, private metaService: MetaService) {}
 
   public ngOnInit() {
     this.initMeta();

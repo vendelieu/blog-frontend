@@ -1,83 +1,83 @@
 <div class='sider'>
-<div class='post-content'>
-  <i *ngIf='post.id === 0' class='icon icon-loading'></i>
-  <div class='post' *ngIf="post.id > 0">
-    <header class='post-header'>
-      <img src='{{post.image}}' alt='Article image' src-fallback='/assets/images/blank_image.webp'>
-      <div class='post-card'>
-        <h1 class='post-title'>
-          {{post.title}}
-        </h1>
-        <div class='post-meta post-meta-top'>
+  <div class='post-content'>
+    <i *ngIf='post.id === 0' class='icon icon-loading'></i>
+    <div *ngIf="post.id > 0" class='post'>
+      <header class='post-header'>
+        <img alt='Article image' src='{{post.image}}' src-fallback='/assets/images/blank_image.webp'>
+        <div class='post-card'>
+          <h1 class='post-title'>
+            {{post.title}}
+          </h1>
+          <div class='post-meta post-meta-top'>
             <span title='Date of article creation.'>
               <i class='icon icon-calendar'></i><span>{{post.updated_at | date:'EEE, MMMM d, y, HH:mm'}}</span>
             </span>
-          <span title='Read time'>
+            <span title='Read time'>
               <i class='icon icon-book'></i> {{post.content | readingTime}} min
             </span>
+          </div>
         </div>
-      </div>
-    </header>
-    <article class='article-content'>
-      <div id='toc-target' class='line-numbers' [innerHTML]="post.content | safeHtml" #tocTarget></div>
-    </article>
-    <footer class='post-footer'>
-      <div class='related' *ngIf='relatedPosts?.length ?? 0 > 0'>
-        <div class='post-meta'>
-          <h4>Related posts:</h4>
-          <ng-container *ngFor='let relatedPost of relatedPosts'>
-            <a [routerLink]="['/' + relatedPost.slug]" title='{{relatedPost.title}}'>
-              <span class='post-link-text'>{{relatedPost.title}}</span>
-            </a>
-          </ng-container>
+      </header>
+      <article class='article-content'>
+        <div #tocTarget [innerHTML]="post.content | safeHtml" class='line-numbers' id='toc-target'></div>
+      </article>
+      <footer class='post-footer'>
+        <div *ngIf='relatedPosts?.length ?? 0 > 0' class='related'>
+          <div class='post-meta'>
+            <h4>Related posts:</h4>
+            <ng-container *ngFor='let relatedPost of relatedPosts'>
+              <a [routerLink]="['/' + relatedPost.slug]" title='{{relatedPost.title}}'>
+                <span class='post-link-text'>{{relatedPost.title}}</span>
+              </a>
+            </ng-container>
+          </div>
         </div>
-      </div>
-      <div class='post-actions'>
-        <button (click)='showShareQrcode()'>
-          <fa-icon [icon]='qrCodeIcon'></fa-icon>
-        </button>
-        <button (click)='shareButton("linkedin")'>
-          <fa-icon [icon]='linkedinIcon'></fa-icon>
-        </button>
-        <button (click)='shareButton("twitter")'>
-          <fa-icon [icon]='twitterIcon'></fa-icon>
-        </button>
-      </div>
-      <div *ngIf='postTags?.length ?? 0 > 0' class='post-meta'>
-        <div class='post-meta-icon'><i class='icon icon-tag'></i></div>
-        <ul class='post-meta-info tag-list'>
-          <li *ngFor='let tag of postTags'>
-            <a [routerLink]="['/tag/' + tag.slug]" class='tag-list-item'
-               rel='category' title='{{tag.name}}'>{{tag.name}}</a>
-          </li>
-        </ul>
-      </div>
-      <div class='divider-dashed' *ngIf='prevPost || nextPost'></div>
-      <div class='post-link' *ngIf='prevPost || nextPost'>
-        <div class='post-link-prev'>
-          <a *ngIf='prevPost' [routerLink]="['/' + prevPost.slug]" title='{{prevPost.title}}'>
+        <div class='post-actions'>
+          <button (click)='showShareQrcode()'>
+            <fa-icon [icon]='qrCodeIcon'></fa-icon>
+          </button>
+          <button (click)='shareButton("linkedin")'>
+            <fa-icon [icon]='linkedinIcon'></fa-icon>
+          </button>
+          <button (click)='shareButton("twitter")'>
+            <fa-icon [icon]='twitterIcon'></fa-icon>
+          </button>
+        </div>
+        <div *ngIf='postTags?.length ?? 0 > 0' class='post-meta'>
+          <div class='post-meta-icon'><i class='icon icon-tag'></i></div>
+          <ul class='post-meta-info tag-list'>
+            <li *ngFor='let tag of postTags'>
+              <a [routerLink]="['/tag/' + tag.slug]" class='tag-list-item'
+                 rel='category' title='{{tag.name}}'>{{tag.name}}</a>
+            </li>
+          </ul>
+        </div>
+        <div *ngIf='prevPost || nextPost' class='divider-dashed'></div>
+        <div *ngIf='prevPost || nextPost' class='post-link'>
+          <div class='post-link-prev'>
+            <a *ngIf='prevPost' [routerLink]="['/' + prevPost.slug]" title='{{prevPost.title}}'>
             <span class='post-link-text'><fa-icon [icon]='prevIcon'></fa-icon>
               {{prevPost.title}}</span>
-          </a>
-        </div>
-        <div class='post-link-next'>
-          <a *ngIf='nextPost' [routerLink]="['/' + nextPost.slug]" title='{{nextPost.title}}'>
+            </a>
+          </div>
+          <div class='post-link-next'>
+            <a *ngIf='nextPost' [routerLink]="['/' + nextPost.slug]" title='{{nextPost.title}}'>
             <span class='post-link-text'>{{nextPost.title}}
               <fa-icon [icon]='nextIcon'></fa-icon></span>
-          </a>
+            </a>
+          </div>
         </div>
-      </div>
-    </footer>
-  </div>
-  <div class='btn' *ngIf='post.commentaries_open'
-       (click)='toggleComments()'>{{!commentsShow ? 'View comments' : 'Hide comments'}}</div>
-  <div class='comment' [hidden]='!post.commentaries_open || !commentsShow'>
-    <div class='comment-list' id='comments'>
-      <div id='vuukle-comments'></div>
+      </footer>
     </div>
+    <div (click)='toggleComments()' *ngIf='post.commentaries_open'
+         class='btn'>{{!commentsShow ? 'View comments' : 'Hide comments'}}</div>
+    <div [hidden]='!post.commentaries_open || !commentsShow' class='comment'>
+      <div class='comment-list' id='comments'>
+        <div id='vuukle-comments'></div>
+      </div>
+    </div>
+    <app-modal (toggleModal)='toggleImgModal($event)'
+               *ngIf='showImgModal' [imgEle]='clickedImage' [padding]='imgModalPadding'></app-modal>
   </div>
-  <app-modal (toggleModal)='toggleImgModal($event)'
-             *ngIf='showImgModal' [imgEle]='clickedImage' [padding]='imgModalPadding'></app-modal>
-</div>
-  <app-toc [tocTarget]='tocElements' [baseUrl]='shareUrl' *ngIf='this.tocElements.length > 0'></app-toc>
+  <app-toc *ngIf='this.tocElements.length > 0' [baseUrl]='shareUrl' [tocTarget]='tocElements'></app-toc>
 </div>

@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SingletonService {
-  private singletonRegistry = new Map<string, { target: any; }>();
+  private singletonRegistry = new Map<string, { target: any }>();
 
   registerSingleton(key: string, target: any) {
     const isExist = this.singletonRegistry.has(key);

@@ -29,19 +29,15 @@ import { faAnglesUp } from '@fortawesome/free-solid-svg-icons';
 export class ScrollTopComponent {
   animationState = 'out';
   scrollIcon = faAnglesUp;
-  private timerID: any = null;
-
   // Button will appear when user scrolls Y to this position, must be >=0
   @Input() scrollDistance = 50;
-
   // If true, scrolling to top will be animated
   @Input() animate = true;
-
   // Animated scrolling speed, must be >=1
   @Input() speed = 80;
-
   // Acceleration coefficient, added to speed when using animated scroll, must be >=0
   @Input() acceleration = 1;
+  private timerID: any = null;
 
   /**
    * Listens to window scroll and animates the button

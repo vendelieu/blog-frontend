@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {MetaService} from '../../core/meta.service';
-import {HTMLMetaData} from '../../interfaces/meta';
-import {Options} from '../../config/site-options';
+import { Component, OnInit } from '@angular/core';
+import { MetaService } from '../../core/meta.service';
+import { HTMLMetaData } from '../../interfaces/meta';
+import { Options } from '../../config/site-options';
 
 @Component({
   selector: 'app-about',
@@ -9,8 +9,7 @@ import {Options} from '../../config/site-options';
   styleUrls: ['./about.component.less']
 })
 export class AboutComponent implements OnInit {
-  constructor(private metaService: MetaService) {
-  }
+  constructor(private metaService: MetaService) {}
 
   ngOnInit(): void {
     this.initMeta();

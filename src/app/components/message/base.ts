@@ -2,8 +2,7 @@ import { AnimationEvent } from '@angular/animations';
 import { ComponentType, Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ChangeDetectorRef, Directive, EventEmitter, Injector, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { filter, Subject, take } from 'rxjs';
 import { PlatformService } from '../../core/platform.service';
 import { SingletonService } from '../../core/singleton.service';
 import { MessageConfig, MessageData, MessageDataOptions } from './message.interface';
@@ -14,12 +13,7 @@ export abstract class MessageBaseService {
   protected container!: MessageContainerBaseComponent;
   protected abstract componentKey: string;
 
-  protected constructor(
-    private singleton: SingletonService,
-    private overlay: Overlay,
-    private injector: Injector
-  ) {
-  }
+  protected constructor(private singleton: SingletonService, private overlay: Overlay, private injector: Injector) {}
 
   remove(id?: string): void {
     if (this.container) {
@@ -56,7 +50,7 @@ export abstract class MessageBaseService {
 }
 
 @Directive()
-export abstract class MessageContainerBaseComponent implements OnInit, OnDestroy {
+export abstract class MessageContainerBaseComponent implements OnDestroy {
   config?: Required<MessageConfig>;
   messages: Array<Required<MessageData>> = [];
 
@@ -64,9 +58,6 @@ export abstract class MessageContainerBaseComponent implements OnInit, OnDestroy
 
   protected constructor(protected cdr: ChangeDetectorRef) {
     this.updateConfig();
-  }
-
-  ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
@@ -77,7 +68,7 @@ export abstract class MessageContainerBaseComponent implements OnInit, OnDestroy
   create(data: MessageData): Required<MessageData> {
     const instance = this.onCreate(data);
 
-    if (this.messages.length >= this.config!.maxStack) {
+    if (this.config && this.messages.length >= this.config.maxStack) {
       this.messages = this.messages.slice(1);
     }
 
@@ -88,7 +79,7 @@ export abstract class MessageContainerBaseComponent implements OnInit, OnDestroy
     return instance;
   }
 
-  remove(id: string, userAction: boolean = false): void {
+  remove(id: string, userAction = false): void {
     this.messages.some((instance, index) => {
       if (instance.messageId === id) {
         this.messages.splice(index, 1);
@@ -102,7 +93,7 @@ export abstract class MessageContainerBaseComponent implements OnInit, OnDestroy
   }
 
   removeAll(): void {
-    this.messages.forEach(i => this.onRemove(i, false));
+    this.messages.forEach((i) => this.onRemove(i, false));
     this.messages = [];
 
     this.readyInstances();
@@ -126,7 +117,7 @@ export abstract class MessageContainerBaseComponent implements OnInit, OnDestroy
   protected abstract updateConfig(): void;
 
   protected mergeOptions(options?: MessageDataOptions): MessageDataOptions {
-    const { duration, animate, pauseOnHover } = this.config!;
+    const { duration, animate, pauseOnHover } = this.config || {};
     return { duration, animate, pauseOnHover, ...options };
   }
 }
@@ -142,13 +133,12 @@ export abstract class MessageBaseComponent implements OnInit, OnDestroy {
   protected options!: Required<MessageDataOptions>;
   protected autoClose?: boolean;
   protected closeTimer!: NodeJS.Timeout | null;
-  protected userAction: boolean = false;
+  protected userAction = false;
   protected eraseTimer: NodeJS.Timeout | null = null;
   protected eraseTimingStart?: number;
   protected eraseTTL!: number;
 
-  protected constructor(protected cdr: ChangeDetectorRef, protected platform: PlatformService) {
-  }
+  protected constructor(protected cdr: ChangeDetectorRef, protected platform: PlatformService) {}
 
   ngOnInit(): void {
     this.options = this.message.options as Required<MessageDataOptions>;
@@ -194,7 +184,7 @@ export abstract class MessageBaseComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected destroy(userAction: boolean = false): void {
+  protected destroy(userAction = false): void {
     this.userAction = userAction;
     if (this.options.animate) {
       this.message.state = 'leave';
@@ -214,8 +204,8 @@ export abstract class MessageBaseComponent implements OnInit, OnDestroy {
   }
 
   private updateTTL(): void {
-    if (this.autoClose) {
-      this.eraseTTL -= Date.now() - this.eraseTimingStart!;
+    if (this.autoClose && this.eraseTimingStart) {
+      this.eraseTTL -= Date.now() - this.eraseTimingStart;
     }
   }
 

@@ -1,4 +1,4 @@
-import {environment as env} from "../../environments/environment";
+import { environment as env } from '../../environments/environment';
 
 export const Options = {
   site_name: 'Vendeli.eu',
@@ -17,5 +17,5 @@ export const Options = {
   STORAGE_THEME_KEY: 'cur_theme',
   CUR_YEAR: new Date().getFullYear().toString(),
   PAGINATOR_PAGE_SIZE: 10,
-  PAGINATOR_PAGINATION_SIZE: 9,
+  PAGINATOR_PAGINATION_SIZE: 9
 };

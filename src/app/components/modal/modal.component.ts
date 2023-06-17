@@ -1,15 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  Renderer2,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-modal',
@@ -28,13 +17,9 @@ export class ModalComponent implements OnInit, OnDestroy, AfterViewInit {
   private unlistenInput!: Function;
   private bodyEle!: ElementRef;
 
-  constructor(
-    private renderer: Renderer2
-  ) {
-  }
+  constructor(private renderer: Renderer2) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.bodyEle = this.renderer.selectRootElement('body', true);

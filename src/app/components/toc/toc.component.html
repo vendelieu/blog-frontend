@@ -1,9 +1,9 @@
-<div class='toc-section' *ngIf='tocList?.length ?? 0 > 0'>
+<div *ngIf='tocList?.length ?? 0 > 0' class='toc-section'>
   <aside class='toc-wrap'>
     <h3 class='toc-title'>Contents:</h3>
     <ol class='toc'>
       <ng-container *ngFor='let toc of tocList'>
-        <li class='toc-item' id='toc-{{toc.id}}' [ngStyle]="{'padding-left': toc.lvl / 3 + 'em'}" >
+        <li [ngStyle]="{'padding-left': toc.lvl / 3 + 'em'}" class='toc-item' id='toc-{{toc.id}}'>
           <a class='toc-link' href='{{baseUrl}}#{{toc.id}}'>
             <span class='toc-text'>{{toc.name}}</span>
           </a>

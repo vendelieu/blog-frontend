@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "vendelieu-blog-frontend",
+      "name": "vendeli.eu",
       "script": "./dist/server/main.js",
       "out_file": "/dev/null",
       "watch": false,

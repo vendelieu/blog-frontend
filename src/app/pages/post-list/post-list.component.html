@@ -9,10 +9,10 @@
 <div class='article-list'>
   <article *ngFor='let post of postList' class='article'>
     <header>
-      <a class='article-link'
-         [routerLink]="['/' + post.slug]" rel='bookmark'
+      <a [routerLink]="['/' + post.slug]"
+         class='article-link' rel='bookmark'
          title='{{post.title}}'>
-        <img src='{{post.image}}' src-fallback='/assets/images/blank_image.webp' alt='Article image'>
+        <img alt='Article image' src='{{post.image}}' src-fallback='/assets/images/blank_image.webp'>
       </a>
       <div class='article-card'>
         <h3>
@@ -44,5 +44,5 @@
     </div>
   </article>
 </div>
-<app-page-bar [paginator]='paginatorData' curSort='{{sort}}' *ngIf='postList?.length ?? 0 > 0'>
+<app-page-bar *ngIf='postList?.length ?? 0 > 0' [paginator]='paginatorData' curSort='{{sort}}'>
 </app-page-bar>

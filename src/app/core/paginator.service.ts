@@ -1,6 +1,6 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { PaginatorEntity, PaginatorRange } from '../interfaces/paginator';
-import {Options} from "../config/site-options";
+import { Options } from '../config/site-options';
 
 @Injectable({
   providedIn: 'root'

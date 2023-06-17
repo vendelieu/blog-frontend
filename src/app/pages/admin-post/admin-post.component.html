@@ -3,13 +3,13 @@
     <div class='form-row'>
       <div class='post-item'>Title:</div>
       <span class='flex'>
-        <input name='title' formControlName='title' [value]='post.title'>
+        <input [value]='post.title' formControlName='title' name='title'>
       </span>
     </div>
     <div class='form-row'>
       <div class='post-item'>Image:</div>
       <span class='flex'>
-        <input name='image' formControlName='image' [value]='post.image'>
+        <input [value]='post.image' formControlName='image' name='image'>
       </span>
     </div>
     <div class='form-row'>
@@ -21,18 +21,18 @@
     <div class='form-row'>
       <div class='post-item'>Description:</div>
       <span class='flex'>
-          <textarea class='input input-textarea' formControlName='description' maxlength='400'
-                    placeholder='Short description' rows='3' [value]='post.description'></textarea>
+          <textarea [value]='post.description' class='input input-textarea' formControlName='description'
+                    maxlength='400' placeholder='Short description' rows='3'></textarea>
         </span>
     </div>
     <div class='form-row'>
       <div class='post-item'>Tags:</div>
       <span class='flex'>
-        <tag-input [ngModel]='post.tags' displayBy='name' (onAdd)='onTagAdd($event)'
+        <tag-input (onAdd)='onTagAdd($event)' (onRemove)='onTagRemove($event)' [allowDupes]="true"
+                   [ngModelOptions]='{standalone: true}'
+                   [ngModel]='post.tags'
                    [theme]="isDark ? 'dark' : ''"
-                   (onRemove)='onTagRemove($event)'
-                   [allowDupes]="true"
-                   [ngModelOptions]='{standalone: true}'>
+                   displayBy='name'>
           <tag-input-dropdown [autocompleteObservable]='requestAutocompleteItems' displayBy='name'></tag-input-dropdown>
       </tag-input>
       </span>
@@ -40,22 +40,22 @@
     <div class='form-row'>
       <div class='post-item'>
         <span class='flex'>
-          <input type='checkbox' formControlName='commentaries_open' [checked]='post.commentaries_open'> Commentaries
+          <input [checked]='post.commentaries_open' formControlName='commentaries_open' type='checkbox'> Commentaries
         </span>
       </div>
     </div>
     <div class='form-row'>
       <div class='post-item'>Slug:</div>
       <span class='flex'>
-        <input name='slug' formControlName='slug' [value]='post.slug' (change)='onSlugChange()'>
+        <input (change)='onSlugChange()' [value]='post.slug' formControlName='slug' name='slug'>
       </span>
     </div>
     <div class='form-row form-btns'>
-      <button class='button button-submit' type='submit' (click)='send()'>
+      <button (click)='send()' class='button button-submit' type='submit'>
         <span>Save</span>
       </button>
-      <button class='button' type='reset' (click)='this.postForm.reset()'>Reset</button>
-      <button class='button delete-btn' *ngIf="post.id > 0" (click)="delete()">Delete</button>
+      <button (click)='this.postForm.reset()' class='button' type='reset'>Reset</button>
+      <button (click)="delete()" *ngIf="post.id > 0" class='button delete-btn'>Delete</button>
     </div>
   </div>
 </div>

@@ -8,6 +8,5 @@ import { Router } from '@angular/router';
   styleUrls: ['./layout.component.less']
 })
 export class LayoutComponent {
-  constructor(private router: Router, @Inject(DOCUMENT) private document: Document) {
-  }
+  constructor(private router: Router, @Inject(DOCUMENT) private document: Document) {}
 }

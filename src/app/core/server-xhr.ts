@@ -1,4 +1,4 @@
-import { XhrFactory } from '@angular/common';
+import {XhrFactory} from '@angular/common';
 // @ts-ignore
 import * as XHR2 from 'xhr2';
 

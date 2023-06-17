@@ -31,10 +31,11 @@ export const PostEntity_DefaultInst: PostEntity = {
   tags: null,
   title: '',
   updated_at: Date.now() as unknown as Date
-}
+};
 
 export enum Sort {
-  newest = 'newest', oldest = 'oldest'
+  newest = 'newest',
+  oldest = 'oldest'
 }
 
 export type SortType = 'newest' | 'oldest';

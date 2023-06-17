@@ -8,8 +8,5 @@ export class PlatformService {
   isBrowser: boolean = this.platformId ? isPlatformBrowser(this.platformId) : typeof document === 'object' && !!document;
   isServer: boolean = !this.isBrowser;
 
-  constructor(
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-  }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 }

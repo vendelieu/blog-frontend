@@ -13,8 +13,7 @@ export class SearchModalComponent {
   keyword = '';
   searchIcon = faSearch;
 
-  constructor(private postsService: PostsService, private router: Router, @Inject(DOCUMENT) private document: Document) {
-  }
+  constructor(private postsService: PostsService, private router: Router, @Inject(DOCUMENT) private document: Document) {}
 
   search() {
     this.keyword = this.keyword.trim();
@@ -25,15 +24,16 @@ export class SearchModalComponent {
     }
   }
 
-  private hideModal() {
-    this.document.body.getElementsByClassName('search')?.item(0)?.classList.add('hide-search');
-    this.document.body.style.overflow = '';
-  }
-
   onClick(e: Event) {
     if (!(e.target as HTMLInputElement).type) {
       this.hideModal();
       this.keyword = '';
     }
+  }
+
+  private hideModal() {
+    this.document.body.getElementsByClassName('search')?.item(0)?.classList.add('hide-search');
+    this.document.body.style.overflow = '';
+    this.keyword = '';
   }
 }

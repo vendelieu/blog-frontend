@@ -1,5 +1,5 @@
-import {Injectable} from "@angular/core";
-import {BehaviorSubject, Observable} from "rxjs";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,8 +7,7 @@ import {BehaviorSubject, Observable} from "rxjs";
 export class ThemeService {
   private themeSubject = new BehaviorSubject<string>('dark');
 
-  constructor() {
-  }
+  constructor() {}
 
   changeTheme(newTheme: string) {
     this.themeSubject.next(newTheme);

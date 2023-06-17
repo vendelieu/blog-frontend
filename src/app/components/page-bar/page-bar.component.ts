@@ -1,11 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { PaginatorEntity } from '../../interfaces/paginator';
-import {
-  faAnglesLeft,
-  faAnglesRight,
-  faArrowDownShortWide,
-  faArrowUpShortWide
-} from '@fortawesome/free-solid-svg-icons';
+import { faAnglesLeft, faAnglesRight, faArrowDownShortWide, faArrowUpShortWide } from '@fortawesome/free-solid-svg-icons';
 import { SortType } from '../../interfaces/posts';
 import { PaginationService } from '../../services/pagination.service';
 
@@ -23,8 +18,7 @@ export class PageBarComponent {
   sortNewestIcon = faArrowDownShortWide;
   sortOldestIcon = faArrowUpShortWide;
 
-  constructor(private paginationService: PaginationService) {
-  }
+  constructor(private paginationService: PaginationService) {}
 
   changeSort(newSort: SortType) {
     this.paginationService.changeSort(newSort);

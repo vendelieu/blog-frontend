@@ -1,22 +1,22 @@
-import {DOCUMENT, ViewportScroller} from '@angular/common';
-import {Component, ElementRef, Inject, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {uniq} from 'lodash';
+import { DOCUMENT, ViewportScroller } from '@angular/common';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { uniq } from 'lodash';
 import * as QRCode from 'qrcode';
-import {Subscription} from 'rxjs';
-import {MessageService} from '../../components/message/message.service';
-import {MetaService} from '../../core/meta.service';
-import {UrlService} from '../../core/url.service';
-import {NavPost, NodeEl, PostEntity, PostEntity_DefaultInst} from '../../interfaces/posts';
-import {PostsService} from '../../services/posts.service';
-import {Options} from '../../config/site-options';
-import {Tag} from '../../interfaces/tag';
-import {faAnglesLeft, faAnglesRight, faHashtag, faQrcode} from '@fortawesome/free-solid-svg-icons';
-import {PaginatorService} from '../../core/paginator.service';
-import {faLinkedin} from '@fortawesome/free-brands-svg-icons';
-import {PaginationService} from '../../services/pagination.service';
-import {environment} from "../../../environments/environment";
-import {HighlightService} from "../../services/highlight.service";
+import { Subscription } from 'rxjs';
+import { MessageService } from '../../components/message/message.service';
+import { MetaService } from '../../core/meta.service';
+import { UrlService } from '../../core/url.service';
+import { NavPost, NodeEl, PostEntity, PostEntity_DefaultInst } from '../../interfaces/posts';
+import { PostsService } from '../../services/posts.service';
+import { Options } from '../../config/site-options';
+import { Tag } from '../../interfaces/tag';
+import { faAnglesLeft, faAnglesRight, faHashtag, faQrcode } from '@fortawesome/free-solid-svg-icons';
+import { PaginatorService } from '../../core/paginator.service';
+import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { PaginationService } from '../../services/pagination.service';
+import { environment } from '../../../environments/environment';
+import { HighlightService } from '../../services/highlight.service';
 
 type shareType = 'twitter' | 'linkedin';
 
@@ -60,8 +60,7 @@ export class PostComponent implements OnInit, OnDestroy {
     private scroller: ViewportScroller,
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private document: Document
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.paramListener = this.route.params.subscribe((params) => {
@@ -95,12 +94,18 @@ export class PostComponent implements OnInit, OnDestroy {
     }
   }
 
+  toggleComments() {
+    this.commentsShow = !this.commentsShow;
+  }
+
   private initMeta() {
     const keywords: string[] = Options.site_keywords.split(',');
-    this.metaService.updateHTMLMeta({
+    this.metaService.updateExtendedHTMLMeta({
       title: `${this.post.title} - ${Options.site_name}`,
       description: this.post.description,
-      keywords: uniq(this.postTags?.map((item) => item.name).concat(keywords)).join(',')
+      keywords: uniq(this.postTags?.map((item) => item.name).concat(keywords)).join(','),
+      image: this.post.image,
+      url: this.shareUrl
     });
   }
 
@@ -128,10 +133,6 @@ export class PostComponent implements OnInit, OnDestroy {
     setTimeout(() => this.prepareContent(), 0);
   }
 
-  toggleComments() {
-    this.commentsShow = !this.commentsShow;
-  }
-
   private prepareContent() {
     if (this.post.id > 0) {
       this.collectContentHeadings();
@@ -144,20 +145,22 @@ export class PostComponent implements OnInit, OnDestroy {
     QRCode.toCanvas(this.shareUrl + '?ref=qrcode', {
       width: 320,
       margin: 0
-    }).then((canvas) => {
-      const modalEle = this.document.querySelector('.modal-content-body');
-      modalEle?.appendChild(canvas);
-    }).catch((err) => {
-      this.message.error(err);
-    });
+    })
+      .then((canvas) => {
+        const modalEle = this.document.querySelector('.modal-content-body');
+        modalEle?.appendChild(canvas);
+      })
+      .catch((err) => {
+        this.message.error(err);
+      });
   }
 
   private initComments(): void {
     if (this.document.getElementById('vuukle-js')) return;
 
     let script = this._renderer2.createElement('script');
-    script.type = 'text/javascript'
-    script.id = 'vuukle-js'
+    script.type = 'text/javascript';
+    script.id = 'vuukle-js';
     script.text = `
       var VUUKLE_CONFIG = {
         apiKey: '${environment.comments_key}',
@@ -176,11 +179,11 @@ export class PostComponent implements OnInit, OnDestroy {
   private collectContentHeadings() {
     const elements = this.tocTargetEl.nativeElement?.childNodes;
     elements?.forEach((el: unknown) => {
-      const cur = (el as NodeEl);
+      const cur = el as NodeEl;
       if (!cur.localName) {
         return;
       }
-      if (cur?.localName.startsWith('h')) this.tocElements.push(cur)
+      if (cur?.localName.startsWith('h')) this.tocElements.push(cur);
     });
   }
 }

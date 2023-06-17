@@ -1,18 +1,18 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subscription} from "rxjs";
-import {ActivatedRoute, Router} from "@angular/router";
-import {PostsService} from "../../services/posts.service";
-import {PostEntity, PostEntity_DefaultInst} from "../../interfaces/posts";
-import {TagsService} from "../../services/tags.service";
-import {NewTag, Tag, UpdatableTag} from "../../interfaces/tag";
-import {TagModel} from "ngx-chips/core/tag-model";
-import {FormBuilder} from "@angular/forms";
-import {MessageService} from "../../components/message/message.service";
-import {TinyMCEConfig} from "../../config/tiny-m-c-e-config";
-import {ThemeService} from "../../services/theme.service";
-import {HTMLMetaData} from "../../interfaces/meta";
-import {Options} from "../../config/site-options";
-import {MetaService} from "../../core/meta.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PostsService } from '../../services/posts.service';
+import { PostEntity, PostEntity_DefaultInst } from '../../interfaces/posts';
+import { TagsService } from '../../services/tags.service';
+import { NewTag, Tag, UpdatableTag } from '../../interfaces/tag';
+import { TagModel } from 'ngx-chips/core/tag-model';
+import { FormBuilder } from '@angular/forms';
+import { MessageService } from '../../components/message/message.service';
+import { TinyMCEConfig } from '../../config/tiny-m-c-e-config';
+import { ThemeService } from '../../services/theme.service';
+import { HTMLMetaData } from '../../interfaces/meta';
+import { Options } from '../../config/site-options';
+import { MetaService } from '../../core/meta.service';
 
 @Component({
   selector: 'app-admin-post',
@@ -20,13 +20,7 @@ import {MetaService} from "../../core/meta.service";
   styleUrls: ['./admin-post.component.less']
 })
 export class AdminPostComponent implements OnInit, OnDestroy {
-  private paramListener!: Subscription;
-  private postSlug = ''
   post: PostEntity = PostEntity_DefaultInst;
-  private tags: string[] = []
-  private newTags: NewTag[] = []
-  private addTags: string[] = []
-  private removeTags: string[] = []
   isDark = false;
   postForm = this.fb.group({
     title: [''],
@@ -35,7 +29,14 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     description: [''],
     commentaries_open: false,
     slug: ['']
-  })
+  });
+  protected readonly TinyMCEConfig = TinyMCEConfig;
+  private paramListener!: Subscription;
+  private postSlug = '';
+  private tags: string[] = [];
+  private newTags: NewTag[] = [];
+  private addTags: string[] = [];
+  private removeTags: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -47,14 +48,14 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     private themeService: ThemeService,
     private metaService: MetaService
   ) {
-    themeService.getFlow().subscribe(e => {
+    themeService.getFlow().subscribe((e) => {
       this.isDark = e === 'dark';
       if (this.isDark) {
         this.TinyMCEConfig.skin = 'oxide-dark';
-        this.TinyMCEConfig.content_css = 'dark'
+        this.TinyMCEConfig.content_css = 'dark';
       } else {
-        this.TinyMCEConfig.skin = 'oxide'
-        this.TinyMCEConfig.content_css = 'default'
+        this.TinyMCEConfig.skin = 'oxide';
+        this.TinyMCEConfig.content_css = 'default';
       }
     });
   }
@@ -62,26 +63,27 @@ export class AdminPostComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.paramListener = this.route.params.subscribe((params) => {
       this.postSlug = params['postSlug']?.trim();
-      if (this.postSlug) this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
-        if (post) {
-          this.post = post
-          this.tags = post.tags?.map((tag) => tag.slug) || [];
-          this.postForm.setValue({
-            title: post.title,
-            image: post.image,
-            content: post.content,
-            description: post.description,
-            commentaries_open: post.commentaries_open,
-            slug: post.slug
-          })
-          this.initMeta();
-        }
-      });
+      if (this.postSlug)
+        this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
+          if (post) {
+            this.post = post;
+            this.tags = post.tags?.map((tag) => tag.slug) || [];
+            this.postForm.setValue({
+              title: post.title,
+              image: post.image,
+              content: post.content,
+              description: post.description,
+              commentaries_open: post.commentaries_open,
+              slug: post.slug
+            });
+            this.initMeta();
+          }
+        });
     });
   }
 
   requestAutocompleteItems = (text: string): Observable<Tag[] | undefined> => {
-    return this.tagService.getByName(text)
+    return this.tagService.getByName(text);
   };
 
   onTagAdd($event: TagModel): void {
@@ -89,18 +91,18 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     if (tag.value != null) {
       this.newTags.push({
         name: tag.name,
-        slug: this.slugify(tag.value),
+        slug: this.slugify(tag.value)
       });
     } else {
       this.addTags.push(tag.slug);
-      this.removeTags = this.removeTags.filter(t => t !== tag.slug)
+      this.removeTags = this.removeTags.filter((t) => t !== tag.slug);
     }
   }
 
   onTagRemove($event: TagModel): void {
     let tag = $event as UpdatableTag;
-    if (tag.slug) this.removeTags.push(tag.slug)
-    else this.newTags = this.newTags.filter(t => t.name !== tag.value);
+    if (tag.slug) this.removeTags.push(tag.slug);
+    else this.newTags = this.newTags.filter((t) => t.name !== tag.value);
   }
 
   handleTags(postSlug: string) {
@@ -109,7 +111,7 @@ export class AdminPostComponent implements OnInit, OnDestroy {
       this.tagService.link(postSlug, i.slug).subscribe();
     });
     new Set(this.addTags).forEach((t) => {
-      if (this.tags.includes(t)) return
+      if (this.tags.includes(t)) return;
       this.tagService.link(postSlug, t).subscribe();
     });
     new Set(this.removeTags).forEach((t) => {
@@ -118,46 +120,47 @@ export class AdminPostComponent implements OnInit, OnDestroy {
   }
 
   send() {
-    if (this.postSlug) this.postsService.updatePostById(this.post.id, this.postForm.value)
-      .subscribe((_) => {
+    if (this.postSlug)
+      this.postsService.updatePostById(this.post.id, this.postForm.value).subscribe((_) => {
         this.handleTags(this.postSlug);
-        this.message.success("Post updated.");
+        this.message.success('Post updated.');
       });
-    else this.postsService.createPost(this.postForm.value).subscribe((_) => {
-      this.postForm.reset();
-      this.handleTags(this.postForm.value.slug!);
-      this.message.success("Post created.");
-    })
+    else
+      this.postsService.createPost(this.postForm.value).subscribe((_) => {
+        this.postForm.reset();
+        this.handleTags(this.postForm.value.slug!);
+        this.message.success('Post created.');
+      });
   }
 
   onSlugChange() {
-    let oldSlug = this.postForm.get("slug")?.value?.trim()
-    if (!oldSlug) return
-    let newSlug = this.slugify(oldSlug)
-    this.postForm.get("slug")?.setValue(newSlug)
+    let oldSlug = this.postForm.get('slug')?.value?.trim();
+    if (!oldSlug) return;
+    let newSlug = this.slugify(oldSlug);
+    this.postForm.get('slug')?.setValue(newSlug);
   }
 
   delete() {
     this.postsService.deletePost(this.post.id).subscribe((res) => {
-      this.message.success("Post deleted.");
-      this.router.navigate(['/'])
-    })
-  }
-
-  private slugify(text: string) {
-    return text
-      .normalize('NFKD')            // normalize() using NFKD method returns the Unicode Normalization Form of a given string.
-      .toLowerCase()                // Convert the string to lowercase letters
-      .trim()                       // Remove whitespace from both sides of a string (optional)
-      .replace(/\s+/g, '-')         // Replace spaces with -
-      .replace(/[^\w\-]+/g, '')     // Remove all non-word chars
-      .replace(/_/g, '-')           // Replace _ with -
-      .replace(/--+/g, '-')       // Replace multiple - with single -
-      .replace(/-$/g, '');         // Remove trailing -
+      this.message.success('Post deleted.');
+      this.router.navigate(['/']);
+    });
   }
 
   ngOnDestroy() {
     this.paramListener.unsubscribe();
+  }
+
+  private slugify(text: string) {
+    return text
+      .normalize('NFKD') // normalize() using NFKD method returns the Unicode Normalization Form of a given string.
+      .toLowerCase() // Convert the string to lowercase letters
+      .trim() // Remove whitespace from both sides of a string (optional)
+      .replace(/\s+/g, '-') // Replace spaces with -
+      .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+      .replace(/_/g, '-') // Replace _ with -
+      .replace(/--+/g, '-') // Replace multiple - with single -
+      .replace(/-$/g, ''); // Remove trailing -
   }
 
   private initMeta() {
@@ -168,6 +171,4 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     };
     this.metaService.updateHTMLMeta(metaData);
   }
-
-  protected readonly TinyMCEConfig = TinyMCEConfig;
 }

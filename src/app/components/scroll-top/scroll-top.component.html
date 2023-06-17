@@ -1,4 +1,4 @@
-<a type='button' aria-label='Back to top of page' class='scroll-to-top-button'
-        [@appearInOut]='animationState' (click)='scrollTop($event)'>
+<a (click)='scrollTop($event)' [@appearInOut]='animationState' aria-label='Back to top of page'
+   class='scroll-to-top-button' type='button'>
   <fa-icon [icon]='scrollIcon'></fa-icon>
 </a>

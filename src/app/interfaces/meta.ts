@@ -3,3 +3,8 @@ export interface HTMLMetaData {
   description: string;
   keywords?: string;
 }
+
+export interface HTMLExtendedData extends HTMLMetaData {
+  url: string;
+  image: string;
+}

@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
-import {Options} from '../../config/site-options';
-import {faCodeBranch, faEnvelope, faPaperPlane} from '@fortawesome/free-solid-svg-icons';
+import { Component } from '@angular/core';
+import { Options } from '../../config/site-options';
+import { faCodeBranch, faEnvelope, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-footer',

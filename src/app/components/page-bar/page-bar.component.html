@@ -64,11 +64,11 @@
     <ul>
       <li>
         <div class='sort-buttons'>
-          <button class='sort-button' (click)="changeSort('newest')" *ngIf='curSort === "oldest"'
+          <button (click)="changeSort('newest')" *ngIf='curSort === "oldest"' class='sort-button'
                   title='Sort by newest'>
             <fa-icon [icon]='sortNewestIcon'></fa-icon>
           </button>
-          <button class='sort-button' (click)="changeSort('oldest')" *ngIf='curSort === "newest"'
+          <button (click)="changeSort('oldest')" *ngIf='curSort === "newest"' class='sort-button'
                   title='Sort by oldest'>
             <fa-icon [icon]='sortOldestIcon'></fa-icon>
           </button>

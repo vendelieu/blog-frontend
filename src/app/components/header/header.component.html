@@ -2,7 +2,7 @@
   <header class='header'>
     <nav class='nav'>
       <a [routerLink]="['/']" class='logo' title="{{options['site_name']}}">
-        <img alt="{{options['site_name']}}" class='logo' src='/assets/images/logo{{isDark ? "_b" : ""}}.png' />
+        <img alt="{{options['site_name']}}" class='logo' src='/assets/images/logo{{isDark ? "_b" : ""}}.png'/>
       </a>
       <ul class='nav-list main-menu'>
         <li><a [routerLink]="['/projects']" title="{{options['site_name']}} projects">Projects</a></li>
@@ -18,22 +18,22 @@
       </ul>
       <div class='navbar'>
         <div class='nav-container'>
-          <input class='checkbox hamburger-action-button' type='checkbox' (click)='toggleOverflow()' id='ham' />
+          <input (click)='toggleOverflow()' class='checkbox hamburger-action-button' id='ham' type='checkbox'/>
           <div class='hamburger-lines hamburger-action-button'>
             <span class='line line1'></span>
             <span class='line line2'></span>
             <span class='line line3'></span>
           </div>
           <div class='menu-items'>
-            <li><a [routerLink]="['/']" title="{{options['site_name']}}" (click)='hideMenu()'>Home</a></li>
-            <li><a [routerLink]="['/projects']" title="{{options['site_name']}} projects"
-                   (click)='hideMenu()'>Projects</a></li>
-            <li><a [routerLink]="['/about']" title="{{options['site_name']}} about" (click)='hideMenu()'>About</a></li>
+            <li><a (click)='hideMenu()' [routerLink]="['/']" title="{{options['site_name']}}">Home</a></li>
+            <li><a (click)='hideMenu()' [routerLink]="['/projects']"
+                   title="{{options['site_name']}} projects">Projects</a></li>
+            <li><a (click)='hideMenu()' [routerLink]="['/about']" title="{{options['site_name']}} about">About</a></li>
             <li><a (click)='toggleSearchOpen()' target='_blank' title='Search'>
-              <fa-icon [icon]='searchIcon' (click)='hideMenu()'></fa-icon>
+              <fa-icon (click)='hideMenu()' [icon]='searchIcon'></fa-icon>
             </a></li>
             <li><a (click)='toggleTheme()'>
-              <fa-icon [icon]='isDark ? lightThemeIcon : darkThemeIcon' (click)='hideMenu()'></fa-icon>
+              <fa-icon (click)='hideMenu()' [icon]='isDark ? lightThemeIcon : darkThemeIcon'></fa-icon>
             </a></li>
           </div>
         </div>

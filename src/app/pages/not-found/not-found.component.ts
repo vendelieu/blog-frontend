@@ -1,9 +1,9 @@
-import {HttpStatusCode} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
-import {PlatformService} from '../../core/platform.service';
-import {ResponseService} from '../../core/response.service';
-import {MetaService} from '../../core/meta.service';
-import {Options} from '../../config/site-options';
+import { HttpStatusCode } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { PlatformService } from '../../core/platform.service';
+import { ResponseService } from '../../core/response.service';
+import { MetaService } from '../../core/meta.service';
+import { Options } from '../../config/site-options';
 
 @Component({
   selector: 'app-not-found',
@@ -11,12 +11,7 @@ import {Options} from '../../config/site-options';
   styleUrls: ['./not-found.component.less']
 })
 export class NotFoundComponent implements OnInit {
-  constructor(
-    private platform: PlatformService,
-    private response: ResponseService,
-    private metaService: MetaService
-  ) {
-  }
+  constructor(private platform: PlatformService, private response: ResponseService, private metaService: MetaService) {}
 
   ngOnInit(): void {
     if (this.platform.isServer) {

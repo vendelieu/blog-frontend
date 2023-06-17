@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "vendelieu-blog-frontend": {
+    "vendeli.eu": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -24,10 +24,15 @@
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
+            "aot": true,
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "less",
             "allowedCommonJsDependencies": [
-              "qrcode"
+              "qrcode",
+              "lodash",
+              "ua-parser-js",
+              "prismjs",
+              "@nestjs/ng-universal/dist/tokens"
             ],
             "assets": [
               {
@@ -108,10 +113,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "vendelieu-blog-frontend:build:production"
+              "browserTarget": "vendeli.eu:build:production"
             },
             "development": {
-              "browserTarget": "vendelieu-blog-frontend:build:development"
+              "browserTarget": "vendeli.eu:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -119,7 +124,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "vendelieu-blog-frontend:build"
+            "browserTarget": "vendeli.eu:build"
           }
         },
         "test": {
@@ -153,6 +158,57 @@
             "scripts": []
           }
         },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json",
+            "inlineStyleLanguage": "less",
+            "externalDependencies": [
+              "@nestjs/microservices",
+              "@nestjs/microservices/microservices-module",
+              "@nestjs/websockets",
+              "@nestjs/websockets/socket-module",
+              "cache-manager"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "options": {
+            "port": 4200,
+            "proxyConfig": "proxy.conf.js"
+          },
+          "configurations": {
+            "development": {
+              "browserTarget": "vendeli.eu:build:development",
+              "serverTarget": "vendeli.eu:server:development"
+            },
+            "production": {
+              "browserTarget": "vendeli.eu:build:production",
+              "serverTarget": "vendeli.eu:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
         "prerender": {
           "builder": "@nguniversal/builders:prerender",
           "options": {
@@ -162,12 +218,12 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "vendelieu-blog-frontend:build:production",
-              "serverTarget": "vendelieu-blog-frontend:server:production"
+              "browserTarget": "vendeli.eu:build:production",
+              "serverTarget": "vendeli.eu:server:production"
             },
             "development": {
-              "browserTarget": "vendelieu-blog-frontend:build:development",
-              "serverTarget": "vendelieu-blog-frontend:server:development"
+              "browserTarget": "vendeli.eu:build:development",
+              "serverTarget": "vendeli.eu:server:development"
             }
           },
           "defaultConfiguration": "production"
@@ -175,7 +231,7 @@
       }
     }
   },
-  "defaultProject": "vendelieu-blog-frontend",
+  "defaultProject": "vendeli.eu",
   "cli": {
     "analytics": false
   }

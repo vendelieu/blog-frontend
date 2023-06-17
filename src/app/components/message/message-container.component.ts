@@ -15,16 +15,12 @@ const MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  selector: 'message-container',
+  selector: 'i-message-container',
   exportAs: 'messageContainer',
   preserveWhitespaces: false,
   template: `
     <div class="message" [class.message-rtl]="dir === 'rtl'" [style.top]="top">
-      <message
-        *ngFor="let message of messages"
-        [message]="message"
-        (destroyed)="remove($event.id, $event.userAction)"
-      ></message>
+      <i-message *ngFor="let message of messages" [message]="message" (destroyed)="remove($event.id, $event.userAction)"></i-message>
     </div>
   `
 })

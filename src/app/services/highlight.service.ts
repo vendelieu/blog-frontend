@@ -8,19 +8,17 @@ import 'prismjs/components/prism-java';
 import 'prismjs/components/prism-markup';
 import 'prismjs/components/prism-kotlin.js';
 import 'prismjs/components/prism-typescript';
-import {Inject, Injectable, PLATFORM_ID} from "@angular/core";
-import {isPlatformBrowser} from "@angular/common";
+import { Injectable } from '@angular/core';
+import { PlatformService } from '../core/platform.service';
 
 declare var Prism: any;
 
 @Injectable()
 export class HighlightService {
-
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
-  }
+  constructor(private platform: PlatformService) {}
 
   highlightAll() {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.platform.isBrowser) {
       Prism.highlightAll();
     }
   }

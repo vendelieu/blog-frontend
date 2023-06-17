@@ -1,5 +1,3 @@
-import { HttpHeaders } from '@angular/common/http';
-
 export interface HttpResponseEntity<T> {
   code?: number;
   message?: string;

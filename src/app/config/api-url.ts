@@ -12,5 +12,5 @@ export enum ApiUrl {
   ADMIN_POST_ACTION = '/admin/post/:id',
 
   ADMIN_TAG_ACTION = '/admin/tag',
-  ADMIN_TAG_UNLINK = '/admin/tag/:slug/:post_slug',
+  ADMIN_TAG_UNLINK = '/admin/tag/:slug/:post_slug'
 }

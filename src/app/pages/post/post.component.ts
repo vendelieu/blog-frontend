@@ -73,6 +73,7 @@ export class PostComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.paramListener.unsubscribe();
+    this.document.getElementById('vuukle-js')?.remove();
   }
 
   toggleImgModal(status: boolean) {

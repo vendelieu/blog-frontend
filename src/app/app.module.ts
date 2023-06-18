@@ -1,9 +1,9 @@
 import { APP_BASE_HREF, CommonModule, registerLocaleData } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { TransferHttpCacheModule } from '@nguniversal/common';
 import { environment as env } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -76,6 +76,9 @@ registerLocaleData(en);
     { provide: APP_BASE_HREF, useValue: env.site },
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
     { provide: APP_ID, useValue: 'vendelieu' },
+    provideHttpClient(withInterceptorsFromDi()),
+    provideAnimations(),
+    provideClientHydration(),
     HighlightService,
     ThemeService
   ],

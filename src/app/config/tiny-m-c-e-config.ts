@@ -1,3 +1,5 @@
+import { Editor } from 'tinymce';
+
 export const TinyMCEConfig = {
   plugins: ['lists', 'link', 'image', 'media', 'code', 'codesample', 'anchor', 'wordcount'],
   menubar: 'view insert format',
@@ -13,14 +15,18 @@ export const TinyMCEConfig = {
     { text: 'Bash', value: 'bash' }
   ],
   browser_spellcheck: true,
-  formats: {
-    h1: { block: 'h1', attributes: { id: '%value' } },
-    h2: { block: 'h2', attributes: { id: '%value' } },
-    h3: { block: 'h3', attributes: { id: '%value' } },
-    h4: { block: 'h4', attributes: { id: '%value' } },
-    h5: { block: 'h5', attributes: { id: '%value' } },
-    h6: { block: 'h6', attributes: { id: '%value' } }
-  },
   skin: '',
-  content_css: ''
+  content_css: '',
+  setup: function (ed: Editor) {
+    ed.on('NodeChange', (e) => {
+      const element = e.element;
+      if (element.localName.startsWith('h') && parseInt(element.localName.charAt(1)) > 0) {
+        element.id = element.innerHTML + '-' + rand();
+      }
+    });
+  }
 };
+
+function rand(): string {
+  return Math.random().toString(36).slice(2);
+}

@@ -119,6 +119,7 @@ export class PostComponent implements OnInit, OnDestroy {
   private fetchPost() {
     this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
       if (post) {
+        this.initMeta();
         this.initData(post);
         this.prevPost = this.post.prev;
         this.nextPost = this.post.next;
@@ -135,7 +136,6 @@ export class PostComponent implements OnInit, OnDestroy {
   private initData(post: PostEntity) {
     this.post = post;
     this.postTags = post.tags;
-    this.initMeta();
     this.shareUrl = Options.site_url + '/' + this.post.slug;
     setTimeout(() => this.prepareContent(), 0);
   }

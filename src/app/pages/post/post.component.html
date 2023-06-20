@@ -33,13 +33,19 @@
           </div>
         </div>
         <div class='post-actions'>
-          <button (click)='showShareQrcode()'>
+          <button (click)='showShareQrcode()' title='Qr code'>
             <fa-icon [icon]='qrCodeIcon'></fa-icon>
           </button>
-          <button (click)='shareButton("linkedin")'>
+          <button (click)='shareButton("email")' title='Email'>
+            <fa-icon [icon]='emailIcon'></fa-icon>
+          </button>
+          <button (click)='shareButton("linkedin")' title='LinkedIn'>
             <fa-icon [icon]='linkedinIcon'></fa-icon>
           </button>
-          <button (click)='shareButton("twitter")'>
+          <button (click)='shareButton("facebook")' title='Facebook'>
+            <fa-icon [icon]='facebookIcon'></fa-icon>
+          </button>
+          <button (click)='shareButton("twitter")' title='Twitter'>
             <fa-icon [icon]='twitterIcon'></fa-icon>
           </button>
         </div>

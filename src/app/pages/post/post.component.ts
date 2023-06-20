@@ -11,14 +11,14 @@ import { NavPost, NodeEl, PostEntity, PostEntity_DefaultInst } from '../../inter
 import { PostsService } from '../../services/posts.service';
 import { Options } from '../../config/site-options';
 import { Tag } from '../../interfaces/tag';
-import { faAnglesLeft, faAnglesRight, faHashtag, faQrcode } from '@fortawesome/free-solid-svg-icons';
+import { faAnglesLeft, faAnglesRight, faEnvelope, faQrcode } from '@fortawesome/free-solid-svg-icons';
 import { PaginatorService } from '../../core/paginator.service';
-import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { faFacebookSquare, faLinkedin, faTwitterSquare } from '@fortawesome/free-brands-svg-icons';
 import { PaginationService } from '../../services/pagination.service';
 import { environment } from '../../../environments/environment';
 import { HighlightService } from '../../services/highlight.service';
 
-type shareType = 'twitter' | 'linkedin';
+type shareType = 'twitter' | 'linkedin' | 'facebook' | 'email';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -38,7 +38,9 @@ export class PostComponent implements OnInit, OnDestroy {
   imgModalPadding = 0;
   qrCodeIcon = faQrcode;
   linkedinIcon = faLinkedin;
-  twitterIcon = faHashtag;
+  twitterIcon = faTwitterSquare;
+  facebookIcon = faFacebookSquare;
+  emailIcon = faEnvelope;
   nextIcon = faAnglesRight;
   prevIcon = faAnglesLeft;
   shareUrl = '';
@@ -92,6 +94,10 @@ export class PostComponent implements OnInit, OnDestroy {
       location.href = 'https://twitter.com/intent/tweet?url=' + this.shareUrl;
     } else if (type === 'linkedin') {
       location.href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + this.shareUrl;
+    } else if (type === 'facebook') {
+      location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + this.shareUrl;
+    } else if (type === 'email') {
+      location.href = 'mailto:info@example.com?&subject=' + this.post.title + '&cc=&bcc=&body=' + this.shareUrl + '%0A' + this.post.description;
     }
   }
 

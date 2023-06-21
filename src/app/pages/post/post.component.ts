@@ -1,5 +1,14 @@
 import { DOCUMENT, ViewportScroller } from '@angular/common';
-import { Component, ElementRef, Inject, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { uniq } from 'lodash';
 import * as QRCode from 'qrcode';
@@ -11,7 +20,12 @@ import { NavPost, NodeEl, PostEntity, PostEntity_DefaultInst } from '../../inter
 import { PostsService } from '../../services/posts.service';
 import { Options } from '../../config/site-options';
 import { Tag } from '../../interfaces/tag';
-import { faAnglesLeft, faAnglesRight, faEnvelope, faQrcode } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAnglesLeft,
+  faAnglesRight,
+  faEnvelope,
+  faQrcode
+} from '@fortawesome/free-solid-svg-icons';
 import { PaginatorService } from '../../core/paginator.service';
 import { faFacebookSquare, faLinkedin, faTwitterSquare } from '@fortawesome/free-brands-svg-icons';
 import { PaginationService } from '../../services/pagination.service';
@@ -97,7 +111,13 @@ export class PostComponent implements OnInit, OnDestroy {
     } else if (type === 'facebook') {
       location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + this.shareUrl;
     } else if (type === 'email') {
-      location.href = 'mailto:info@example.com?&subject=' + this.post.title + '&cc=&bcc=&body=' + this.shareUrl + '%0A' + this.post.description;
+      location.href =
+        'mailto:info@example.com?&subject=' +
+        this.post.title +
+        '&cc=&bcc=&body=' +
+        this.shareUrl +
+        '%0A' +
+        this.post.description;
     }
   }
 

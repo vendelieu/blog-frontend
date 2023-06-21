@@ -103,7 +103,10 @@ export class ScrollTopComponent {
       return document.body.scrollTop;
     }
 
-    if (typeof document.documentElement.scrollTop !== 'undefined' && document.documentElement.scrollTop >= 0) {
+    if (
+      typeof document.documentElement.scrollTop !== 'undefined' &&
+      document.documentElement.scrollTop >= 0
+    ) {
       return document.documentElement.scrollTop;
     }
 

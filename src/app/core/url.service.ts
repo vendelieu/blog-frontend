@@ -6,7 +6,10 @@ import { UrlHistory } from '../interfaces/url';
   providedIn: 'root'
 })
 export class UrlService {
-  private urlInfo: BehaviorSubject<UrlHistory> = new BehaviorSubject<UrlHistory>({ previous: '', current: '' });
+  private urlInfo: BehaviorSubject<UrlHistory> = new BehaviorSubject<UrlHistory>({
+    previous: '',
+    current: ''
+  });
   public urlInfo$: Observable<UrlHistory> = this.urlInfo.asObservable();
 
   updatePreviousUrl(urlInfo: UrlHistory) {

@@ -1,6 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { PaginatorEntity } from '../../interfaces/paginator';
-import { faAnglesLeft, faAnglesRight, faArrowDownShortWide, faArrowUpShortWide } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAnglesLeft,
+  faAnglesRight,
+  faArrowDownShortWide,
+  faArrowUpShortWide
+} from '@fortawesome/free-solid-svg-icons';
 import { SortType } from '../../interfaces/posts';
 import { PaginationService } from '../../services/pagination.service';
 

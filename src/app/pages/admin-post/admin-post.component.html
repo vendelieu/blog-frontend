@@ -15,7 +15,7 @@
     <div class='form-row'>
       <div class='post-item'>Text:</div>
       <span class='flex'>
-        <editor [init]="TinyMCEConfig" [initialValue]="post.content" formControlName='content'></editor>
+        <editor [init]='TinyMCEConfig' [initialValue]='post.content' formControlName='content'></editor>
       </span>
     </div>
     <div class='form-row'>
@@ -28,7 +28,7 @@
     <div class='form-row'>
       <div class='post-item'>Tags:</div>
       <span class='flex'>
-        <tag-input (onAdd)='onTagAdd($event)' (onRemove)='onTagRemove($event)' [allowDupes]="true"
+        <tag-input (onAdd)='onTagAdd($event)' (onRemove)='onTagRemove($event)' [allowDupes]='true'
                    [ngModelOptions]='{standalone: true}'
                    [ngModel]='post.tags'
                    [theme]="isDark ? 'dark' : ''"
@@ -55,7 +55,7 @@
         <span>Save</span>
       </button>
       <button (click)='this.postForm.reset()' class='button' type='reset'>Reset</button>
-      <button (click)="delete()" *ngIf="post.id > 0" class='button delete-btn'>Delete</button>
+      <button (click)='delete()' *ngIf='post.id > 0' class='button delete-btn'>Delete</button>
     </div>
   </div>
 </div>

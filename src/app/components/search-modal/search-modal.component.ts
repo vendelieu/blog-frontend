@@ -13,7 +13,11 @@ export class SearchModalComponent {
   keyword = '';
   searchIcon = faSearch;
 
-  constructor(private postsService: PostsService, private router: Router, @Inject(DOCUMENT) private document: Document) {}
+  constructor(
+    private postsService: PostsService,
+    private router: Router,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   search() {
     this.keyword = this.keyword.trim();

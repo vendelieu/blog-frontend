@@ -8,7 +8,7 @@
       "node"
     ],
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "experimentalDecorators": true
   },
   "files": [
     "src/main.server.ts",

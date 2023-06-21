@@ -1,4 +1,10 @@
-import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse, HttpStatusCode } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+  HttpResponse,
+  HttpStatusCode
+} from '@angular/common/http';
 import { Inject, Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { Response } from 'express';
@@ -18,7 +24,13 @@ import { RESPONSE } from '@nestjs/ng-universal/dist/tokens';
 export class ApiService {
   private apiUrlPrefix: string = ApiUrl.API_URL_PREFIX;
 
-  constructor(private http: HttpClient, private message: MessageService, private router: Router, private platform: PlatformService, @Optional() @Inject(RESPONSE) private response: Response) {}
+  constructor(
+    private http: HttpClient,
+    private message: MessageService,
+    private router: Router,
+    private platform: PlatformService,
+    @Optional() @Inject(RESPONSE) private response: Response
+  ) {}
 
   getApiUrl(path: string): string {
     return `${Options.api_url}${this.apiUrlPrefix}${path}`;
@@ -53,7 +65,10 @@ export class ApiService {
       .pipe(catchError(this.handleError<T>()));
   }
 
-  httpPost<T>(url: string, body: Record<string, any> | FormData = {}): Observable<HttpResponseEntity<T>> {
+  httpPost<T>(
+    url: string,
+    body: Record<string, any> | FormData = {}
+  ): Observable<HttpResponseEntity<T>> {
     return this.http
       .post<HttpResponseEntity<T>>(url, body, {
         observe: 'body'
@@ -69,7 +84,10 @@ export class ApiService {
       .pipe(catchError(this.handleError<HttpResponseEntity<T>>()));
   }
 
-  httpPut<T>(url: string, body: Record<string, any> | FormData = {}): Observable<HttpResponseEntity<T>> {
+  httpPut<T>(
+    url: string,
+    body: Record<string, any> | FormData = {}
+  ): Observable<HttpResponseEntity<T>> {
     return this.http
       .put<HttpResponseEntity<T>>(url, body, {
         observe: 'body'

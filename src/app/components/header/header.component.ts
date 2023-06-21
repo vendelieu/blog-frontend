@@ -27,12 +27,18 @@ export class HeaderComponent {
   lightThemeIcon = faSun;
   darkThemeIcon = faMoon;
 
-  constructor(private router: Router, private themeService: ThemeService, @Inject(DOCUMENT) private document: Document, private localStorage: CoolLocalStorage) {
+  constructor(
+    private router: Router,
+    private themeService: ThemeService,
+    @Inject(DOCUMENT) private document: Document,
+    private localStorage: CoolLocalStorage
+  ) {
     const localTheme = this.localStorage.getItem(Options.STORAGE_THEME_KEY);
     if (localTheme) {
       this.setTheme(<'light' | 'dark'>localTheme);
     } else {
-      this.currentTheme = this.document.getElementsByTagName('html').item(0)?.getAttribute('color-mode') ?? undefined;
+      this.currentTheme =
+        this.document.getElementsByTagName('html').item(0)?.getAttribute('color-mode') ?? undefined;
     }
   }
 
@@ -50,7 +56,8 @@ export class HeaderComponent {
   }
 
   hideMenu() {
-    if (this.document.body.style.overflow === 'hidden') this.document.getElementById('ham')?.click();
+    if (this.document.body.style.overflow === 'hidden')
+      this.document.getElementById('ham')?.click();
   }
 
   toggleSearchOpen() {

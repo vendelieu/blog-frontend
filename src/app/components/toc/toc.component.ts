@@ -20,8 +20,10 @@ export class TocComponent implements AfterViewInit {
       this.intersectionObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((el) => {
-            if (el.isIntersecting) this.document.getElementById('toc-' + el.target.id)?.classList.add('toc-active');
-            else this.document.getElementById('toc-' + el.target.id)?.classList.remove('toc-active');
+            if (el.isIntersecting)
+              this.document.getElementById('toc-' + el.target.id)?.classList.add('toc-active');
+            else
+              this.document.getElementById('toc-' + el.target.id)?.classList.remove('toc-active');
           });
         },
         {
@@ -35,7 +37,11 @@ export class TocComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.tocTargetElementRef.forEach((el) => {
-      this.tocList?.push({ id: el.id, lvl: parseInt(el.localName.charAt(1)), name: el.textContent ?? '' });
+      this.tocList?.push({
+        id: el.id,
+        lvl: parseInt(el.localName.charAt(1)),
+        name: el.textContent ?? ''
+      });
     });
 
     this.document.querySelectorAll('div#toc-target *[id]').forEach((section) => {

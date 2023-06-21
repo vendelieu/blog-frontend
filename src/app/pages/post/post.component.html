@@ -1,7 +1,7 @@
 <div class='sider'>
   <div class='post-content'>
     <i *ngIf='post.id === 0' class='icon icon-loading'></i>
-    <div *ngIf="post.id > 0" class='post'>
+    <div *ngIf='post.id > 0' class='post'>
       <header class='post-header'>
         <img alt='Article image' src='{{post.image}}' src-fallback='/assets/images/blank_image.webp'>
         <div class='post-card'>
@@ -19,7 +19,7 @@
         </div>
       </header>
       <article class='article-content'>
-        <div #tocTarget [innerHTML]="post.content | safeHtml" class='line-numbers' id='toc-target'></div>
+        <div #tocTarget [innerHTML]='post.content | safeHtml' class='line-numbers' id='toc-target'></div>
       </article>
       <footer class='post-footer'>
         <div *ngIf='relatedPosts?.length ?? 0 > 0' class='related'>

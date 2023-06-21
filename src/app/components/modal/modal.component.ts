@@ -1,4 +1,15 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
 
 @Component({
   selector: 'app-modal',
@@ -23,16 +34,24 @@ export class ModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.bodyEle = this.renderer.selectRootElement('body', true);
-    this.unlistenClick = this.renderer.listen(this.modal.nativeElement, 'click', (e: MouseEvent) => {
-      let classNames = Array.from((e.target as HTMLElement).classList);
-      if (classNames.length < 1) {
-        // in case of: SVGPathElement
-        classNames = Array.from(((e.target as HTMLElement).parentNode as HTMLElement).classList);
+    this.unlistenClick = this.renderer.listen(
+      this.modal.nativeElement,
+      'click',
+      (e: MouseEvent) => {
+        let classNames = Array.from((e.target as HTMLElement).classList);
+        if (classNames.length < 1) {
+          // in case of: SVGPathElement
+          classNames = Array.from(((e.target as HTMLElement).parentNode as HTMLElement).classList);
+        }
+        if (
+          classNames.some((name) =>
+            ['modal-mask', 'modal-container', 'modal-close', 'icon-close'].includes(name)
+          )
+        ) {
+          this.hideModal();
+        }
       }
-      if (classNames.some((name) => ['modal-mask', 'modal-container', 'modal-close', 'icon-close'].includes(name))) {
-        this.hideModal();
-      }
-    });
+    );
     this.unlistenInput = this.renderer.listen(this.bodyEle, 'keyup', (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         this.hideModal();
@@ -40,7 +59,10 @@ export class ModalComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.renderer.setStyle(this.bodyEle, 'overflow', 'hidden');
     if (this.padding > 0) {
-      this.modalBody.nativeElement.setAttribute('style', `padding: ${this.padding}px; background-color:#fff;`);
+      this.modalBody.nativeElement.setAttribute(
+        'style',
+        `padding: ${this.padding}px; background-color:#fff;`
+      );
     }
 
     if (this.imgEle) {

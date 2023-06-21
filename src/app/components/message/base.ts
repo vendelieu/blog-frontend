@@ -1,7 +1,14 @@
 import { AnimationEvent } from '@angular/animations';
 import { ComponentType, Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ChangeDetectorRef, Directive, EventEmitter, Injector, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Directive,
+  EventEmitter,
+  Injector,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { filter, Subject, take } from 'rxjs';
 import { PlatformService } from '../../core/platform.service';
 import { SingletonService } from '../../core/singleton.service';
@@ -13,7 +20,11 @@ export abstract class MessageBaseService {
   protected container!: MessageContainerBaseComponent;
   protected abstract componentKey: string;
 
-  protected constructor(private singleton: SingletonService, private overlay: Overlay, private injector: Injector) {}
+  protected constructor(
+    private singleton: SingletonService,
+    private overlay: Overlay,
+    private injector: Injector
+  ) {}
 
   remove(id?: string): void {
     if (this.container) {

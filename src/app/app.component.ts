@@ -14,12 +14,14 @@ export class AppComponent implements OnInit {
   constructor(private router: Router, private urlService: UrlService) {}
 
   ngOnInit(): void {
-    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event) => {
-      this.urlService.updatePreviousUrl({
-        previous: this.currentUrl,
-        current: (event as NavigationEnd).url
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        this.urlService.updatePreviousUrl({
+          previous: this.currentUrl,
+          current: (event as NavigationEnd).url
+        });
+        this.currentUrl = (event as NavigationEnd).url;
       });
-      this.currentUrl = (event as NavigationEnd).url;
-    });
   }
 }

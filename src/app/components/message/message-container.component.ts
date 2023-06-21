@@ -1,5 +1,10 @@
 import { Direction } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ViewEncapsulation
+} from '@angular/core';
 import { MessageContainerBaseComponent, toCssPixel } from './base';
 import { MessageConfig } from './message.interface';
 
@@ -20,7 +25,11 @@ const MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
   preserveWhitespaces: false,
   template: `
     <div class="message" [class.message-rtl]="dir === 'rtl'" [style.top]="top">
-      <i-message *ngFor="let message of messages" [message]="message" (destroyed)="remove($event.id, $event.userAction)"></i-message>
+      <i-message
+        *ngFor="let message of messages"
+        [message]="message"
+        (destroyed)="remove($event.id, $event.userAction)"
+      ></i-message>
     </div>
   `
 })

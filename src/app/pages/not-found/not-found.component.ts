@@ -11,7 +11,11 @@ import { Options } from '../../config/site-options';
   styleUrls: ['./not-found.component.less']
 })
 export class NotFoundComponent implements OnInit {
-  constructor(private platform: PlatformService, private response: ResponseService, private metaService: MetaService) {}
+  constructor(
+    private platform: PlatformService,
+    private response: ResponseService,
+    private metaService: MetaService
+  ) {}
 
   ngOnInit(): void {
     if (this.platform.isServer) {

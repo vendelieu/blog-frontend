@@ -5,6 +5,6 @@ export interface HTMLMetaData {
 }
 
 export interface HTMLExtendedData extends HTMLMetaData {
-  url: string;
-  image: string;
+  url?: string;
+  image?: string;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { HTMLExtendedData, HTMLMetaData } from '../interfaces/meta';
+import { HTMLExtendedData } from '../interfaces/meta';
 
 @Injectable({
   providedIn: 'root'
@@ -8,14 +8,24 @@ import { HTMLExtendedData, HTMLMetaData } from '../interfaces/meta';
 export class MetaService {
   constructor(private meta: Meta, private title: Title) {}
 
-  updateHTMLMeta(metaData: HTMLMetaData) {
+  updateHTMLMeta(metaData: HTMLExtendedData) {
     if (metaData.title) {
       this.title.setTitle(metaData.title);
+      const titleTag = this.meta.getTag('property="og:title"');
+      this.meta[titleTag ? 'updateTag' : 'addTag']({
+        property: 'og:title',
+        content: metaData.title
+      });
     }
     if (metaData.description) {
       const descTag = this.meta.getTag('name="description"');
       this.meta[descTag ? 'updateTag' : 'addTag']({
         name: 'description',
+        content: metaData.description
+      });
+      const descriptionTag = this.meta.getTag('property="og:description"');
+      this.meta[descriptionTag ? 'updateTag' : 'addTag']({
+        property: 'og:description',
         content: metaData.description
       });
     }
@@ -24,25 +34,6 @@ export class MetaService {
       this.meta[keywordsTag ? 'updateTag' : 'addTag']({
         name: 'keywords',
         content: metaData.keywords
-      });
-    }
-  }
-
-  updateExtendedHTMLMeta(metaData: HTMLExtendedData) {
-    this.updateHTMLMeta(metaData);
-    if (metaData.title) {
-      const titleTag = this.meta.getTag('property="og:title"');
-      this.meta[titleTag ? 'updateTag' : 'addTag']({
-        property: 'og:title',
-        content: metaData.title
-      });
-    }
-
-    if (metaData.description) {
-      const descriptionTag = this.meta.getTag('property="og:description"');
-      this.meta[descriptionTag ? 'updateTag' : 'addTag']({
-        property: 'og:description',
-        content: metaData.description
       });
     }
 

@@ -5,18 +5,18 @@ import {
   HttpResponse,
   HttpStatusCode
 } from '@angular/common/http';
-import { Inject, Injectable, Optional } from '@angular/core';
+import { Inject, Injectable, makeStateKey, Optional, StateKey, TransferState } from '@angular/core';
 import { Router } from '@angular/router';
 import { Response } from 'express';
-import { EMPTY, Observable, of } from 'rxjs';
+import { EMPTY, from, Observable, of, tap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { MessageService } from '../components/message/message.service';
 import { ApiUrl } from '../config/api-url';
-import { Message } from '../config/message.enum';
 import { HttpResponseEntity } from '../interfaces/http-response';
 import { PlatformService } from './platform.service';
 import { Options } from '../config/site-options';
 import { RESPONSE } from '@nestjs/ng-universal/dist/tokens';
+import { Message } from '../config/message.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +29,7 @@ export class ApiService {
     private message: MessageService,
     private router: Router,
     private platform: PlatformService,
+    private _state: TransferState,
     @Optional() @Inject(RESPONSE) private response: Response
   ) {}
 
@@ -44,55 +45,100 @@ export class ApiService {
   }
 
   httpGet<T>(url: string, param: Record<string, any> = {}): Observable<HttpResponseEntity<T>> {
-    return this.http
-      .get<HttpResponseEntity<T>>(url, {
-        params: new HttpParams({
-          fromObject: param
-        }),
-        observe: 'body'
-      })
-      .pipe(catchError(this.handleError<HttpResponseEntity<T>>()));
+    return this.get<HttpResponseEntity<T>>(url, param);
   }
 
   httpGetCustomResponse<T>(url: string, param: Record<string, any> = {}): Observable<T> {
-    return this.http
-      .get<T>(url, {
-        params: new HttpParams({
-          fromObject: param
-        }),
-        observe: 'body'
-      })
-      .pipe(catchError(this.handleError<T>()));
+    return this.get<T>(url, param);
   }
 
   httpPost<T>(
     url: string,
     body: Record<string, any> | FormData = {}
   ): Observable<HttpResponseEntity<T>> {
-    return this.http
-      .post<HttpResponseEntity<T>>(url, body, {
-        observe: 'body'
-      })
-      .pipe(catchError(this.handleError<HttpResponseEntity<T>>()));
+    return this.getData(url, body, () =>
+      this.http
+        .post<HttpResponseEntity<T>>(url, body, {
+          observe: 'body'
+        })
+        .pipe(catchError(this.handleError<HttpResponseEntity<T>>()))
+    );
   }
 
   httpDelete<T>(url: string): Observable<HttpResponseEntity<T>> {
-    return this.http
-      .delete<HttpResponseEntity<T>>(url, {
-        observe: 'body'
-      })
-      .pipe(catchError(this.handleError<HttpResponseEntity<T>>()));
+    return this.getData(url, {}, () =>
+      this.http
+        .delete<HttpResponseEntity<T>>(url, {
+          observe: 'body'
+        })
+        .pipe(catchError(this.handleError<HttpResponseEntity<T>>()))
+    );
   }
 
   httpPut<T>(
     url: string,
     body: Record<string, any> | FormData = {}
   ): Observable<HttpResponseEntity<T>> {
-    return this.http
-      .put<HttpResponseEntity<T>>(url, body, {
-        observe: 'body'
-      })
-      .pipe(catchError(this.handleError<HttpResponseEntity<T>>()));
+    return this.getData(url, body, () =>
+      this.http
+        .put<HttpResponseEntity<T>>(url, body, {
+          observe: 'body'
+        })
+        .pipe(catchError(this.handleError<HttpResponseEntity<T>>()))
+    );
+  }
+
+  private get<T>(url: string, params: Record<string, any> = {}) {
+    return this.getData(url, params, () =>
+      this.http
+        .get<T>(url, {
+          params: new HttpParams({
+            fromObject: params
+          }),
+          observe: 'body'
+        })
+        .pipe(catchError(this.handleError<T>()))
+    );
+  }
+
+  private getData(
+    url: string,
+    options: Record<string, any> = {},
+    callback: () => Observable<any>
+  ): Observable<any> {
+    const optionsString = options ? JSON.stringify(options) : '';
+    let key = makeStateKey<string>(`${url + optionsString}`);
+    try {
+      return this.resolveData(key);
+    } catch (e) {
+      return callback().pipe(
+        tap((data) => {
+          this.setCache(key, data);
+        })
+      );
+    }
+  }
+
+  private resolveData(key: StateKey<string>) {
+    let resultData: any;
+    if (this.hasKey(key)) {
+      resultData = this.getFromCache(key);
+    } else {
+      throw new Error();
+    }
+    return from(Promise.resolve(resultData));
+  }
+
+  setCache(key: StateKey<string>, value: any) {
+    this._state.set(key, value);
+  }
+
+  private getFromCache(key: StateKey<string>) {
+    return this._state.get(key, null); // null set as default value
+  }
+
+  private hasKey(key: StateKey<string>) {
+    return this._state.hasKey(key);
   }
 
   private handleError<T>() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TransferState } from '@angular/core';
 import { GithubRepo } from '../../interfaces/github-repo';
 import { GithubService } from '../../services/github.service';
 import { faCode, faTerminal } from '@fortawesome/free-solid-svg-icons';

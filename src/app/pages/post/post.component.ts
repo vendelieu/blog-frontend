@@ -127,7 +127,7 @@ export class PostComponent implements OnInit, OnDestroy {
 
   private initMeta() {
     const keywords: string[] = Options.site_keywords.split(',');
-    this.metaService.updateExtendedHTMLMeta({
+    this.metaService.updateHTMLMeta({
       title: `${this.post.title} - ${Options.site_name}`,
       description: this.post.description,
       keywords: uniq(this.postTags?.map((item) => item.name).concat(keywords)).join(','),
@@ -139,10 +139,10 @@ export class PostComponent implements OnInit, OnDestroy {
   private fetchPost() {
     this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
       if (post) {
-        this.initMeta();
         this.initData(post);
         this.prevPost = this.post.prev;
         this.nextPost = this.post.next;
+        this.initMeta();
       }
     });
   }

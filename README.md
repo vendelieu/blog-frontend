@@ -1,31 +1,50 @@
-# vendeli.eu-blog frontent
+<br/>
+<p align="center">
+  <a href="https://vendeli.eu" title="What" target="_blank">
+    <img src="src/assets/images/logo.png" height="90" alt="ifuyun.com logo" />
+  </a>
+</p>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.3.
+Website of [vendeli.eu](https://vendeli.eu), implementation
+of [blog-backend](https://github.com/vendelieu/blog-backend).
 
-## Development server
+[Vendeli.eu](https://vendeli.eu) is powered by [Angular Universal](https://angular.io/guide/universal), API services is
+provided by [blog-backend](https://github.com/vendelieu/blog-backend).
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change
-any of the source files.
+## Development setup
 
-## Code scaffolding
+```bash
+# Installation
+$ npm i
 
-Run `ng generate component component-name` to generate a new component. You can also
-use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+# SSR mode
+$ npm run dev:ssr
+$ npm run serve:ssr
+$ npm run build:ssr
+$ npm run build:gulp
+$ npm run build:prod
 
-## Build
+# SPA mode
+$ npm run start
+$ npm run build
+$ npm run watch
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+# Code scaffolding
+$ ng g component|directive|pipe|service|class|guard|interface|enum|module name
 
-## Running unit tests
+# Lint & test
+$ npm run lint
+$ npm run test
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a
-package that implements end-to-end testing capabilities.
+# Deploy
+$ npm run deploy
+```
 
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out
 the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## License
+
+Licensed under the [MIT](/LICENSE) License.

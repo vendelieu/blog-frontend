@@ -13,12 +13,10 @@ export class PostsService {
   constructor(private apiService: ApiService) {}
 
   getPosts(param: PostQueryParam): Observable<PaginatedHttpResponse<PostEntity[]> | undefined> {
-    return this.apiService
-      .httpGetCustomResponse<PaginatedHttpResponse<PostEntity[]>>(
-        this.apiService.getApiUrl(ApiUrl.GET_POSTS),
-        param
-      )
-      .pipe(map((res) => res || undefined));
+    return this.apiService.httpGetCustomResponse<PaginatedHttpResponse<PostEntity[]>>(
+      this.apiService.getApiUrl(ApiUrl.GET_POSTS),
+      param
+    );
   }
 
   getPostBySlug(slug: string): Observable<PostEntity | undefined> {

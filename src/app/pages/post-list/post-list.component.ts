@@ -67,6 +67,8 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.paramListener.unsubscribe();
+    this.paginationService.pageChanged.unsubscribe();
+    this.paginationService.sortingChanged.unsubscribe();
   }
 
   private fetchPosts() {

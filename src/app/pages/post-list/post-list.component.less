@@ -22,6 +22,20 @@
 
     img {
       width: 100%;
+      max-width: 1000px;
+      transition: transform 0.3s ease-out;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    li img {
+      transform: scale(1.2);
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    li img {
+      transform: scale(1.5);
     }
   }
 }

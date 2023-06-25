@@ -28,24 +28,17 @@ export class TocComponent implements AfterViewInit {
               tocElement?.classList.remove('toc-active');
             }
           });
-          const intersected = Array.from(this.document.getElementsByClassName('toc-active'));
-          const path: (string | number)[] = [];
+          const intersected = this.document.getElementsByClassName('toc-active');
+          const firstRect = (intersected[0] as HTMLElement).getBoundingClientRect();
+          const lastRect = (
+            intersected[intersected.length - 1] as HTMLElement
+          ).getBoundingClientRect();
 
-          let pathIndent: number;
-          intersected.forEach((e, index) => {
-            const rect = e.getBoundingClientRect();
-            if (index === 0) {
-              path.push('M', rect.left, rect.top + rect.height - 25);
-              path.push('L', rect.left, rect.top + rect.height);
-            } else {
-              if (pathIndent !== rect.y)
-                path.push('L', rect.left + 10, rect.top + rect.height - 10);
-              path.push('L', rect.left, rect.top + rect.height);
-            }
-            pathIndent = rect.y;
-          });
+          const d = `M ${firstRect.left} ${firstRect.top + firstRect.height - 25} L ${
+            lastRect.left
+          } ${lastRect.top + lastRect.height}`;
 
-          this.tocPathEl.nativeElement.setAttribute('d', path.join(' '));
+          this.tocPathEl.nativeElement.setAttribute('d', d);
         },
         {
           root: null,

@@ -29,6 +29,7 @@ export class TocComponent implements AfterViewInit {
             }
           });
           const intersected = this.document.getElementsByClassName('toc-active');
+          if (intersected.length === 0) return;
           const firstRect = (intersected[0] as HTMLElement).getBoundingClientRect();
           const lastRect = (
             intersected[intersected.length - 1] as HTMLElement

@@ -6,43 +6,45 @@
 <div *ngIf='postList?.length === 0' class='not-found'>
   no posts found
 </div>
-<div class='article-list'>
-  <article *ngFor='let post of postList' class='article'>
-    <header>
-      <a [routerLink]="['/' + post.slug]"
-         class='article-link' rel='bookmark'
-         title='{{post.title}}'>
-        <img alt='Article image' src='{{post.image}}' src-fallback='/assets/images/blank_image.webp'>
-      </a>
-      <div class='article-card'>
-        <h3>
-          <a [routerLink]="['/' + post.slug]" rel='bookmark' title='{{post.title}}'>{{post.title}}</a>
-        </h3>
-        <div class='article-meta article-meta-top'>
+<div class='post-list-wrapper'>
+  <div class='article-list'>
+    <article *ngFor='let post of postList' class='article'>
+      <header>
+        <a [routerLink]="['/' + post.slug]"
+           class='article-link' rel='bookmark'
+           title='{{post.title}}'>
+          <img alt='Article image' src='{{post.image}}' src-fallback='/assets/images/blank_image.webp'>
+        </a>
+        <div class='article-card'>
+          <h3>
+            <a [routerLink]="['/' + post.slug]" rel='bookmark' title='{{post.title}}'>{{post.title}}</a>
+          </h3>
+          <div class='article-meta article-meta-top'>
       <span title='Date of article creation.'>
         <i class='icon icon-calendar'></i><span>{{post.updated_at | date:'EEE, MMMM d, y'}}</span>
       </span>
+          </div>
+        </div>
+      </header>
+      <div class='content-wrapper'>
+        <div class='article-content'>
+          <p class='article-excerpt'>
+            <span [innerHTML]='post.description'></span>
+          </p>
+          <div *ngIf='post.tags?.length ?? 0 > 0' class='article-meta article-meta-bottom'>
+            <div *ngIf='post.tags?.length ?? 0 > 0' class='article-meta-tag'>
+              <div class='article-meta-icon'><i class='icon icon-tag'></i></div>
+              <ul class='article-meta-info tag-list'>
+                <li *ngFor='let tag of post.tags'>
+                  <a [routerLink]="['/tag/' + tag.slug]" class='tag-list-item'
+                     rel='category' title='{{tag.name}}'>{{tag.name}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
-    </header>
-    <div class='article-content'>
-      <p class='article-excerpt'>
-        <span [innerHTML]='post.description'></span>
-        <a [routerLink]="['/' + post.slug]" class='read-more' title='{{post.title}}'>..read more</a>
-      </p>
-      <div *ngIf='post.tags?.length ?? 0 > 0' class='article-meta article-meta-bottom'>
-        <div *ngIf='post.tags?.length ?? 0 > 0' class='article-meta-tag'>
-          <div class='article-meta-icon'><i class='icon icon-tag'></i></div>
-          <ul class='article-meta-info tag-list'>
-            <li *ngFor='let tag of post.tags'>
-              <a [routerLink]="['/tag/' + tag.slug]" class='tag-list-item'
-                 rel='category' title='{{tag.name}}'>{{tag.name}}</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </article>
+    </article>
+  </div>
+  <app-page-bar *ngIf='postList?.length ?? 0 > 0' [paginator]='paginatorData' curSort='{{sort}}' />
 </div>
-<app-page-bar *ngIf='postList?.length ?? 0 > 0' [paginator]='paginatorData' curSort='{{sort}}'>
-</app-page-bar>

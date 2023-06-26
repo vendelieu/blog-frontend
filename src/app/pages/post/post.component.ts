@@ -63,7 +63,7 @@ export class PostComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private postsService: PostsService,
     private highlightService: HighlightService,
-    private metaService: MetaService,
+    private _meta: MetaService,
     private urlService: UrlService,
     private message: MessageService,
     private paginator: PaginatorService,
@@ -79,13 +79,13 @@ export class PostComponent implements OnInit, OnDestroy {
       this.postTags = post.tags;
       this.shareUrl = Options.site_url + '/' + this.post.slug;
 
-      this.metaService.updateHTMLMeta({
-        title: `${this.post.title} - ${Options.site_name}`,
-        description: this.post.description,
-        keywords: this.postTags?.map((item) => item.name).join(','),
-        image: this.post.image,
-        url: this.shareUrl
-      });
+      this._meta.updateTitle(`${post.title} - ${Options.site_name}`);
+      this._meta.updateDescription(post.description);
+      this._meta.updateKeywords(
+        post.tags?.map((item) => item.name).join(',') ?? Options.site_keywords
+      );
+      this._meta.updateImage(post.image);
+      this._meta.updateUrl(this.shareUrl);
     });
     this.scroller.scrollToPosition([0, 0]);
   }

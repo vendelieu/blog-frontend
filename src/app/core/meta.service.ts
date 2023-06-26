@@ -8,44 +8,62 @@ import { HTMLExtendedData } from '../interfaces/meta';
 export class MetaService {
   constructor(private meta: Meta, private title: Title) {}
 
+  updateTitle(title: string) {
+    this.title.setTitle(title);
+    this.meta.updateTag({
+      property: 'og:title',
+      content: title
+    });
+  }
+
+  updateDescription(description: string) {
+    this.meta.updateTag({
+      name: 'description',
+      content: description
+    });
+    this.meta.updateTag({
+      property: 'og:description',
+      content: description
+    });
+  }
+
+  updateKeywords(keywords: string) {
+    this.meta.updateTag({
+      name: 'keywords',
+      property: 'keywords',
+      content: keywords
+    });
+  }
+
+  updateUrl(url: string) {
+    this.meta.updateTag({
+      property: 'og:url',
+      content: url
+    });
+  }
+
+  updateImage(image: string) {
+    this.meta.updateTag({
+      property: 'og:image',
+      content: image
+    });
+  }
+
   updateHTMLMeta(metaData: HTMLExtendedData) {
     if (metaData.title) {
-      this.title.setTitle(metaData.title);
-      this.meta.updateTag({
-        property: 'og:title',
-        content: metaData.title
-      });
+      this.updateTitle(metaData.title);
     }
     if (metaData.description) {
-      this.meta.updateTag({
-        name: 'description',
-        content: metaData.description
-      });
-      this.meta.updateTag({
-        property: 'og:description',
-        content: metaData.description
-      });
+      this.updateDescription(metaData.description);
     }
     if (metaData.keywords) {
-      this.meta.updateTag({
-        name: 'keywords',
-        property: 'keywords',
-        content: metaData.keywords
-      });
+      this.updateKeywords(metaData.keywords);
     }
-
     if (metaData.url) {
-      this.meta.updateTag({
-        property: 'og:url',
-        content: metaData.url
-      });
+      this.updateUrl(metaData.url);
     }
-
     if (metaData.image) {
-      this.meta.updateTag({
-        property: 'og:image',
-        content: metaData.image
-      });
+      this.updateImage(metaData.image);
     }
   }
 }

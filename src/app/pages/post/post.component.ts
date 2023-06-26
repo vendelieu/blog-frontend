@@ -73,23 +73,25 @@ export class PostComponent implements OnInit, OnDestroy {
     @Inject(DOCUMENT) private document: Document
   ) {
     this.postSlug = this.route.snapshot.params['postSlug'];
+  }
+
+  ngOnInit(): void {
     this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
       if (!post) return;
       this.shareUrl = Options.site_url + '/' + this.post.slug;
       this.post = post;
       this.postTags = post.tags;
-    });
-    this.scroller.scrollToPosition([0, 0]);
-  }
 
-  ngOnInit(): void {
-    this._meta.updateTitle(`${this.post.title} - ${Options.site_name}`);
-    this._meta.updateDescription(this.post.description);
-    this._meta.updateKeywords(
-      this.post.tags?.map((item) => item.name).join(',') ?? Options.site_keywords
-    );
-    this._meta.updateImage(this.post.image);
-    this._meta.updateUrl(this.shareUrl);
+      this._meta.updateTitle(`${this.post.title} - ${Options.site_name}`);
+      this._meta.updateDescription(this.post.description);
+      this._meta.updateKeywords(
+        this.post.tags?.map((item) => item.name).join(',') ?? Options.site_keywords
+      );
+      this._meta.updateImage(this.post.image);
+      this._meta.updateUrl(this.shareUrl);
+
+      this.scroller.scrollToPosition([0, 0]);
+    });
 
     this.fetchRelated();
     setTimeout(() => this.prepareContent(), 0);

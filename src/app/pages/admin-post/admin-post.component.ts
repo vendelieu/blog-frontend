@@ -13,6 +13,7 @@ import { ThemeService } from '../../services/theme.service';
 import { HTMLMetaData } from '../../interfaces/meta';
 import { Options } from '../../config/site-options';
 import { MetaService } from '../../core/meta.service';
+import { ImagesService } from '../../services/images.service';
 
 @Component({
   selector: 'app-admin-post',
@@ -46,6 +47,7 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     private router: Router,
     private fb: FormBuilder,
     private themeService: ThemeService,
+    private imagesService: ImagesService,
     private metaService: MetaService
   ) {
     themeService.getFlow().subscribe((e) => {
@@ -137,7 +139,7 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     let oldSlug = this.postForm.get('slug')?.value?.trim();
     if (!oldSlug) return;
     let newSlug = this.slugify(oldSlug);
-    this.postForm.get('slug')?.setValue(newSlug);
+    this.postForm.patchValue({ slug: newSlug });
   }
 
   delete() {
@@ -149,6 +151,14 @@ export class AdminPostComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.paramListener.unsubscribe();
+  }
+
+  onImageChange() {
+    const imageUrl = this.postForm.get('image')?.value;
+    if (!imageUrl) return;
+    this.imagesService.saveImage(imageUrl).subscribe((img) => {
+      this.postForm.patchValue({ image: img.url });
+    });
   }
 
   private slugify(text: string) {

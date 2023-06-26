@@ -4,7 +4,6 @@ import {
   ElementRef,
   Inject,
   OnDestroy,
-  OnInit,
   Renderer2,
   ViewChild,
   ViewEncapsulation
@@ -29,6 +28,7 @@ import { faFacebookSquare, faLinkedin, faTwitterSquare } from '@fortawesome/free
 import { PaginationService } from '../../services/pagination.service';
 import { environment } from '../../../environments/environment';
 import { HighlightService } from '../../services/highlight.service';
+import { Subscription } from 'rxjs';
 
 type shareType = 'twitter' | 'linkedin' | 'facebook' | 'email';
 
@@ -38,7 +38,7 @@ type shareType = 'twitter' | 'linkedin' | 'facebook' | 'email';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.less']
 })
-export class PostComponent implements OnInit, OnDestroy {
+export class PostComponent implements OnDestroy {
   relatedPosts: NavPost[] | undefined;
   post: PostEntity = PostEntity_DefaultInst;
   postTags: Tag[] | null = [];
@@ -57,7 +57,8 @@ export class PostComponent implements OnInit, OnDestroy {
   tocElements: NodeEl[] = [];
   @ViewChild('tocTarget') tocTargetEl!: ElementRef;
 
-  private readonly postSlug = '';
+  private postSlug = '';
+  private paramListener!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -72,32 +73,14 @@ export class PostComponent implements OnInit, OnDestroy {
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private document: Document
   ) {
-    this.postSlug = this.route.snapshot.params['postSlug'];
-  }
-
-  ngOnInit(): void {
-    this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
-      if (!post) return;
-      this.shareUrl = Options.site_url + '/' + this.post.slug;
-      this.post = post;
-      this.postTags = post.tags;
-
-      this._meta.updateTitle(`${this.post.title} - ${Options.site_name}`);
-      this._meta.updateDescription(this.post.description);
-      this._meta.updateKeywords(
-        this.post.tags?.map((item) => item.name).join(',') ?? Options.site_keywords
-      );
-      this._meta.updateImage(this.post.image);
-      this._meta.updateUrl(this.shareUrl);
-
-      this.scroller.scrollToPosition([0, 0]);
-      setTimeout(() => this.prepareContent(), 0);
+    this.paramListener = this.route.params.subscribe((params) => {
+      this.postSlug = params['postSlug'];
+      this.loadContent();
     });
-
-    this.fetchRelated();
   }
 
   ngOnDestroy() {
+    this.paramListener.unsubscribe();
     this.document.getElementById('vuukle-js')?.remove();
   }
 
@@ -132,6 +115,28 @@ export class PostComponent implements OnInit, OnDestroy {
 
   toggleComments() {
     this.commentsShow = !this.commentsShow;
+  }
+
+  private loadContent() {
+    this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
+      if (!post) return;
+      this.shareUrl = Options.site_url + '/' + this.post.slug;
+      this.post = post;
+      this.postTags = post.tags;
+
+      this._meta.updateTitle(`${this.post.title} - ${Options.site_name}`);
+      this._meta.updateDescription(this.post.description);
+      this._meta.updateKeywords(
+        this.post.tags?.map((item) => item.name).join(',') ?? Options.site_keywords
+      );
+      this._meta.updateImage(this.post.image);
+      this._meta.updateUrl(this.shareUrl);
+
+      this.scroller.scrollToPosition([0, 0]);
+      setTimeout(() => this.prepareContent(), 0);
+    });
+
+    this.fetchRelated();
   }
 
   private fetchRelated() {

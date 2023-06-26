@@ -10,9 +10,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { uniq } from 'lodash';
 import * as QRCode from 'qrcode';
-import { Subscription } from 'rxjs';
 import { MessageService } from '../../components/message/message.service';
 import { MetaService } from '../../core/meta.service';
 import { UrlService } from '../../core/url.service';
@@ -41,8 +39,6 @@ type shareType = 'twitter' | 'linkedin' | 'facebook' | 'email';
   styleUrls: ['./post.component.less']
 })
 export class PostComponent implements OnInit, OnDestroy {
-  prevPost: NavPost | null = null;
-  nextPost: NavPost | null = null;
   relatedPosts: NavPost[] | undefined;
   post: PostEntity = PostEntity_DefaultInst;
   postTags: Tag[] | null = [];
@@ -61,8 +57,7 @@ export class PostComponent implements OnInit, OnDestroy {
   tocElements: NodeEl[] = [];
   @ViewChild('tocTarget') tocTargetEl!: ElementRef;
 
-  private postSlug = '';
-  private paramListener!: Subscription;
+  private readonly postSlug = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -76,19 +71,24 @@ export class PostComponent implements OnInit, OnDestroy {
     private scroller: ViewportScroller,
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private document: Document
-  ) {}
+  ) {
+    this.postSlug = this.route.snapshot.params['postSlug'];
+    this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
+      if (!post) return;
+      this.post = post;
+      this.postTags = post.tags;
+      this.shareUrl = Options.site_url + '/' + this.post.slug;
+      this.initMeta();
+    });
+    this.scroller.scrollToPosition([0, 0]);
+  }
 
   ngOnInit(): void {
-    this.paramListener = this.route.params.subscribe((params) => {
-      this.postSlug = params['postSlug']?.trim();
-      this.fetchPost();
-      this.scroller.scrollToPosition([0, 0]);
-      this.fetchRelated();
-    });
+    this.fetchRelated();
+    setTimeout(() => this.prepareContent(), 0);
   }
 
   ngOnDestroy() {
-    this.paramListener.unsubscribe();
     this.document.getElementById('vuukle-js')?.remove();
   }
 
@@ -125,25 +125,13 @@ export class PostComponent implements OnInit, OnDestroy {
     this.commentsShow = !this.commentsShow;
   }
 
-  private async initMeta() {
-    const keywords: string[] = Options.site_keywords.split(',');
+  private initMeta() {
     this.metaService.updateHTMLMeta({
       title: `${this.post.title} - ${Options.site_name}`,
       description: this.post.description,
-      keywords: uniq(this.postTags?.map((item) => item.name).concat(keywords)).join(','),
+      keywords: this.postTags?.map((item) => item.name).join(','),
       image: this.post.image,
       url: this.shareUrl
-    });
-  }
-
-  private fetchPost() {
-    this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
-      if (post) {
-        this.initData(post);
-        this.prevPost = this.post.prev;
-        this.nextPost = this.post.next;
-        this.initMeta();
-      }
     });
   }
 
@@ -151,13 +139,6 @@ export class PostComponent implements OnInit, OnDestroy {
     this.postsService.getRelatedPostBySlug(this.postSlug).subscribe((navs) => {
       this.relatedPosts = navs;
     });
-  }
-
-  private initData(post: PostEntity) {
-    this.post = post;
-    this.postTags = post.tags;
-    this.shareUrl = Options.site_url + '/' + this.post.slug;
-    setTimeout(() => this.prepareContent(), 0);
   }
 
   private prepareContent() {

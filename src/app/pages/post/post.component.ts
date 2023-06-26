@@ -75,8 +75,6 @@ export class PostComponent implements OnInit, OnDestroy {
     this.postSlug = this.route.snapshot.params['postSlug'];
     this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
       if (!post) return;
-      this.post = post;
-      this.postTags = post.tags;
       this.shareUrl = Options.site_url + '/' + this.post.slug;
 
       this._meta.updateTitle(`${post.title} - ${Options.site_name}`);
@@ -86,6 +84,9 @@ export class PostComponent implements OnInit, OnDestroy {
       );
       this._meta.updateImage(post.image);
       this._meta.updateUrl(this.shareUrl);
+
+      this.post = post;
+      this.postTags = post.tags;
     });
     this.scroller.scrollToPosition([0, 0]);
   }

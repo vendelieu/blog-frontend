@@ -76,15 +76,6 @@ export class PostComponent implements OnInit, OnDestroy {
     this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
       if (!post) return;
       this.shareUrl = Options.site_url + '/' + this.post.slug;
-
-      this._meta.updateTitle(`${post.title} - ${Options.site_name}`);
-      this._meta.updateDescription(post.description);
-      this._meta.updateKeywords(
-        post.tags?.map((item) => item.name).join(',') ?? Options.site_keywords
-      );
-      this._meta.updateImage(post.image);
-      this._meta.updateUrl(this.shareUrl);
-
       this.post = post;
       this.postTags = post.tags;
     });
@@ -92,6 +83,14 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._meta.updateTitle(`${this.post.title} - ${Options.site_name}`);
+    this._meta.updateDescription(this.post.description);
+    this._meta.updateKeywords(
+      this.post.tags?.map((item) => item.name).join(',') ?? Options.site_keywords
+    );
+    this._meta.updateImage(this.post.image);
+    this._meta.updateUrl(this.shareUrl);
+
     this.fetchRelated();
     setTimeout(() => this.prepareContent(), 0);
   }

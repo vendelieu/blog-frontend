@@ -75,8 +75,11 @@ export class PostComponent implements OnDestroy {
   ) {
     this.paramListener = this.route.params.subscribe((params) => {
       this.postSlug = params['postSlug'];
-      this.shareUrl = Options.site_url + '/' + this.post.slug;
-      this.loadContent();
+      this.loadContent().then((_) => {
+        setTimeout(() => this.prepareContent(), 0);
+        this.scroller.scrollToPosition([0, 0]);
+        this.fetchRelated();
+      });
     });
   }
 
@@ -118,11 +121,12 @@ export class PostComponent implements OnDestroy {
     this.commentsShow = !this.commentsShow;
   }
 
-  private loadContent() {
+  private async loadContent() {
     this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
       if (!post) return;
       this.post = post;
       this.postTags = post.tags;
+      this.shareUrl = Options.site_url + '/' + this.post.slug;
 
       this._meta.updateTitle(`${this.post.title} - ${Options.site_name}`);
       this._meta.updateDescription(this.post.description);
@@ -131,10 +135,6 @@ export class PostComponent implements OnDestroy {
       );
       this._meta.updateImage(this.post.image);
       this._meta.updateUrl(this.shareUrl);
-
-      this.scroller.scrollToPosition([0, 0]);
-      setTimeout(() => this.prepareContent(), 0);
-      this.fetchRelated();
     });
   }
 

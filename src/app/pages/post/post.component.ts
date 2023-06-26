@@ -125,7 +125,7 @@ export class PostComponent implements OnInit, OnDestroy {
     this.commentsShow = !this.commentsShow;
   }
 
-  private initMeta() {
+  private async initMeta() {
     const keywords: string[] = Options.site_keywords.split(',');
     this.metaService.updateHTMLMeta({
       title: `${this.post.title} - ${Options.site_name}`,

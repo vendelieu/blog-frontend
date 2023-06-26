@@ -1,6 +1,9 @@
+@import "../../../styles/variables";
+
+
 .toc-section {
   position: relative;
-  left: 1em;
+  left: 61vw;
 }
 
 .toc-wrap {
@@ -10,9 +13,28 @@
   padding: 20px;
 }
 
+.mobile-toc {
+  display: none;
+}
+
+.toc-title {
+  margin-left: -1rem;
+}
+
+.toc-block {
+  padding: 1.5em;
+  position: relative;
+  box-shadow: @content-shadow;
+  flex: 1;
+}
+
 @media (max-width: 1300px) {
   .toc-section {
     display: none;
+  }
+
+  .mobile-toc {
+    display: block;
   }
 }
 

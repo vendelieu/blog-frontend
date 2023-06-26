@@ -4,6 +4,7 @@ import {
   ElementRef,
   Inject,
   OnDestroy,
+  OnInit,
   Renderer2,
   ViewChild,
   ViewEncapsulation
@@ -38,7 +39,7 @@ type shareType = 'twitter' | 'linkedin' | 'facebook' | 'email';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.less']
 })
-export class PostComponent implements OnDestroy {
+export class PostComponent implements OnInit, OnDestroy {
   relatedPosts: NavPost[] | undefined;
   post: PostEntity = PostEntity_DefaultInst;
   postTags: Tag[] | null = [];
@@ -72,7 +73,9 @@ export class PostComponent implements OnDestroy {
     private scroller: ViewportScroller,
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private document: Document
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.paramListener = this.route.params.subscribe((params) => {
       this.postSlug = params['postSlug'];
       this.loadContent().then((_) => {

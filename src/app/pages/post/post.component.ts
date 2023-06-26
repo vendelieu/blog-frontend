@@ -78,7 +78,14 @@ export class PostComponent implements OnInit, OnDestroy {
       this.post = post;
       this.postTags = post.tags;
       this.shareUrl = Options.site_url + '/' + this.post.slug;
-      this.initMeta();
+
+      this.metaService.updateHTMLMeta({
+        title: `${this.post.title} - ${Options.site_name}`,
+        description: this.post.description,
+        keywords: this.postTags?.map((item) => item.name).join(','),
+        image: this.post.image,
+        url: this.shareUrl
+      });
     });
     this.scroller.scrollToPosition([0, 0]);
   }
@@ -123,16 +130,6 @@ export class PostComponent implements OnInit, OnDestroy {
 
   toggleComments() {
     this.commentsShow = !this.commentsShow;
-  }
-
-  private initMeta() {
-    this.metaService.updateHTMLMeta({
-      title: `${this.post.title} - ${Options.site_name}`,
-      description: this.post.description,
-      keywords: this.postTags?.map((item) => item.name).join(','),
-      image: this.post.image,
-      url: this.shareUrl
-    });
   }
 
   private fetchRelated() {

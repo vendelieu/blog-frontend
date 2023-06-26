@@ -14,6 +14,7 @@ import { HTMLMetaData } from '../../interfaces/meta';
 import { Options } from '../../config/site-options';
 import { MetaService } from '../../core/meta.service';
 import { ImagesService } from '../../services/images.service';
+import { slugify } from '../../helpers/slugify';
 
 @Component({
   selector: 'app-admin-post',
@@ -93,7 +94,7 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     if (tag.value != null) {
       this.newTags.push({
         name: tag.name,
-        slug: this.slugify(tag.value)
+        slug: slugify(tag.value)
       });
     } else {
       this.addTags.push(tag.slug);
@@ -138,7 +139,7 @@ export class AdminPostComponent implements OnInit, OnDestroy {
   onSlugChange() {
     let oldSlug = this.postForm.get('slug')?.value?.trim();
     if (!oldSlug) return;
-    let newSlug = this.slugify(oldSlug);
+    let newSlug = slugify(oldSlug);
     this.postForm.patchValue({ slug: newSlug });
   }
 
@@ -159,18 +160,6 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     this.imagesService.saveImage(imageUrl).subscribe((img) => {
       this.postForm.patchValue({ image: img.url });
     });
-  }
-
-  private slugify(text: string) {
-    return text
-      .normalize('NFKD') // normalize() using NFKD method returns the Unicode Normalization Form of a given string.
-      .toLowerCase() // Convert the string to lowercase letters
-      .trim() // Remove whitespace from both sides of a string (optional)
-      .replace(/\s+/g, '-') // Replace spaces with -
-      .replace(/[^\w\-]+/g, '') // Remove all non-word chars
-      .replace(/_/g, '-') // Replace _ with -
-      .replace(/--+/g, '-') // Replace multiple - with single -
-      .replace(/-$/g, ''); // Remove trailing -
   }
 
   private initMeta() {

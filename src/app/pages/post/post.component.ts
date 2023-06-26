@@ -91,10 +91,10 @@ export class PostComponent implements OnInit, OnDestroy {
       this._meta.updateUrl(this.shareUrl);
 
       this.scroller.scrollToPosition([0, 0]);
+      setTimeout(() => this.prepareContent(), 0);
     });
 
     this.fetchRelated();
-    setTimeout(() => this.prepareContent(), 0);
   }
 
   ngOnDestroy() {

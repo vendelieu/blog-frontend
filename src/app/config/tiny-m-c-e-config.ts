@@ -1,4 +1,5 @@
 import { Editor } from 'tinymce';
+import { slugify } from '../helpers/slugify';
 
 export const TinyMCEConfig = {
   plugins: ['lists', 'link', 'image', 'media', 'code', 'codesample', 'anchor', 'wordcount'],
@@ -22,7 +23,7 @@ export const TinyMCEConfig = {
     ed.on('NodeChange', (e) => {
       const element = e.element;
       if (element.localName.startsWith('h') && parseInt(element.localName.charAt(1)) > 0) {
-        element.id = element.innerHTML + '-' + rand();
+        element.id = slugify(element.innerHTML) + '-' + rand();
       }
     });
   }

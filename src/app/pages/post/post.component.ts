@@ -123,6 +123,7 @@ export class PostComponent implements OnInit, OnDestroy {
   private loadContent() {
     this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
       if (!post) return;
+      this.commentsShow = false;
       this.post = post;
       this.postTags = post.tags;
       this.shareUrl = Options.site_url + '/' + this.post.slug;

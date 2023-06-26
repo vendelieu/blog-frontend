@@ -78,11 +78,7 @@ export class PostComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.paramListener = this.route.params.subscribe((params) => {
       this.postSlug = params['postSlug'];
-      this.loadContent().then((_) => {
-        setTimeout(() => this.prepareContent(), 0);
-        this.scroller.scrollToPosition([0, 0]);
-        this.fetchRelated();
-      });
+      this.loadContent();
     });
   }
 
@@ -124,7 +120,7 @@ export class PostComponent implements OnInit, OnDestroy {
     this.commentsShow = !this.commentsShow;
   }
 
-  private async loadContent() {
+  private loadContent() {
     this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
       if (!post) return;
       this.post = post;
@@ -138,6 +134,10 @@ export class PostComponent implements OnInit, OnDestroy {
       );
       this._meta.updateImage(this.post.image);
       this._meta.updateUrl(this.shareUrl);
+
+      this.scroller.scrollToPosition([0, 0]);
+      setTimeout(() => this.prepareContent(), 0);
+      this.fetchRelated();
     });
   }
 
@@ -148,11 +148,10 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   private prepareContent() {
-    if (this.post.id > 0) {
-      this.collectContentHeadings();
-      this.highlightService.highlightAll();
-      this.initComments();
-    }
+    this.tocElements = [];
+    this.collectContentHeadings();
+    this.highlightService.highlightAll();
+    this.initComments();
   }
 
   private generateShareQrcode() {

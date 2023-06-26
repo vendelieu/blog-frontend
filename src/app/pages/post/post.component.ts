@@ -75,6 +75,7 @@ export class PostComponent implements OnDestroy {
   ) {
     this.paramListener = this.route.params.subscribe((params) => {
       this.postSlug = params['postSlug'];
+      this.shareUrl = Options.site_url + '/' + this.post.slug;
       this.loadContent();
     });
   }
@@ -120,7 +121,6 @@ export class PostComponent implements OnDestroy {
   private loadContent() {
     this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
       if (!post) return;
-      this.shareUrl = Options.site_url + '/' + this.post.slug;
       this.post = post;
       this.postTags = post.tags;
 
@@ -134,9 +134,8 @@ export class PostComponent implements OnDestroy {
 
       this.scroller.scrollToPosition([0, 0]);
       setTimeout(() => this.prepareContent(), 0);
+      this.fetchRelated();
     });
-
-    this.fetchRelated();
   }
 
   private fetchRelated() {

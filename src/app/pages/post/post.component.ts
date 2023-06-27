@@ -30,7 +30,6 @@ import { PaginationService } from '../../services/pagination.service';
 import { environment } from '../../../environments/environment';
 import { HighlightService } from '../../services/highlight.service';
 import { Subscription } from 'rxjs';
-import { waitFor } from '../../helpers/waitFor';
 
 type shareType = 'twitter' | 'linkedin' | 'facebook' | 'email';
 
@@ -122,8 +121,7 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   private loadContent() {
-    const post = this.postsService.getPostBySlug(this.postSlug);
-    waitFor(post).then((post) => {
+    this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
       if (!post) return;
       this.commentsShow = false;
       this.post = post;

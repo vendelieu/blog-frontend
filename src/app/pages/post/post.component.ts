@@ -10,7 +10,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-// import * as QRCode from 'qrcode';
+import * as QRCode from 'qrcode';
 import { MessageService } from '../../components/message/message.service';
 import { MetaService } from '../../core/meta.service';
 import { UrlService } from '../../core/url.service';
@@ -73,7 +73,10 @@ export class PostComponent implements OnInit, OnDestroy {
     private scroller: ViewportScroller,
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private document: Document
-  ) {}
+  ) {
+    this.postSlug = this.route.snapshot.params['postSlug'];
+    this.loadContent();
+  }
 
   ngOnInit() {
     this.paramListener = this.route.params.subscribe((params) => {
@@ -95,7 +98,7 @@ export class PostComponent implements OnInit, OnDestroy {
     this.clickedImage = '';
     this.imgModalPadding = 16;
     this.showImgModal = true;
-    // setTimeout(() => this.generateShareQrcode(), 0);
+    setTimeout(() => this.generateShareQrcode(), 0);
   }
 
   shareButton(type: shareType) {
@@ -152,22 +155,22 @@ export class PostComponent implements OnInit, OnDestroy {
     this.tocElements = [];
     this.collectContentHeadings();
     this.highlightService.highlightAll();
-    // setTimeout(() => this.initComments(), 0);
+    setTimeout(() => this.initComments(), 0);
   }
 
-  // private generateShareQrcode() {
-  //   QRCode.toCanvas(this.shareUrl + '?ref=qrcode', {
-  //     width: 320,
-  //     margin: 0
-  //   })
-  //     .then((canvas) => {
-  //       const modalEle = this.document.querySelector('.modal-content-body');
-  //       modalEle?.appendChild(canvas);
-  //     })
-  //     .catch((err) => {
-  //       this.message.error(err);
-  //     });
-  // }
+  private generateShareQrcode() {
+    QRCode.toCanvas(this.shareUrl + '?ref=qrcode', {
+      width: 320,
+      margin: 0
+    })
+      .then((canvas) => {
+        const modalEle = this.document.querySelector('.modal-content-body');
+        modalEle?.appendChild(canvas);
+      })
+      .catch((err) => {
+        this.message.error(err);
+      });
+  }
 
   private initComments(): void {
     if (this.document.getElementById('vuukle-js')) return;

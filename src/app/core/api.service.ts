@@ -45,11 +45,29 @@ export class ApiService {
   }
 
   httpGet<T>(url: string, param: Record<string, any> = {}): Observable<HttpResponseEntity<T>> {
-    return this.get<HttpResponseEntity<T>>(url, param);
+    return this.getData(url, param, () =>
+      this.http
+        .get<HttpResponseEntity<T>>(url, {
+          params: new HttpParams({
+            fromObject: param
+          }),
+          observe: 'body'
+        })
+        .pipe(catchError(this.handleError<T>()))
+    );
   }
 
   httpGetCustomResponse<T>(url: string, param: Record<string, any> = {}): Observable<T> {
-    return this.get<T>(url, param);
+    return this.getData(url, param, () =>
+      this.http
+        .get<HttpResponseEntity<T>>(url, {
+          params: new HttpParams({
+            fromObject: param
+          }),
+          observe: 'body'
+        })
+        .pipe(catchError(this.handleError<T>()))
+    );
   }
 
   httpPost<T>(
@@ -85,19 +103,6 @@ export class ApiService {
           observe: 'body'
         })
         .pipe(catchError(this.handleError<HttpResponseEntity<T>>()))
-    );
-  }
-
-  private get<T>(url: string, params: Record<string, any> = {}) {
-    return this.getData(url, params, () =>
-      this.http
-        .get<T>(url, {
-          params: new HttpParams({
-            fromObject: params
-          }),
-          observe: 'body'
-        })
-        .pipe(catchError(this.handleError<T>()))
     );
   }
 

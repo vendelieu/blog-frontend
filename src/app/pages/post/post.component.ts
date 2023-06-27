@@ -59,7 +59,6 @@ export class PostComponent implements OnInit, OnDestroy {
   @ViewChild('tocTarget') tocTargetEl!: ElementRef;
 
   private postSlug = '';
-  private paramListener!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -74,35 +73,17 @@ export class PostComponent implements OnInit, OnDestroy {
     private _renderer2: Renderer2,
     private activatedRoute: ActivatedRoute,
     @Inject(DOCUMENT) private document: Document
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.activatedRoute.data.subscribe(({ postEntity }) => {
       this.postSlug = postEntity.slug;
       this.post = postEntity;
-      this._meta.updateHTMLMeta({
-        title: `${postEntity.title} - ${Options.site_name}`,
-        description: postEntity.description,
-        keywords: postEntity.tags?.map((item: Tag) => item.name).join(',') ?? Options.site_keywords,
-        image: postEntity.image,
-        url: Options.site_url + '/' + postEntity.slug
-      });
-
       this.loadContent();
     });
   }
 
-  ngOnInit() {
-    this.paramListener = this.route.params.subscribe((params) => {
-      this.postSlug = params['postSlug'];
-      this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
-        if (!post) return;
-        this.post = post;
-        this.loadContent();
-      });
-    });
-  }
-
   ngOnDestroy() {
-    this.paramListener.unsubscribe();
     this.document.getElementById('vuukle-js')?.remove();
   }
 

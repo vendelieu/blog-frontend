@@ -1,12 +1,5 @@
 import { DOCUMENT, ViewportScroller } from '@angular/common';
-import {
-  Component,
-  ElementRef,
-  Inject,
-  OnDestroy,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as QRCode from 'qrcode';
 import { MessageService } from '../../components/message/message.service';
@@ -33,7 +26,7 @@ type shareType = 'twitter' | 'linkedin' | 'facebook' | 'email';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.less']
 })
-export class PostComponent implements OnDestroy {
+export class PostComponent {
   relatedPosts: NavPost[] | undefined;
   post!: PostEntity;
   postTags: Tag[] | null = [];
@@ -77,10 +70,6 @@ export class PostComponent implements OnDestroy {
 
       this.loadContent();
     });
-  }
-
-  ngOnDestroy() {
-    this.document.getElementById('vuukle-js')?.remove();
   }
 
   toggleImgModal(status: boolean) {

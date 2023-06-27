@@ -122,7 +122,8 @@ export class PostComponent implements OnDestroy {
   }
 
   private async loadContent() {
-    this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
+    const post = this.postsService.getPostBySlug(this.postSlug);
+    waitFor(post).then((post) => {
       if (!post) return;
       this.commentsShow = false;
       this.post = post;
@@ -136,11 +137,11 @@ export class PostComponent implements OnDestroy {
       );
       this._meta.updateImage(this.post.image);
       this._meta.updateUrl(this.shareUrl);
-
-      this.scroller.scrollToPosition([0, 0]);
-      setTimeout(() => this.prepareContent(), 0);
-      this.fetchRelated();
     });
+
+    this.scroller.scrollToPosition([0, 0]);
+    setTimeout(() => this.prepareContent(), 0);
+    this.fetchRelated();
   }
 
   private fetchRelated() {

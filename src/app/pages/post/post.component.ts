@@ -10,7 +10,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import * as QRCode from 'qrcode';
+// import * as QRCode from 'qrcode';
 import { MessageService } from '../../components/message/message.service';
 import { MetaService } from '../../core/meta.service';
 import { UrlService } from '../../core/url.service';
@@ -95,7 +95,7 @@ export class PostComponent implements OnInit, OnDestroy {
     this.clickedImage = '';
     this.imgModalPadding = 16;
     this.showImgModal = true;
-    setTimeout(() => this.generateShareQrcode(), 0);
+    // setTimeout(() => this.generateShareQrcode(), 0);
   }
 
   shareButton(type: shareType) {
@@ -155,19 +155,19 @@ export class PostComponent implements OnInit, OnDestroy {
     // setTimeout(() => this.initComments(), 0);
   }
 
-  private generateShareQrcode() {
-    QRCode.toCanvas(this.shareUrl + '?ref=qrcode', {
-      width: 320,
-      margin: 0
-    })
-      .then((canvas) => {
-        const modalEle = this.document.querySelector('.modal-content-body');
-        modalEle?.appendChild(canvas);
-      })
-      .catch((err) => {
-        this.message.error(err);
-      });
-  }
+  // private generateShareQrcode() {
+  //   QRCode.toCanvas(this.shareUrl + '?ref=qrcode', {
+  //     width: 320,
+  //     margin: 0
+  //   })
+  //     .then((canvas) => {
+  //       const modalEle = this.document.querySelector('.modal-content-body');
+  //       modalEle?.appendChild(canvas);
+  //     })
+  //     .catch((err) => {
+  //       this.message.error(err);
+  //     });
+  // }
 
   private initComments(): void {
     if (this.document.getElementById('vuukle-js')) return;

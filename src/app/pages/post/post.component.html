@@ -75,13 +75,6 @@
       </div>
     </footer>
   </div>
-  <div (click)='toggleComments()' *ngIf='post.commentaries_open'
-       class='btn'>{{!commentsShow ? 'View comments' : 'Hide comments'}}</div>
-  <div [hidden]='!post.commentaries_open || !commentsShow' class='comment'>
-    <div class='comment-list' id='comments'>
-      <div id='vuukle-comments'></div>
-    </div>
-  </div>
   <app-modal (toggleModal)='toggleImgModal($event)'
              *ngIf='showImgModal' [imgEle]='clickedImage' [padding]='imgModalPadding'></app-modal>
 </div>

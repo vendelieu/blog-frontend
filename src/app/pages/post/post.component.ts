@@ -75,7 +75,7 @@ export class PostComponent implements OnDestroy {
     @Inject(DOCUMENT) private document: Document
   ) {
     this.postSlug = this.route.snapshot.params['postSlug'];
-    waitFor(this.loadContent());
+    this.loadContent();
 
     this.paramListener = this.route.params.subscribe((params) => {
       this.postSlug = params['postSlug'];
@@ -121,8 +121,9 @@ export class PostComponent implements OnDestroy {
     this.commentsShow = !this.commentsShow;
   }
 
-  private async loadContent() {
-    this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
+  private loadContent() {
+    const post = this.postsService.getPostBySlug(this.postSlug);
+    waitFor(post).then((post) => {
       if (!post) return;
       this.commentsShow = false;
       this.post = post;

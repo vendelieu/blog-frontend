@@ -4,8 +4,6 @@ import {
   ElementRef,
   Inject,
   OnDestroy,
-  OnInit,
-  Renderer2,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -24,8 +22,8 @@ import {
   faQrcode
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookSquare, faLinkedin, faTwitterSquare } from '@fortawesome/free-brands-svg-icons';
-import { environment } from '../../../environments/environment';
 import { HighlightService } from '../../services/highlight.service';
+import { PlatformService } from '../../core/platform.service';
 
 type shareType = 'twitter' | 'linkedin' | 'facebook' | 'email';
 
@@ -41,7 +39,6 @@ export class PostComponent implements OnDestroy {
   postTags: Tag[] | null = [];
   clickedImage!: HTMLImageElement | string;
   showImgModal = false;
-  commentsShow = false;
   imgModalPadding = 0;
   qrCodeIcon = faQrcode;
   linkedinIcon = faLinkedin;
@@ -62,8 +59,8 @@ export class PostComponent implements OnDestroy {
     private _meta: MetaService,
     private message: MessageService,
     private scroller: ViewportScroller,
-    private _renderer2: Renderer2,
     private activatedRoute: ActivatedRoute,
+    private platform: PlatformService,
     @Inject(DOCUMENT) private document: Document
   ) {
     this.activatedRoute.data.subscribe(({ postEntity }) => {
@@ -106,12 +103,7 @@ export class PostComponent implements OnDestroy {
     }
   }
 
-  toggleComments() {
-    this.commentsShow = !this.commentsShow;
-  }
-
   private loadContent() {
-    this.commentsShow = false;
     this.postTags = this.post.tags;
     this.shareUrl = Options.site_url + '/' + this.post.slug;
 
@@ -123,7 +115,6 @@ export class PostComponent implements OnDestroy {
       url: this.shareUrl
     });
 
-    this.scroller.scrollToPosition([0, 0]);
     setTimeout(() => this.prepareContent(), 0);
     this.fetchRelated();
   }
@@ -137,8 +128,10 @@ export class PostComponent implements OnDestroy {
   private prepareContent() {
     this.tocElements = [];
     this.collectContentHeadings();
-    this.highlightService.highlightAll();
-    setTimeout(() => this.initComments(), 0);
+    if (this.platform.isBrowser) {
+      this.highlightService.highlightAll();
+      this.scroller.scrollToPosition([0, 0]);
+    }
   }
 
   private generateShareQrcode() {
@@ -153,27 +146,6 @@ export class PostComponent implements OnDestroy {
       .catch((err) => {
         this.message.error(err);
       });
-  }
-
-  private initComments(): void {
-    if (this.document.getElementById('vuukle-js')) return;
-
-    let script = this._renderer2.createElement('script');
-    script.type = 'text/javascript';
-    script.id = 'vuukle-js';
-    script.text = `
-      var VUUKLE_CONFIG = {
-        apiKey: '${environment.comments_key}',
-        articleId: '${this.postSlug}',
-      };
-      (function() {
-        var d = document,
-          s = d.createElement('script');
-        s.src = 'https://cdn.vuukle.com/platform.js';
-        (d.head || d.body).appendChild(s);
-      })();
-      `;
-    this._renderer2.appendChild(this.document.body, script);
   }
 
   private collectContentHeadings() {

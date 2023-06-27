@@ -152,7 +152,7 @@ export class PostComponent implements OnInit, OnDestroy {
     this.tocElements = [];
     this.collectContentHeadings();
     this.highlightService.highlightAll();
-    this.initComments();
+    setTimeout(() => this.initComments(), 0);
   }
 
   private generateShareQrcode() {

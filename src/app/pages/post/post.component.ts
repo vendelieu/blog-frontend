@@ -66,6 +66,15 @@ export class PostComponent implements OnDestroy {
     this.activatedRoute.data.subscribe(({ postEntity }) => {
       this.postSlug = postEntity.slug;
       this.post = postEntity;
+
+      this._meta.updateHTMLMeta({
+        title: `${postEntity.title} - ${Options.site_name}`,
+        description: postEntity.description,
+        keywords: postEntity.tags?.map((item: Tag) => item.name).join(',') ?? Options.site_keywords,
+        image: postEntity.image,
+        url: this.shareUrl
+      });
+
       this.loadContent();
     });
   }
@@ -106,15 +115,6 @@ export class PostComponent implements OnDestroy {
   private loadContent() {
     this.postTags = this.post.tags;
     this.shareUrl = Options.site_url + '/' + this.post.slug;
-
-    this._meta.updateHTMLMeta({
-      title: `${this.post.title} - ${Options.site_name}`,
-      description: this.post.description,
-      keywords: this.post.tags?.map((item) => item.name).join(',') ?? Options.site_keywords,
-      image: this.post.image,
-      url: this.shareUrl
-    });
-
     setTimeout(() => this.prepareContent(), 0);
     this.fetchRelated();
   }

@@ -73,10 +73,7 @@ export class PostComponent implements OnInit, OnDestroy {
     private scroller: ViewportScroller,
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private document: Document
-  ) {
-    this.postSlug = this.route.snapshot.params['postSlug'];
-    this.loadContent();
-  }
+  ) {}
 
   ngOnInit() {
     this.paramListener = this.route.params.subscribe((params) => {

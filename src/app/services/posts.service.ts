@@ -15,14 +15,17 @@ export class PostsService {
   getPosts(param: PostQueryParam): Observable<PaginatedHttpResponse<PostEntity[]> | undefined> {
     return this.apiService.httpGetCustomResponse<PaginatedHttpResponse<PostEntity[]>>(
       this.apiService.getApiUrl(ApiUrl.GET_POSTS),
-      param
+      param,
+      'POSTS_LIST_' + param.page
     );
   }
 
   getPostBySlug(slug: string): Observable<PostEntity | undefined> {
     return this.apiService
       .httpGet<PostEntity>(
-        this.apiService.getApiUrl(ApiUrl.GET_POST_BY_SLUG).replace(':slug', slug)
+        this.apiService.getApiUrl(ApiUrl.GET_POST_BY_SLUG).replace(':slug', slug),
+        {},
+        'POST_' + slug
       )
       .pipe(map((res) => res?.data || undefined));
   }
@@ -30,7 +33,9 @@ export class PostsService {
   getRelatedPostBySlug(slug: string): Observable<NavPost[] | undefined> {
     return this.apiService
       .httpGet<NavPost[]>(
-        this.apiService.getApiUrl(ApiUrl.GET_RELATED_POST_BY_SLUG).replace(':slug', slug)
+        this.apiService.getApiUrl(ApiUrl.GET_RELATED_POST_BY_SLUG).replace(':slug', slug),
+        {},
+        'RELATED_POSTS_' + slug
       )
       .pipe(map((res) => res?.data || undefined));
   }

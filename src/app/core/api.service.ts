@@ -44,29 +44,45 @@ export class ApiService {
     );
   }
 
-  httpGet<T>(url: string, param: Record<string, any> = {}): Observable<HttpResponseEntity<T>> {
-    return this.getData(url, param, () =>
-      this.http
-        .get<HttpResponseEntity<T>>(url, {
-          params: new HttpParams({
-            fromObject: param
-          }),
-          observe: 'body'
-        })
-        .pipe(catchError(this.handleError<T>()))
+  httpGet<T>(
+    url: string,
+    param: Record<string, any> = {},
+    key?: string
+  ): Observable<HttpResponseEntity<T>> {
+    return this.getData(
+      url,
+      param,
+      () =>
+        this.http
+          .get<HttpResponseEntity<T>>(url, {
+            params: new HttpParams({
+              fromObject: param
+            }),
+            observe: 'body'
+          })
+          .pipe(catchError(this.handleError<T>())),
+      key
     );
   }
 
-  httpGetCustomResponse<T>(url: string, param: Record<string, any> = {}): Observable<T> {
-    return this.getData(url, param, () =>
-      this.http
-        .get<HttpResponseEntity<T>>(url, {
-          params: new HttpParams({
-            fromObject: param
-          }),
-          observe: 'body'
-        })
-        .pipe(catchError(this.handleError<T>()))
+  httpGetCustomResponse<T>(
+    url: string,
+    param: Record<string, any> = {},
+    key?: string
+  ): Observable<T> {
+    return this.getData(
+      url,
+      param,
+      () =>
+        this.http
+          .get<HttpResponseEntity<T>>(url, {
+            params: new HttpParams({
+              fromObject: param
+            }),
+            observe: 'body'
+          })
+          .pipe(catchError(this.handleError<T>())),
+      key
     );
   }
 
@@ -109,10 +125,11 @@ export class ApiService {
   private getData(
     url: string,
     options: Record<string, any> = {},
-    callback: () => Observable<any>
+    callback: () => Observable<any>,
+    _key?: string
   ): Observable<any> {
     const optionsString = options ? JSON.stringify(options) : '';
-    let key = makeStateKey<string>(`${url + optionsString}`);
+    let key = makeStateKey<string>(_key ?? `${url + optionsString}`);
     try {
       return this.resolveData(key);
     } catch (e) {

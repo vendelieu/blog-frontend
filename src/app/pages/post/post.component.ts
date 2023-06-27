@@ -131,13 +131,13 @@ export class PostComponent implements OnInit, OnDestroy {
       this.postTags = post.tags;
       this.shareUrl = Options.site_url + '/' + this.post.slug;
 
-      this._meta.updateTitle(`${this.post.title} - ${Options.site_name}`);
-      this._meta.updateDescription(this.post.description);
-      this._meta.updateKeywords(
-        this.post.tags?.map((item) => item.name).join(',') ?? Options.site_keywords
-      );
-      this._meta.updateImage(this.post.image);
-      this._meta.updateUrl(this.shareUrl);
+      this._meta.updateHTMLMeta({
+        title: `${this.post.title} - ${Options.site_name}`,
+        description: this.post.description,
+        keywords: this.post.tags?.map((item) => item.name).join(',') ?? Options.site_keywords,
+        image: this.post.image,
+        url: this.shareUrl
+      });
 
       this.scroller.scrollToPosition([0, 0]);
       setTimeout(() => this.prepareContent(), 0);

@@ -13,8 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import * as QRCode from 'qrcode';
 import { MessageService } from '../../components/message/message.service';
 import { MetaService } from '../../core/meta.service';
-import { UrlService } from '../../core/url.service';
-import { NavPost, NodeEl, PostEntity, PostEntity_DefaultInst } from '../../interfaces/posts';
+import { NavPost, NodeEl, PostEntity } from '../../interfaces/posts';
 import { PostsService } from '../../services/posts.service';
 import { Options } from '../../config/site-options';
 import { Tag } from '../../interfaces/tag';
@@ -24,12 +23,9 @@ import {
   faEnvelope,
   faQrcode
 } from '@fortawesome/free-solid-svg-icons';
-import { PaginatorService } from '../../core/paginator.service';
 import { faFacebookSquare, faLinkedin, faTwitterSquare } from '@fortawesome/free-brands-svg-icons';
-import { PaginationService } from '../../services/pagination.service';
 import { environment } from '../../../environments/environment';
 import { HighlightService } from '../../services/highlight.service';
-import { Subscription } from 'rxjs';
 
 type shareType = 'twitter' | 'linkedin' | 'facebook' | 'email';
 
@@ -39,9 +35,9 @@ type shareType = 'twitter' | 'linkedin' | 'facebook' | 'email';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.less']
 })
-export class PostComponent implements OnInit, OnDestroy {
+export class PostComponent implements OnDestroy {
   relatedPosts: NavPost[] | undefined;
-  post: PostEntity = PostEntity_DefaultInst;
+  post!: PostEntity;
   postTags: Tag[] | null = [];
   clickedImage!: HTMLImageElement | string;
   showImgModal = false;
@@ -61,21 +57,15 @@ export class PostComponent implements OnInit, OnDestroy {
   private postSlug = '';
 
   constructor(
-    private route: ActivatedRoute,
     private postsService: PostsService,
     private highlightService: HighlightService,
     private _meta: MetaService,
-    private urlService: UrlService,
     private message: MessageService,
-    private paginator: PaginatorService,
-    private paginationService: PaginationService,
     private scroller: ViewportScroller,
     private _renderer2: Renderer2,
     private activatedRoute: ActivatedRoute,
     @Inject(DOCUMENT) private document: Document
-  ) {}
-
-  ngOnInit() {
+  ) {
     this.activatedRoute.data.subscribe(({ postEntity }) => {
       this.postSlug = postEntity.slug;
       this.post = postEntity;

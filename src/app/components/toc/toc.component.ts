@@ -1,4 +1,14 @@
-import { AfterViewInit, Component, ElementRef, Inject, Input, ViewChild } from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { NodeEl, TocElement } from '../../interfaces/posts';
 import { DOCUMENT } from '@angular/common';
 import { PlatformService } from '../../core/platform.service';
@@ -8,7 +18,7 @@ import { PlatformService } from '../../core/platform.service';
   templateUrl: './toc.component.html',
   styleUrls: ['./toc.component.less']
 })
-export class TocComponent implements AfterViewInit {
+export class TocComponent implements OnInit {
   tocList: TocElement[] = [];
   @Input('tocTarget') tocTargetElementRef!: NodeEl[];
   @Input('baseUrl') baseUrl!: string;
@@ -50,7 +60,11 @@ export class TocComponent implements AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
+  ngOnInit() {
+    setTimeout(() => this.formToc(), 0);
+  }
+
+  formToc() {
     this.tocTargetElementRef.forEach((el) => {
       this.tocList?.push({
         id: el.id,

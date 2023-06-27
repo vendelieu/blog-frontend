@@ -1,9 +1,19 @@
 import { DOCUMENT, ViewportScroller } from '@angular/common';
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as QRCode from 'qrcode';
 import { MessageService } from '../../components/message/message.service';
 import { MetaService } from '../../core/meta.service';
+import { UrlService } from '../../core/url.service';
 import { NavPost, NodeEl, PostEntity, PostEntity_DefaultInst } from '../../interfaces/posts';
 import { PostsService } from '../../services/posts.service';
 import { Options } from '../../config/site-options';
@@ -14,8 +24,12 @@ import {
   faEnvelope,
   faQrcode
 } from '@fortawesome/free-solid-svg-icons';
+import { PaginatorService } from '../../core/paginator.service';
 import { faFacebookSquare, faLinkedin, faTwitterSquare } from '@fortawesome/free-brands-svg-icons';
+import { PaginationService } from '../../services/pagination.service';
+import { environment } from '../../../environments/environment';
 import { HighlightService } from '../../services/highlight.service';
+import { Subscription } from 'rxjs';
 
 type shareType = 'twitter' | 'linkedin' | 'facebook' | 'email';
 
@@ -25,12 +39,13 @@ type shareType = 'twitter' | 'linkedin' | 'facebook' | 'email';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.less']
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements OnInit, OnDestroy {
   relatedPosts: NavPost[] | undefined;
-  post!: PostEntity;
+  post: PostEntity = PostEntity_DefaultInst;
   postTags: Tag[] | null = [];
   clickedImage!: HTMLImageElement | string;
   showImgModal = false;
+  commentsShow = false;
   imgModalPadding = 0;
   qrCodeIcon = faQrcode;
   linkedinIcon = faLinkedin;
@@ -46,11 +61,16 @@ export class PostComponent implements OnInit {
   private postSlug = '';
 
   constructor(
+    private route: ActivatedRoute,
     private postsService: PostsService,
     private highlightService: HighlightService,
     private _meta: MetaService,
+    private urlService: UrlService,
     private message: MessageService,
+    private paginator: PaginatorService,
+    private paginationService: PaginationService,
     private scroller: ViewportScroller,
+    private _renderer2: Renderer2,
     private activatedRoute: ActivatedRoute,
     @Inject(DOCUMENT) private document: Document
   ) {}
@@ -61,6 +81,10 @@ export class PostComponent implements OnInit {
       this.post = postEntity;
       this.loadContent();
     });
+  }
+
+  ngOnDestroy() {
+    this.document.getElementById('vuukle-js')?.remove();
   }
 
   toggleImgModal(status: boolean) {
@@ -92,7 +116,12 @@ export class PostComponent implements OnInit {
     }
   }
 
+  toggleComments() {
+    this.commentsShow = !this.commentsShow;
+  }
+
   private loadContent() {
+    this.commentsShow = false;
     this.postTags = this.post.tags;
     this.shareUrl = Options.site_url + '/' + this.post.slug;
 
@@ -119,6 +148,7 @@ export class PostComponent implements OnInit {
     this.tocElements = [];
     this.collectContentHeadings();
     this.highlightService.highlightAll();
+    setTimeout(() => this.initComments(), 0);
   }
 
   private generateShareQrcode() {
@@ -133,6 +163,27 @@ export class PostComponent implements OnInit {
       .catch((err) => {
         this.message.error(err);
       });
+  }
+
+  private initComments(): void {
+    if (this.document.getElementById('vuukle-js')) return;
+
+    let script = this._renderer2.createElement('script');
+    script.type = 'text/javascript';
+    script.id = 'vuukle-js';
+    script.text = `
+      var VUUKLE_CONFIG = {
+        apiKey: '${environment.comments_key}',
+        articleId: '${this.postSlug}',
+      };
+      (function() {
+        var d = document,
+          s = d.createElement('script');
+        s.src = 'https://cdn.vuukle.com/platform.js';
+        (d.head || d.body).appendChild(s);
+      })();
+      `;
+    this._renderer2.appendChild(this.document.body, script);
   }
 
   private collectContentHeadings() {

@@ -109,8 +109,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "port": 4200,
-            "proxyConfig": "proxy.conf.js"
+            "port": 4200
           },
           "configurations": {
             "production": {
@@ -195,8 +194,7 @@
         "serve-ssr": {
           "builder": "@nguniversal/builders:ssr-dev-server",
           "options": {
-            "port": 4200,
-            "proxyConfig": "proxy.conf.js"
+            "port": 4200
           },
           "configurations": {
             "development": {

@@ -14,6 +14,7 @@ import { adminPostEditMatcher } from './config/admin-post-edit.matcher';
 import { AdminPostComponent } from './pages/admin-post/admin-post.component';
 import { adminGuard } from './core/admin.guard';
 import { adminPostCreateMatcher } from './config/admin-post-create.matcher';
+import { postResolver } from './resolvers/post.resolver';
 
 const routes: Routes = [
   {
@@ -67,7 +68,8 @@ const routes: Routes = [
       {
         /* :postSlug */
         matcher: postPageUrlMatcher,
-        component: PostComponent
+        component: PostComponent,
+        resolve: { postEntity: postResolver }
       },
       {
         path: '**',

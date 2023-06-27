@@ -72,8 +72,14 @@ export class PostComponent implements OnInit, OnDestroy {
     private paginationService: PaginationService,
     private scroller: ViewportScroller,
     private _renderer2: Renderer2,
+    private activatedRoute: ActivatedRoute,
     @Inject(DOCUMENT) private document: Document
-  ) {}
+  ) {
+    this.activatedRoute.data.subscribe(({ postEntity }) => {
+      this.postSlug = postEntity.slug;
+      this.loadContent(postEntity);
+    });
+  }
 
   ngOnInit() {
     this.paramListener = this.route.params.subscribe((params) => {
@@ -120,26 +126,30 @@ export class PostComponent implements OnInit, OnDestroy {
     this.commentsShow = !this.commentsShow;
   }
 
-  private loadContent() {
-    this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
-      if (!post) return;
-      this.commentsShow = false;
-      this.post = post;
-      this.postTags = post.tags;
-      this.shareUrl = Options.site_url + '/' + this.post.slug;
-
-      this._meta.updateHTMLMeta({
-        title: `${this.post.title} - ${Options.site_name}`,
-        description: this.post.description,
-        keywords: this.post.tags?.map((item) => item.name).join(',') ?? Options.site_keywords,
-        image: this.post.image,
-        url: this.shareUrl
+  private loadContent(entity?: PostEntity) {
+    if (entity) {
+      this.post = entity;
+    } else {
+      this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
+        if (!post) return;
+        this.post = post;
       });
+    }
+    this.commentsShow = false;
+    this.postTags = this.post.tags;
+    this.shareUrl = Options.site_url + '/' + this.post.slug;
 
-      this.scroller.scrollToPosition([0, 0]);
-      setTimeout(() => this.prepareContent(), 0);
-      this.fetchRelated();
+    this._meta.updateHTMLMeta({
+      title: `${this.post.title} - ${Options.site_name}`,
+      description: this.post.description,
+      keywords: this.post.tags?.map((item) => item.name).join(',') ?? Options.site_keywords,
+      image: this.post.image,
+      url: this.shareUrl
     });
+
+    this.scroller.scrollToPosition([0, 0]);
+    setTimeout(() => this.prepareContent(), 0);
+    this.fetchRelated();
   }
 
   private fetchRelated() {

@@ -5,8 +5,8 @@
   </a>
 </p>
 
-Website of [vendeli.eu](https://vendeli.eu), implementation
-of [blog-backend](https://github.com/vendelieu/blog-backend).
+Project of [vendeli.eu](https://vendeli.eu), implementation
+of [blog-backend](https://github.com/vendelieu/blog-backend) api.
 
 [Vendeli.eu](https://vendeli.eu) is powered by [Angular Universal](https://angular.io/guide/universal), API services is
 provided by [blog-backend](https://github.com/vendelieu/blog-backend).

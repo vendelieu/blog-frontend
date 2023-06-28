@@ -30,13 +30,13 @@ export class TagsService {
 
   create(tag: NewTag): Observable<string | undefined> {
     return this.transferHttp
-      .post<HttpResponseEntity<string>>(this.transferHttp.getApiUrl(ApiUrl.ADMIN_TAG_ACTION), tag)
+      .post<HttpResponseEntity<string>>(this.transferHttp.getAdminUrl(ApiUrl.ADMIN_TAG_ACTION), tag)
       .pipe(map((res) => res.data || undefined));
   }
 
   link(postSlug: string, tagSlug: string): Observable<string | undefined> {
     return this.transferHttp
-      .put<HttpResponseEntity<string>>(this.transferHttp.getApiUrl(ApiUrl.ADMIN_TAG_ACTION), {
+      .put<HttpResponseEntity<string>>(this.transferHttp.getAdminUrl(ApiUrl.ADMIN_TAG_ACTION), {
         post_slug: postSlug,
         tag_slug: tagSlug
       })
@@ -47,7 +47,7 @@ export class TagsService {
     return this.transferHttp
       .delete<HttpResponseEntity<string>>(
         this.transferHttp
-          .getApiUrl(ApiUrl.ADMIN_TAG_UNLINK)
+          .getAdminUrl(ApiUrl.ADMIN_TAG_UNLINK)
           .replace(':slug', tagSlug)
           .replace(':post_slug', postSlug)
       )

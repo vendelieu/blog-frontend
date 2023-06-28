@@ -27,6 +27,10 @@ export class TransferHttpService {
     return `${Options.api_url}${this.apiUrlPrefix}${path}`;
   }
 
+  getAdminUrl(path: string): string {
+    return `${Options.api_url}:8080${this.apiUrlPrefix}${path}`;
+  }
+
   constructor(
     protected transferState: TransferState,
     private httpClient: HttpClient,

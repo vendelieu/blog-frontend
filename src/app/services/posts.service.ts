@@ -38,7 +38,7 @@ export class PostsService {
   updatePostById(id: number, body: Record<string, any>): Observable<boolean> {
     return this.transferHttp
       .put<HttpResponseEntity<string>>(
-        this.transferHttp.getApiUrl(ApiUrl.ADMIN_POST_ACTION).replace(':id', id.toString()),
+        this.transferHttp.getAdminUrl(ApiUrl.ADMIN_POST_ACTION).replace(':id', id.toString()),
         body
       )
       .pipe(map((res) => res.code === 200));
@@ -46,14 +46,17 @@ export class PostsService {
 
   createPost(body: Record<string, any>): Observable<boolean> {
     return this.transferHttp
-      .post<HttpResponseEntity<string>>(this.transferHttp.getApiUrl(ApiUrl.ADMIN_CREATE_POST), body)
+      .post<HttpResponseEntity<string>>(
+        this.transferHttp.getAdminUrl(ApiUrl.ADMIN_CREATE_POST),
+        body
+      )
       .pipe(map((res) => res.code === 200));
   }
 
   deletePost(id: number) {
     return this.transferHttp
       .delete<HttpResponseEntity<string>>(
-        this.transferHttp.getApiUrl(ApiUrl.ADMIN_POST_ACTION).replace(':id', id.toString())
+        this.transferHttp.getAdminUrl(ApiUrl.ADMIN_POST_ACTION).replace(':id', id.toString())
       )
       .pipe(map((res) => res.code === 200));
   }

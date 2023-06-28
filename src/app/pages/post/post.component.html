@@ -1,15 +1,18 @@
-<div class='post-content'>
+<div class='post-content' itemscope itemtype='https://schema.org/Blog'>
   <i *ngIf='post.id === 0' class='icon icon-loading'></i>
-  <div *ngIf='post.id > 0' class='post'>
+  <div *ngIf='post.id > 0' class='post' itemprop='blogPosts' itemscope itemtype='https://schema.org/BlogPosting'>
     <header class='post-header'>
-      <img alt='Article image' src='{{post.image}}' src-fallback='/assets/images/blank_image.webp'>
+      <img alt='Article image' src='{{post.image}}' src-fallback='/assets/images/blank_image.webp' itemprop='image'>
       <div class='post-card'>
-        <h1 class='post-title'>
+        <h1 class='post-title' itemprop='headline'>
           {{post.title}}
         </h1>
         <div class='post-meta post-meta-top'>
             <span title='Date of article creation.'>
-              <i class='icon icon-calendar'></i><span>{{post.updated_at | date:'EEE, MMMM d, y, HH:mm'}}</span>
+              <i class='icon icon-calendar'></i>
+              <span itemprop='datePublished' datetime="{{post.updated_at | date: 'YYYY-MM-DD'}}">
+                {{post.updated_at | date:'EEE, MMMM d, y, HH:mm'}}
+              </span>
             </span>
           <span title='Read time'>
               <i class='icon icon-book'></i> {{post.content | readingTime}} min
@@ -17,8 +20,8 @@
         </div>
       </div>
     </header>
-    <app-toc *ngIf='this.tocElements.length > 0' [baseUrl]='shareUrl' [tocTarget]='tocElements'></app-toc>
-    <article class='article-content'>
+    <app-toc *ngIf='tocElements.length > 0' [baseUrl]='shareUrl' [tocTarget]='tocElements'></app-toc>
+    <article class='article-content' itemprop='articleBody'>
       <div #tocTarget [innerHTML]='post.content | safeHtml' class='line-numbers' id='toc-target'></div>
     </article>
     <footer class='post-footer'>
@@ -74,6 +77,7 @@
         </div>
       </div>
     </footer>
+    <meta itemscope itemprop='mainEntityOfPage' itemType='https://schema.org/WebPage' itemid='{{shareUrl}}' />
   </div>
   <app-modal (toggleModal)='toggleImgModal($event)'
              *ngIf='showImgModal' [imgEle]='clickedImage' [padding]='imgModalPadding'></app-modal>

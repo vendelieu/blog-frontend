@@ -4,9 +4,9 @@
       <a [routerLink]="['/']" class='logo' title="{{options['site_name']}}">
         <img alt="{{options['site_name']}}" class='logo' src='/assets/images/logo{{isDark ? "_b" : ""}}.png' />
       </a>
-      <ul class='nav-list main-menu'>
-        <li><a [routerLink]="['/projects']" title="{{options['site_name']}} projects">Projects</a></li>
-        <li><a [routerLink]="['/about']" title="{{options['site_name']}} about">About</a></li>
+      <ul class='nav-list main-menu' itemscope itemtype='https://schema.org/SiteNavigationElement'>
+        <li><a [routerLink]="['/projects']" itemprop='url' title="{{options['site_name']}} projects">Projects</a></li>
+        <li><a [routerLink]="['/about']" itemprop='url' title="{{options['site_name']}} about">About</a></li>
       </ul>
       <ul class='link-list main-menu'>
         <li><a (click)='toggleTheme()'>

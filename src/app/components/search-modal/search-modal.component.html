@@ -1,13 +1,16 @@
-<div id='sider'>
+<div id='sider' itemscope='' itemtype='https://schema.org/WebSite'>
   <div (click)='onClick($event)' class='search hide-search'>
     <div class='search-container'>
       <div class='search-close'>
         <i class='iconfont iconbaseline-close-px'></i>
       </div>
-      <div class='search-input-wrapper'>
+      <div class='search-input-wrapper' itemprop='potentialAction' itemscope=''
+           itemtype='http://schema.org/SearchAction'>
+        <meta itemprop='target' content='/search/{query}'>
         <input (keyup.enter)='search()' [(ngModel)]='keyword' autocapitalize='off' autocomplete='off' autocorrect='off'
                class='search-input' id='search-input'
                name='keyword' placeholder='Enter your request here...' type='search'>
+        <input itemprop='query-input' type='hidden' name='query'>
         <fa-icon (click)='search()' [icon]='searchIcon' class='search-icon'></fa-icon>
       </div>
     </div>

@@ -14,6 +14,10 @@ export class MetaService {
       property: 'og:title',
       content: title
     });
+    this.meta.updateTag({
+      name: 'twitter:title',
+      content: title
+    });
   }
 
   updateDescription(description: string) {
@@ -23,6 +27,10 @@ export class MetaService {
     });
     this.meta.updateTag({
       property: 'og:description',
+      content: description
+    });
+    this.meta.updateTag({
+      property: 'twitter:description',
       content: description
     });
   }
@@ -45,6 +53,10 @@ export class MetaService {
   updateImage(image: string) {
     this.meta.updateTag({
       property: 'og:image',
+      content: image
+    });
+    this.meta.updateTag({
+      property: 'twitter:image',
       content: image
     });
   }

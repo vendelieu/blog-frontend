@@ -268,7 +268,6 @@
     code {
       padding: 2px 6px;
       border-radius: 2px;
-      color: var(--color-text-secondary);
     }
 
     ol, ul {
@@ -529,7 +528,6 @@
 }
 
 .sider {
-  //width: calc(@body-width + 20%);
   display: flex;
 }
 
@@ -540,6 +538,11 @@
   &-dashed {
     border-bottom: var(--color-text) dashed 1px;
   }
+}
+
+code[class*="language-"], pre[class^="language-"] {
+  color: var(--color-text-secondary);
+  background: var(--color-background-third);
 }
 
 .code-toolbar {

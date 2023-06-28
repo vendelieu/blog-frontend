@@ -30,7 +30,7 @@ export class MetaService {
       content: description
     });
     this.meta.updateTag({
-      property: 'twitter:description',
+      name: 'twitter:description',
       content: description
     });
   }
@@ -56,7 +56,7 @@ export class MetaService {
       content: image
     });
     this.meta.updateTag({
-      property: 'twitter:image',
+      name: 'twitter:image',
       content: image
     });
   }

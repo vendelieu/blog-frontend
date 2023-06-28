@@ -1,7 +1,7 @@
 import { Editor } from 'tinymce';
 import { slugify } from '../helpers/slugify';
 
-export const TinyMCEConfig = {
+export const TinyMceConfig = {
   plugins: ['lists', 'link', 'image', 'media', 'code', 'codesample', 'anchor', 'wordcount'],
   menubar: 'view insert format',
   toolbar:
@@ -19,6 +19,9 @@ export const TinyMCEConfig = {
   browser_spellcheck: true,
   skin: '',
   content_css: '',
+  forced_root_block_attrs: {
+    class: 'base-block'
+  },
   setup: function (ed: Editor) {
     ed.on('NodeChange', (e) => {
       const element = e.element;

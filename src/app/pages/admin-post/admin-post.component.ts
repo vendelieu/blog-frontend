@@ -8,7 +8,7 @@ import { NewTag, Tag, UpdatableTag } from '../../interfaces/tag';
 import { TagModel } from 'ngx-chips/core/tag-model';
 import { FormBuilder } from '@angular/forms';
 import { MessageService } from '../../components/message/message.service';
-import { TinyMCEConfig } from '../../config/tiny-m-c-e-config';
+import { TinyMceConfig } from '../../config/tiny-mce-config';
 import { ThemeService } from '../../services/theme.service';
 import { HTMLMetaData } from '../../interfaces/meta';
 import { Options } from '../../config/site-options';
@@ -32,7 +32,7 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     commentaries_open: false,
     slug: ['']
   });
-  protected readonly TinyMCEConfig = TinyMCEConfig;
+  protected readonly TinyMCEConfig = TinyMceConfig;
   private paramListener!: Subscription;
   private postSlug = '';
   private tags: string[] = [];

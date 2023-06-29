@@ -58,7 +58,7 @@
             ],
             "styles": [
               "src/styles.less",
-              "node_modules/prism-themes/themes/prism-darcula.css",
+              "node_modules/prism-themes/themes/prism-one-light.css",
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css"
             ],
             "scripts": [

@@ -1,6 +1,6 @@
 import { APP_BASE_HREF, CommonModule, registerLocaleData } from '@angular/common';
 import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { APP_ID, NgModule } from '@angular/core';
+import { APP_ID, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
@@ -33,6 +33,7 @@ import { HighlightService } from './services/highlight.service';
 import { ThemeService } from './services/theme.service';
 import { TocComponent } from './components/toc/toc.component';
 import { CoolStorageModule } from '@angular-cool/storage';
+import { CommentsComponent } from './components/comments/comments.component';
 
 registerLocaleData(en);
 
@@ -52,6 +53,7 @@ registerLocaleData(en);
     AboutComponent,
     AdminPostComponent,
     ScrollTopComponent,
+    CommentsComponent,
     TocComponent
   ],
   imports: [
@@ -82,6 +84,7 @@ registerLocaleData(en);
     HighlightService,
     ThemeService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}

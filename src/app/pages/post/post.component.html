@@ -80,5 +80,6 @@
     <meta itemscope itemprop='mainEntityOfPage' itemType='https://schema.org/WebPage' attr.itemid='{{shareUrl}}' />
   </div>
   <app-modal (toggleModal)='toggleImgModal($event)'
-             *ngIf='showImgModal' [imgEle]='clickedImage' [padding]='imgModalPadding'></app-modal>
+             *ngIf='showImgModal' [imgEle]='clickedImage' [padding]='imgModalPadding' />
+  <app-comments [show]='post.commentaries_open' />
 </div>

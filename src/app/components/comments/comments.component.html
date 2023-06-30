@@ -1,5 +1,5 @@
 <div (click)='toggleComments()' *ngIf='showComments'
-     class='btn'>{{!isExpanded ? 'View comments' : 'Hide comments'}}</div>
+     [class]="isExpanded ? 'btn reverse-btn' : 'btn expand-btn'">{{!isExpanded ? 'View comments' : 'Hide comments'}}</div>
 <div [hidden]='!showComments || !isExpanded' class='comment'>
   <div class='comment-list' id='comments'>
     <giscus-widget

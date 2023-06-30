@@ -6,6 +6,11 @@
   outline: 0;
 }
 
+body, html {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
 html {
   font-size: @base-font-size;
   -webkit-text-size-adjust: 100%;
@@ -14,7 +19,6 @@ html {
 }
 
 body {
-  overflow-x: hidden;
   line-height: 1.42857143;
   background-color: var(--color-background);
   font-family: 'Ubuntu', sans-serif;

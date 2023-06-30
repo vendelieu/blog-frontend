@@ -8,9 +8,18 @@
   display: block;
   padding: 10px;
   text-align: center;
+  margin: -3px @box-shadow-width @box-shadow-width;
 }
 
 .expand-btn {
+  background-color: var(--color-background-third);
+  background-image: none;
+  color: var(--color-text);
+  border-bottom-right-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.expand-btn:hover {
   background-color: @action-color;
   background-image: linear-gradient(-60deg, #ff5858 0%, #f09819 100%);
   color: var(--color-background);
@@ -19,13 +28,6 @@
   border-bottom-right-radius: 0.5em;
   border-bottom-left-radius: 0.5em;
   box-shadow: @content-box-shadow;
-  margin: @box-shadow-width;
-}
-
-.expand-btn:hover {
-  background-color: var(--color-background-third);
-  background-image: none;
-  color: var(--color-text);
 }
 
 .reverse-btn {

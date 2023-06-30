@@ -61,7 +61,21 @@ export class MetaService {
     });
   }
 
-  updateHTMLMeta(metaData: HTMLExtendedData) {
+  updateType(type: string) {
+    this.meta.updateTag({
+      property: 'og:type',
+      content: type
+    });
+  }
+
+  addArticleModifiedDate(date: Date) {
+    this.meta.addTag({
+      property: 'article:modified_time',
+      content: date.toString()
+    });
+  }
+
+  updateHTMLMeta(metaData: HTMLExtendedData, articleUpdateDate?: Date) {
     if (metaData.title) {
       this.updateTitle(metaData.title);
     }
@@ -76,6 +90,10 @@ export class MetaService {
     }
     if (metaData.image) {
       this.updateImage(metaData.image);
+    }
+    if (articleUpdateDate) {
+      this.updateType('article');
+      this.addArticleModifiedDate(articleUpdateDate);
     }
   }
 }

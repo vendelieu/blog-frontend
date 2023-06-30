@@ -27,7 +27,7 @@ type shareType = 'twitter' | 'linkedin' | 'facebook' | 'email';
   styleUrls: ['./post.component.less']
 })
 export class PostComponent {
-  relatedPosts: NavPost[] | undefined;
+  relatedPosts?: NavPost[];
   post!: PostEntity;
   postTags: Tag[] | null = [];
   clickedImage!: HTMLImageElement | string;
@@ -44,7 +44,7 @@ export class PostComponent {
   tocElements: NodeEl[] = [];
   @ViewChild('tocTarget') tocTargetEl!: ElementRef;
 
-  private postSlug = '';
+  private postSlug!: string;
 
   constructor(
     private postsService: PostsService,
@@ -60,13 +60,17 @@ export class PostComponent {
       this.postSlug = postEntity.slug;
       this.post = postEntity;
 
-      this._meta.updateHTMLMeta({
-        title: `${postEntity.title} - ${Options.site_name}`,
-        description: postEntity.description,
-        keywords: postEntity.tags?.map((item: Tag) => item.name).join(',') ?? Options.site_keywords,
-        image: postEntity.image,
-        url: this.shareUrl
-      });
+      this._meta.updateHTMLMeta(
+        {
+          title: `${postEntity.title} - ${Options.site_name}`,
+          description: postEntity.description,
+          keywords:
+            postEntity.tags?.map((item: Tag) => item.name).join(',') ?? Options.site_keywords,
+          image: postEntity.image,
+          url: this.shareUrl
+        },
+        postEntity.updated_at
+      );
 
       this.loadContent();
     });

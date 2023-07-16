@@ -3,7 +3,7 @@
     <h3 class='toc-title'>Contents:</h3>
     <ol class='toc'>
       <ng-container *ngFor='let toc of tocList'>
-        <li [ngStyle]="{'padding-left': toc.lvl / 3 + 'em'}" class='toc-item' id='toc-{{toc.id}}'>
+        <li class='toc-item {{"toc-lvl-" + toc.lvl}}' id='toc-{{toc.id}}'>
           <a class='toc-link' href='{{baseUrl}}#{{toc.id}}'>
             <span class='toc-text'>{{toc.name}}</span>
           </a>

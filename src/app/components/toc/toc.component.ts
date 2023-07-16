@@ -1,14 +1,4 @@
-import {
-  AfterContentChecked,
-  AfterContentInit,
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Inject,
-  Input,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { NodeEl, TocElement } from '../../interfaces/posts';
 import { DOCUMENT } from '@angular/common';
 import { PlatformService } from '../../core/platform.service';
@@ -38,18 +28,28 @@ export class TocComponent implements OnInit {
               tocElement?.classList.remove('toc-active');
             }
           });
-          const intersected = this.document.getElementsByClassName('toc-active');
-          if (intersected.length === 0) return;
-          const firstRect = (intersected[0] as HTMLElement).getBoundingClientRect();
-          const lastRect = (
-            intersected[intersected.length - 1] as HTMLElement
-          ).getBoundingClientRect();
+          const intersected = Array.from(this.document.getElementsByClassName('toc-active'));
+          const path: (string | number)[] = [];
 
-          const d = `M ${firstRect.left} ${firstRect.top + firstRect.height - 25} L ${
-            lastRect.left
-          } ${lastRect.top + lastRect.height}`;
+          let prevLvl = 0;
+          intersected.forEach((e, index) => {
+            const rect = e.getBoundingClientRect();
+            const curLvl = parseInt(e.classList[1].charAt(8));
+            const x = rect.left + 12;
+            const y = rect.top + rect.height;
 
-          this.tocPathEl.nativeElement.setAttribute('d', d);
+            if (index === 0) {
+              const correction = (curLvl - 1) * 5;
+              path.push('M', x + correction, y - 20);
+              path.push('L', x + correction, y);
+              return;
+            }
+            prevLvl = parseInt(intersected[index - 1].classList[1].charAt(8));
+            if (prevLvl !== curLvl) path.push('h', 10 * ((curLvl - prevLvl) / 2));
+            path.push('v', 27);
+          });
+
+          this.tocPathEl.nativeElement.setAttribute('d', path.join(' '));
         },
         {
           root: null,

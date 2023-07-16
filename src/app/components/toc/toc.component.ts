@@ -1,4 +1,12 @@
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Inject,
+  Input,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { NodeEl, TocElement } from '../../interfaces/posts';
 import { DOCUMENT } from '@angular/common';
 import { PlatformService } from '../../core/platform.service';
@@ -13,8 +21,8 @@ export class TocComponent implements OnInit {
   @Input('tocTarget') tocTargetElementRef!: NodeEl[];
   @Input('baseUrl') baseUrl!: string;
 
-  private intersectionObserver: IntersectionObserver | undefined;
   @ViewChild('tocPath') tocPathEl!: ElementRef;
+  private readonly intersectionObserver?: IntersectionObserver;
 
   constructor(@Inject(DOCUMENT) private document: Document, private platform: PlatformService) {
     if (this.platform.isBrowser) {
@@ -28,28 +36,7 @@ export class TocComponent implements OnInit {
               tocElement?.classList.remove('toc-active');
             }
           });
-          const intersected = Array.from(this.document.getElementsByClassName('toc-active'));
-          const path: (string | number)[] = [];
-
-          let prevLvl = 0;
-          intersected.forEach((e, index) => {
-            const rect = e.getBoundingClientRect();
-            const curLvl = parseInt(e.classList[1].charAt(8));
-            const x = rect.left + 12;
-            const y = rect.top + rect.height;
-
-            if (index === 0) {
-              const correction = (curLvl - 1) * 5;
-              path.push('M', x + correction, y - 20);
-              path.push('L', x + correction, y);
-              return;
-            }
-            prevLvl = parseInt(intersected[index - 1].classList[1].charAt(8));
-            if (prevLvl !== curLvl) path.push('h', 10 * ((curLvl - prevLvl) / 2));
-            path.push('v', 27);
-          });
-
-          this.tocPathEl.nativeElement.setAttribute('d', path.join(' '));
+          this.drawLine();
         },
         {
           root: null,
@@ -58,6 +45,32 @@ export class TocComponent implements OnInit {
         }
       );
     }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  private drawLine() {
+    const path: (string | number)[] = [];
+    const intersected = Array.from(this.document.getElementsByClassName('toc-active'));
+
+    let prevLvl = 0;
+    intersected.forEach((e, index) => {
+      const rect = e.getBoundingClientRect();
+      const curLvl = parseInt(e.classList[1].charAt(8));
+      const x = rect.left + 12;
+      const y = rect.top + rect.height;
+
+      if (index === 0) {
+        const correction = (curLvl - 1) * 5;
+        path.push('M', x + correction, y - 20);
+        path.push('L', x + correction, y);
+        return;
+      }
+      prevLvl = parseInt(intersected[index - 1].classList[1].charAt(8));
+      if (prevLvl !== curLvl) path.push('h', 10 * ((curLvl - prevLvl) / 2));
+      path.push('v', 27);
+    });
+
+    this.tocPathEl.nativeElement.setAttribute('d', path.join(' '));
   }
 
   ngOnInit() {
@@ -73,6 +86,7 @@ export class TocComponent implements OnInit {
       });
     });
 
+    if (!this.intersectionObserver) return;
     this.document.querySelectorAll('div#toc-target *[id]').forEach((section) => {
       this.intersectionObserver?.observe(section);
     });

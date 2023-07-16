@@ -1,12 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { HTMLExtendedData } from '../interfaces/meta';
+import { DOCUMENT } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MetaService {
-  constructor(private meta: Meta, private title: Title) {}
+  constructor(private meta: Meta, private title: Title, @Inject(DOCUMENT) private dom: Document) {}
 
   updateTitle(title: string) {
     this.title.setTitle(title);
@@ -95,5 +96,10 @@ export class MetaService {
       this.updateType('article');
       this.addArticleModifiedDate(articleUpdateDate);
     }
+  }
+
+  updateCanonicalUrl(newUrl: string) {
+    const element: HTMLLinkElement = this.dom.querySelector(`link[rel='canonical']`)!;
+    element.href = newUrl;
   }
 }

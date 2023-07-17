@@ -20,7 +20,7 @@
   <ng-container *ngFor='let toc of tocList'>
     <ul>
       <li>
-        <a [ngStyle]="{'padding-left': toc.lvl / 3 + 'em'}" href='{{baseUrl}}#{{toc.id}}'>
+        <a [style]='"toc-lvl-" + toc.lvl' href='{{baseUrl}}#{{toc.id}}'>
           <span class='post-link-text'>- {{toc.name}}</span>
         </a>
       </li>

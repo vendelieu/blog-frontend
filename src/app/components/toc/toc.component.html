@@ -19,8 +19,8 @@
   <h3 class='toc-title'>Table of Contents:</h3>
   <ng-container *ngFor='let toc of tocList'>
     <ul>
-      <li>
-        <a [style]='"toc-lvl-" + toc.lvl' href='{{baseUrl}}#{{toc.id}}'>
+      <li style='{{"toc-lvl-" + toc.lvl}}'>
+        <a href='{{baseUrl}}#{{toc.id}}'>
           <span class='post-link-text'>- {{toc.name}}</span>
         </a>
       </li>

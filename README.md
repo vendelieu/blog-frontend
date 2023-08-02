@@ -1,7 +1,7 @@
 <br/>
 <p align="center">
   <a href="https://vendeli.eu" title="What" target="_blank">
-    <img src="src/assets/images/logo.png" height="90" alt="ifuyun.com logo" />
+    <img src="src/assets/images/logo.png" height="90" alt="vendeli.eu logo" />
   </a>
 </p>
 

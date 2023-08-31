@@ -5,14 +5,14 @@
     <li>
       <a class='inactive-icon' href='{{githubUrl}}' onmouseout="this.classList.remove('github-hover')"
          onmouseover="this.classList.add('github-hover')"
-         title='Github' rel="nofollow">
+         title='Github' rel='nofollow'>
         <fa-icon [icon]='githubIcon'></fa-icon>
       </a>
     </li>
     <li>
       <a class='inactive-icon' href='{{telegramUrl}}' onmouseout="this.classList.remove('telegram-hover')"
          onmouseover="this.classList.add('telegram-hover')"
-         title='Telegram' rel="nofollow">
+         title='Telegram' rel='nofollow'>
         <fa-icon [icon]='telegramIcon'></fa-icon>
       </a>
     </li>
@@ -25,6 +25,11 @@
     </li>
   </ul>
   <ul>
-    <li [innerHTML]="'Copyright © ' + Options.copyright_notice + ' - ' + Options.CUR_YEAR"></li>
+
+    <li>
+      © {{Options.copyright_notice}}
+      <fa-icon [icon]='heartIcon' animation='beat'></fa-icon>
+      - {{Options.CUR_YEAR}}
+    </li>
   </ul>
 </footer>

@@ -115,6 +115,7 @@ export class TagInputComponent {
 
   private link(tag: TagDTO) {
     if (!tag.id) this.createTag(tag);
+    if (this.postSlug.length == 0) return;
     this.tagService.link(this.postSlug, tag.slug).subscribe();
   }
 

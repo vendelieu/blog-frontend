@@ -5,15 +5,18 @@ export interface NavPost {
   slug: string;
 }
 
-export interface PostEntity {
-  id: number;
+export interface IPost {
   image: string;
   title: string;
   content: string;
   description: string;
   slug: string;
   commentaries_open: boolean;
-  tags: TagDTO[] | null;
+  tags: TagDTO[];
+}
+
+export interface PostEntity extends IPost {
+  id: number;
   prev: NavPost | null;
   next: NavPost | null;
   updated_at: Date;
@@ -28,7 +31,7 @@ export const PostEntity_DefaultInst: PostEntity = {
   prev: null,
   description: '',
   slug: '',
-  tags: null,
+  tags: [],
   title: '',
   updated_at: Date.now() as unknown as Date
 };

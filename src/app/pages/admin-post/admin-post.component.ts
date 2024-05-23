@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PostsService } from '../../services/posts.service';
 import { PostEntity, PostEntity_DefaultInst } from '../../interfaces/posts';
 import { TagDTO } from '../../interfaces/tag';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { MessageService } from '../../components/message/message.service';
 import { TinyMceConfig } from '../../config/tiny-mce-config';
 import { ThemeService } from '../../services/theme.service';
@@ -15,6 +15,7 @@ import { ImagesService } from '../../services/images.service';
 import { slugify } from '../../helpers/slugify';
 import { CoolLocalStorage } from '@angular-cool/storage';
 import { faUndo } from '@fortawesome/free-solid-svg-icons/faUndo';
+import { TagsService } from '../../services/tags.service';
 
 @Component({
   selector: 'app-admin-post',
@@ -26,13 +27,13 @@ export class AdminPostComponent implements OnInit, OnDestroy {
   isDark = false;
   returnIcon = faUndo;
   postForm = this.fb.group({
-    title: [''],
-    image: [''],
-    content: [''],
-    description: [''],
+    title: '',
+    image: '',
+    content: '',
+    description: '',
     commentaries_open: false,
-    tags: [{} as TagDTO[]],
-    slug: ['']
+    tags: new FormControl<TagDTO[]>([]),
+    slug: ''
   });
   protected readonly TinyMCEConfig = TinyMceConfig;
   private paramListener!: Subscription;
@@ -46,6 +47,7 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private imagesService: ImagesService,
     private metaService: MetaService,
+    private tagsService: TagsService,
     localStorage: CoolLocalStorage,
     themeService: ThemeService
   ) {
@@ -87,13 +89,12 @@ export class AdminPostComponent implements OnInit, OnDestroy {
   send() {
     if (this.postSlug)
       this.postsService.updatePostById(this.post.id, this.postForm.value).subscribe((_) => {
-        // this.handleTags(this.postSlug);
         this.message.success('Post updated.');
       });
     else
       this.postsService.createPost(this.postForm.value).subscribe((_) => {
+        this.handleTags(this.postForm.value.slug!);
         this.postForm.reset();
-        // this.handleTags(this.postForm.value.slug!);
         this.message.success('Post created.');
       });
   }
@@ -126,6 +127,25 @@ export class AdminPostComponent implements OnInit, OnDestroy {
 
   backToPost() {
     this.router.navigate(['/' + this.postSlug]);
+  }
+
+  handleTags(postSlug: string) {
+    this.postForm.value.tags?.forEach(t => {
+      this.tagsService.link(postSlug, t.slug).subscribe();
+    });
+  }
+
+  addTag(i: TagDTO) {
+    if (this.postSlug) return;
+    const newTags: TagDTO[] = this.postForm.get('tags')?.value || [];
+    newTags.push(i);
+    this.postForm.patchValue({ tags: newTags });
+  }
+
+  removeTag(i: TagDTO) {
+    if (this.postSlug) return;
+    const oldTags: TagDTO[] = this.postForm.get('tags')?.value || [];
+    this.postForm.patchValue({ tags: oldTags.filter(e => e.slug !== i.slug) });
   }
 
   private initMeta() {

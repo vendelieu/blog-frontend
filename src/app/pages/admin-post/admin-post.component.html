@@ -46,7 +46,8 @@
             <label class='form-label'>Tags:</label>
           </div>
           <div class='input-col'>
-            <app-tag-input [tags]='post.tags!!' [postSlug]='post.slug'></app-tag-input>
+            <app-tag-input [tags]='post.tags ? post.tags : []' [postSlug]='post.slug'
+                           (onAdd)='addTag($event)' (onRemove)='removeTag($event)'></app-tag-input>
           </div>
         </div>
         <div class='form-row mb-3'>

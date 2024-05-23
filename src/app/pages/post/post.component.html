@@ -7,11 +7,6 @@
       <div class='post-card'>
         <h1 class='post-title' itemprop='headline'>
           {{ post.title }}
-          <div *ngIf='isAdmin'>
-             | <button (click)='editPostButton()' title='Add post'>
-              <fa-icon [icon]='editPostIcon'></fa-icon>
-            </button>
-          </div>
         </h1>
         <div class='post-meta post-meta-top'>
             <span title='Date of article creation.'>
@@ -23,6 +18,9 @@
           <span title='Read time'>
               <i class='icon icon-book'></i> {{ post.content | readingTime }} min
             </span>
+          <span title='Edit post' *ngIf='isAdmin'>
+              <i class='icon icon-write' (click)='editPostButton()'></i>
+          </span>
         </div>
       </div>
     </header>

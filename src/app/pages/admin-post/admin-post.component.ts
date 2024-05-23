@@ -14,6 +14,7 @@ import { MetaService } from '../../core/meta.service';
 import { ImagesService } from '../../services/images.service';
 import { slugify } from '../../helpers/slugify';
 import { CoolLocalStorage } from '@angular-cool/storage';
+import { faUndo } from '@fortawesome/free-solid-svg-icons/faUndo';
 
 @Component({
   selector: 'app-admin-post',
@@ -23,6 +24,7 @@ import { CoolLocalStorage } from '@angular-cool/storage';
 export class AdminPostComponent implements OnInit, OnDestroy {
   post: PostEntity = PostEntity_DefaultInst;
   isDark = false;
+  returnIcon = faUndo;
   postForm = this.fb.group({
     title: [''],
     image: [''],
@@ -120,6 +122,10 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     this.imagesService.saveImage(imageUrl).subscribe((img) => {
       this.postForm.patchValue({ image: img.url });
     });
+  }
+
+  backToPost() {
+    this.router.navigate(['/' + this.postSlug]);
   }
 
   private initMeta() {

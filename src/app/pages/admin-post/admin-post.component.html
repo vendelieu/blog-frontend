@@ -1,6 +1,8 @@
 <div class='content'>
   <div class='card'>
-    <div class='card-header'>Post Form</div>
+    <div class='card-header'>Post Form |
+      <fa-icon [icon]='returnIcon' (mouseup)='backToPost()' class='pointer' title='Back to post'></fa-icon>
+    </div>
     <div class='card-body'>
       <form [formGroup]='postForm' class='post-form'>
         <div class='form-row mb-3'>
@@ -66,13 +68,13 @@
           </div>
         </div>
         <div class='form-row button-row'>
-          <div class="btn-container btn-container-left">
+          <div class='btn-container btn-container-left'>
             <button (click)='postForm.reset()' class='btn btn-secondary' type='reset'>Reset</button>
           </div>
-          <div class="btn-container btn-container-center">
+          <div class='btn-container btn-container-center'>
             <button (click)='send()' class='btn btn-primary' type='submit'>Save</button>
           </div>
-          <div class="btn-container btn-container-right">
+          <div class='btn-container btn-container-right'>
             <button (click)='delete()' *ngIf='post.id > 0' class='btn btn-danger'>Delete</button>
           </div>
         </div>

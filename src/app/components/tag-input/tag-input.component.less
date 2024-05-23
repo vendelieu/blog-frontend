@@ -1,0 +1,64 @@
+.tag-input-container {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  padding: .375rem .75rem;
+  background-color: var(--color-background-third);
+  position: relative;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background-color: var(--color-background-secondary);
+  border-radius: .25rem;
+  padding: .375rem .75rem;
+  margin-right: .5rem;
+  margin-bottom: .5rem;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background-color: var(--color-text-third);
+  }
+
+  .remove-tag {
+    margin-left: .5rem;
+    cursor: pointer;
+    color: #dc3545;
+  }
+}
+
+.tag-input {
+  color: var(--color-text);
+  background-color: var(--color-background-secondary);
+  border: none;
+  outline: none;
+  padding: .375rem .75rem;
+}
+
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border: 1px solid #ced4da;
+  border-top: none;
+  background-color: var(--color-background-secondary);
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+
+  .autocomplete-item {
+    padding: .375rem .75rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--color-text-third);
+    }
+  }
+}

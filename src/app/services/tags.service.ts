@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiUrl } from '../config/api-url';
-import { NewTag, Tag } from '../interfaces/tag';
+import { Tag, TagDTO } from '../interfaces/tag';
 import { TransferHttpService } from './transfer-http.service';
 import { HttpResponseEntity } from '../interfaces/http-response';
 
@@ -10,25 +10,18 @@ import { HttpResponseEntity } from '../interfaces/http-response';
   providedIn: 'root'
 })
 export class TagsService {
-  constructor(private transferHttp: TransferHttpService) {}
-
-  getByPostSlug(slug: string): Observable<Tag | undefined> {
-    return this.transferHttp
-      .get<HttpResponseEntity<Tag>>(this.transferHttp.getApiUrl(ApiUrl.GET_TAGS_BY_POST_SLUG), {
-        params: slug
-      })
-      .pipe(map((res) => res.data || undefined));
+  constructor(private transferHttp: TransferHttpService) {
   }
 
-  getByName(slug: string): Observable<Tag[] | undefined> {
+  getByName(slug: string): Observable<TagDTO[] | undefined> {
     return this.transferHttp
-      .get<HttpResponseEntity<Tag[]>>(
+      .get<HttpResponseEntity<TagDTO[]>>(
         this.transferHttp.getApiUrl(ApiUrl.GET_TAG_BY_NAME).replace(':name', slug)
       )
       .pipe(map((res) => res.data || undefined));
   }
 
-  create(tag: NewTag): Observable<string | undefined> {
+  create(tag: Tag): Observable<string | undefined> {
     return this.transferHttp
       .post<HttpResponseEntity<string>>(this.transferHttp.getAdminUrl(ApiUrl.ADMIN_TAG_ACTION), tag)
       .pipe(map((res) => res.data || undefined));

@@ -1,4 +1,4 @@
-import { APP_BASE_HREF, CommonModule, registerLocaleData } from '@angular/common';
+import { APP_BASE_HREF, CommonModule, NgOptimizedImage, registerLocaleData } from '@angular/common';
 import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_ID, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -34,6 +34,7 @@ import { ThemeService } from './services/theme.service';
 import { TocComponent } from './components/toc/toc.component';
 import { CoolStorageModule } from '@angular-cool/storage';
 import { CommentsComponent } from './components/comments/comments.component';
+import { TagInputComponent } from './components/tag-input/tag-input.component';
 
 registerLocaleData(en);
 
@@ -54,7 +55,8 @@ registerLocaleData(en);
     AdminPostComponent,
     ScrollTopComponent,
     CommentsComponent,
-    TocComponent
+    TocComponent,
+    TagInputComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +74,8 @@ registerLocaleData(en);
     ImgFallbackModule,
     EditorModule,
     TagInputModule,
-    CoolStorageModule.forRoot()
+    CoolStorageModule.forRoot(),
+    NgOptimizedImage
   ],
   providers: [
     { provide: APP_BASE_HREF, useValue: env.site },

@@ -62,7 +62,6 @@
     "giscus": "^1.2.8",
     "helmet": "^5.1.0",
     "lodash": "^4.17.21",
-    "ngx-chips": "^3.0.0",
     "ngx-img-fallback": "^2.0.0",
     "prism-themes": "^1.9.0",
     "prismjs": "^1.29.0",

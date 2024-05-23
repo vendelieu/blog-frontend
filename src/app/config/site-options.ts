@@ -11,10 +11,11 @@ export const Options = {
   site_url: env.site,
   githubUrl: 'https://github.com/vendelieu',
   telegramUrl: 'https://t.me/vendelieu',
-  email: 'vendelieu@gmail.com',
+  email: 'j@vendeli.eu',
   GITHUB_API_URL: 'https://api.github.com/users/vendelieu/repos?sort=pushed',
   STORAGE_POSTS_SORTING_KEY: 'posts_sorting',
   STORAGE_THEME_KEY: 'cur_theme',
+  STORAGE_ADMIN_MARK: 'is_admin',
   CUR_YEAR: new Date().getFullYear().toString(),
   PAGINATOR_PAGE_SIZE: 10,
   PAGINATOR_PAGINATION_SIZE: 9

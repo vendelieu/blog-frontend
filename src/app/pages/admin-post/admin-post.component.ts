@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostsService } from '../../services/posts.service';
 import { PostEntity, PostEntity_DefaultInst } from '../../interfaces/posts';
-import { TagsService } from '../../services/tags.service';
-import { NewTag, Tag, UpdatableTag } from '../../interfaces/tag';
-import { TagModel } from 'ngx-chips/core/tag-model';
+import { TagDTO } from '../../interfaces/tag';
 import { FormBuilder } from '@angular/forms';
 import { MessageService } from '../../components/message/message.service';
 import { TinyMceConfig } from '../../config/tiny-mce-config';
@@ -15,6 +13,7 @@ import { Options } from '../../config/site-options';
 import { MetaService } from '../../core/meta.service';
 import { ImagesService } from '../../services/images.service';
 import { slugify } from '../../helpers/slugify';
+import { CoolLocalStorage } from '@angular-cool/storage';
 
 @Component({
   selector: 'app-admin-post',
@@ -30,27 +29,25 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     content: [''],
     description: [''],
     commentaries_open: false,
+    tags: [{} as TagDTO[]],
     slug: ['']
   });
   protected readonly TinyMCEConfig = TinyMceConfig;
   private paramListener!: Subscription;
   private postSlug = '';
-  private tags: string[] = [];
-  private newTags: NewTag[] = [];
-  private addTags: string[] = [];
-  private removeTags: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private postsService: PostsService,
-    private tagService: TagsService,
     private message: MessageService,
     private router: Router,
     private fb: FormBuilder,
-    private themeService: ThemeService,
     private imagesService: ImagesService,
-    private metaService: MetaService
+    private metaService: MetaService,
+    localStorage: CoolLocalStorage,
+    themeService: ThemeService
   ) {
+    localStorage.setItem(Options.STORAGE_ADMIN_MARK, '1');
     themeService.getFlow().subscribe((e) => {
       this.isDark = e === 'dark';
       if (this.isDark) {
@@ -70,13 +67,13 @@ export class AdminPostComponent implements OnInit, OnDestroy {
         this.postsService.getPostBySlug(this.postSlug).subscribe((post) => {
           if (post) {
             this.post = post;
-            this.tags = post.tags?.map((tag) => tag.slug) || [];
             this.postForm.setValue({
               title: post.title,
               image: post.image,
               content: post.content,
               description: post.description,
               commentaries_open: post.commentaries_open,
+              tags: post.tags,
               slug: post.slug
             });
             this.initMeta();
@@ -85,53 +82,16 @@ export class AdminPostComponent implements OnInit, OnDestroy {
     });
   }
 
-  requestAutocompleteItems = (text: string): Observable<Tag[] | undefined> => {
-    return this.tagService.getByName(text);
-  };
-
-  onTagAdd($event: TagModel): void {
-    let tag = $event as UpdatableTag;
-    if (tag.value != null) {
-      this.newTags.push({
-        name: tag.name,
-        slug: slugify(tag.value)
-      });
-    } else {
-      this.addTags.push(tag.slug);
-      this.removeTags = this.removeTags.filter((t) => t !== tag.slug);
-    }
-  }
-
-  onTagRemove($event: TagModel): void {
-    let tag = $event as UpdatableTag;
-    if (tag.slug) this.removeTags.push(tag.slug);
-    else this.newTags = this.newTags.filter((t) => t.name !== tag.value);
-  }
-
-  handleTags(postSlug: string) {
-    new Set(this.newTags).forEach((i) => {
-      this.tagService.create(i).subscribe();
-      this.tagService.link(postSlug, i.slug).subscribe();
-    });
-    new Set(this.addTags).forEach((t) => {
-      if (this.tags.includes(t)) return;
-      this.tagService.link(postSlug, t).subscribe();
-    });
-    new Set(this.removeTags).forEach((t) => {
-      this.tagService.unlink(postSlug, t).subscribe();
-    });
-  }
-
   send() {
     if (this.postSlug)
       this.postsService.updatePostById(this.post.id, this.postForm.value).subscribe((_) => {
-        this.handleTags(this.postSlug);
+        // this.handleTags(this.postSlug);
         this.message.success('Post updated.');
       });
     else
       this.postsService.createPost(this.postForm.value).subscribe((_) => {
         this.postForm.reset();
-        this.handleTags(this.postForm.value.slug!);
+        // this.handleTags(this.postForm.value.slug!);
         this.message.success('Post created.');
       });
   }

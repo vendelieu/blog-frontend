@@ -1,4 +1,4 @@
-import { Tag } from './tag';
+import { TagDTO } from './tag';
 
 export interface NavPost {
   title: string;
@@ -13,7 +13,7 @@ export interface PostEntity {
   description: string;
   slug: string;
   commentaries_open: boolean;
-  tags: Tag[] | null;
+  tags: TagDTO[] | null;
   prev: NavPost | null;
   next: NavPost | null;
   updated_at: Date;

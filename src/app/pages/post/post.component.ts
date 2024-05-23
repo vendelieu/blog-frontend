@@ -1,6 +1,6 @@
 import { DOCUMENT, ViewportScroller } from '@angular/common';
 import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as QRCode from 'qrcode';
 import { MessageService } from '../../components/message/message.service';
 import { MetaService } from '../../core/meta.service';
@@ -8,15 +8,12 @@ import { NavPost, NodeEl, PostEntity } from '../../interfaces/posts';
 import { PostsService } from '../../services/posts.service';
 import { Options } from '../../config/site-options';
 import { Tag } from '../../interfaces/tag';
-import {
-  faAnglesLeft,
-  faAnglesRight,
-  faEnvelope,
-  faQrcode
-} from '@fortawesome/free-solid-svg-icons';
+import { faAnglesLeft, faAnglesRight, faEnvelope, faQrcode } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookSquare, faLinkedin, faTwitterSquare } from '@fortawesome/free-brands-svg-icons';
 import { HighlightService } from '../../services/highlight.service';
 import { PlatformService } from '../../core/platform.service';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { CoolLocalStorage } from '@angular-cool/storage';
 
 type shareType = 'twitter' | 'linkedin' | 'facebook' | 'email';
 
@@ -40,6 +37,8 @@ export class PostComponent {
   emailIcon = faEnvelope;
   nextIcon = faAnglesRight;
   prevIcon = faAnglesLeft;
+  editPostIcon = faPenToSquare;
+  isAdmin = false;
   shareUrl = '';
   tocElements: NodeEl[] = [];
   @ViewChild('tocTarget') tocTargetEl!: ElementRef;
@@ -54,8 +53,13 @@ export class PostComponent {
     private scroller: ViewportScroller,
     private activatedRoute: ActivatedRoute,
     private platform: PlatformService,
-    @Inject(DOCUMENT) private document: Document
+    private router: Router,
+    @Inject(DOCUMENT) private document: Document,
+    localStorage: CoolLocalStorage
   ) {
+    if (localStorage.getItem(Options.STORAGE_ADMIN_MARK) === '1') {
+      this.isAdmin = true;
+    }
     this.activatedRoute.data.subscribe(({ postEntity }) => {
       this.postSlug = postEntity.slug;
       this.post = postEntity;
@@ -103,6 +107,10 @@ export class PostComponent {
         '%0A' +
         this.post.description;
     }
+  }
+
+  editPostButton() {
+    this.router.navigate(['/admin/post/' + this.post.slug]);
   }
 
   private loadContent() {

@@ -74,6 +74,14 @@
           </button>
         </div>
       </li>
+      <li *ngIf='isAdmin'>
+        <div>
+          <button (click)="addPost()" class='sort-button'
+                  title='Add post'>
+            <fa-icon [icon]='newPostIcon'></fa-icon>
+          </button>
+        </div>
+      </li>
     </ul>
   </div>
 </ng-container>

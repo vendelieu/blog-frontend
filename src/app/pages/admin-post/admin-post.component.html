@@ -3,59 +3,78 @@
     <div class='card-header'>Post Form</div>
     <div class='card-body'>
       <form [formGroup]='postForm' class='post-form'>
-        <div class='form-row'>
-          <div class='col-2'><label for='title' class='form-label'>Title:</label></div>
-          <div class='col-10'>
+        <div class='form-row mb-3'>
+          <div class='label-col'>
+            <label for='title' class='form-label'>Title:</label>
+          </div>
+          <div class='input-col'>
             <input id='title' [value]='post.title' formControlName='title' name='title' class='form-control'
                    placeholder='Enter Title'>
           </div>
         </div>
-        <div class='form-row'>
-          <div class='col-2'><label for='image' class='form-label'>Image:</label></div>
-          <div class='col-10'>
+        <div class='form-row mb-3'>
+          <div class='label-col'>
+            <label for='image' class='form-label'>Image:</label>
+          </div>
+          <div class='input-col'>
             <input id='image' [value]='post.image' formControlName='image' name='image' class='form-control'
                    placeholder='Enter Image URL' (change)='onImageChange()'>
           </div>
         </div>
-        <div class='form-row'>
-          <div class='col-2'><label for='content' class='form-label'>Text:</label></div>
-          <div class='col-10'>
+        <div class='form-row mb-3'>
+          <div class='label-col'>
+            <label for='content' class='form-label'>Text:</label>
+          </div>
+          <div class='input-col'>
             <editor id='content' [init]='TinyMCEConfig' [initialValue]='post.content' formControlName='content'
                     class='form-control'></editor>
           </div>
         </div>
-        <div class='form-row'>
-          <div class='col-2'><label for='description' class='form-label'>Description:</label></div>
-          <div class='col-10'>
+        <div class='form-row mb-3'>
+          <div class='label-col'>
+            <label for='description' class='form-label'>Description:</label>
+          </div>
+          <div class='input-col'>
             <textarea id='description' [value]='post.description' class='form-control' formControlName='description'
                       maxlength='400' placeholder='Short description' rows='3'></textarea>
           </div>
         </div>
-        <div class='form-row'>
-          <div class='col-2'><label class='form-label'>Tags:</label></div>
-          <div class='col-10'>
+        <div class='form-row mb-3'>
+          <div class='label-col'>
+            <label class='form-label'>Tags:</label>
+          </div>
+          <div class='input-col'>
             <app-tag-input [tags]='post.tags!!' [postSlug]='post.slug'></app-tag-input>
           </div>
         </div>
-        <div class='form-row'>
-          <div class='col-2'><label for='commentaries_open' class='form-label'>Commentaries:</label></div>
-          <div class='col-10'>
+        <div class='form-row mb-3'>
+          <div class='label-col'>
+            <label for='commentaries_open' class='form-label'>Commentaries:</label>
+          </div>
+          <div class='input-col'>
             <input id='commentaries_open' [checked]='post.commentaries_open' formControlName='commentaries_open'
                    type='checkbox' class='form-check-input'>
-            <label for='commentaries_open' class='form-check-label'>Enable Commentaries</label>
           </div>
         </div>
-        <div class='form-row'>
-          <div class='col-2'><label for='slug' class='form-label'>Slug:</label></div>
-          <div class='col-10'>
+        <div class='form-row mb-3'>
+          <div class='label-col'>
+            <label for='slug' class='form-label'>Slug:</label>
+          </div>
+          <div class='input-col'>
             <input id='slug' [value]='post.slug' formControlName='slug' name='slug' class='form-control'
                    placeholder='Enter Slug' (change)='onSlugChange()'>
           </div>
         </div>
-        <div class='form-row justify-content-center'>
-          <button (click)='postForm.reset()' class='btn btn-secondary mr-2' type='reset'>Reset</button>
-          <button (click)='send()' class='btn btn-primary mr-2' type='submit'>Save</button>
-          <button (click)='delete()' *ngIf='post.id > 0' class='btn btn-danger'>Delete</button>
+        <div class='form-row button-row'>
+          <div class="btn-container btn-container-left">
+            <button (click)='postForm.reset()' class='btn btn-secondary' type='reset'>Reset</button>
+          </div>
+          <div class="btn-container btn-container-center">
+            <button (click)='send()' class='btn btn-primary' type='submit'>Save</button>
+          </div>
+          <div class="btn-container btn-container-right">
+            <button (click)='delete()' *ngIf='post.id > 0' class='btn btn-danger'>Delete</button>
+          </div>
         </div>
       </form>
     </div>

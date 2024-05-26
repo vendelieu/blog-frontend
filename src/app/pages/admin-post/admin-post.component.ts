@@ -126,7 +126,7 @@ export class AdminPostComponent implements OnInit, OnDestroy {
   }
 
   backToPost() {
-    this.router.navigate(['/' + this.postSlug ? this.postSlug : '']);
+    this.router.navigate(['/' + this.post.slug]);
   }
 
   handleTags(postSlug: string) {

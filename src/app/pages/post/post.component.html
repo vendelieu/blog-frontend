@@ -19,7 +19,7 @@
               <i class='icon icon-book'></i> {{ post.content | readingTime }} min
             </span>
           <span title='Edit post' *ngIf='isAdmin'>
-              <i class='icon icon-write' (click)='editPostButton()'></i>
+              <fa-icon [icon]='editPostIcon' (click)='editPostButton()'></fa-icon>
           </span>
         </div>
       </div>

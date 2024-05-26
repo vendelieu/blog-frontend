@@ -4,7 +4,7 @@
       <fa-icon [icon]='returnIcon' (mouseup)='backToPost()' class='pointer' title='Back to post'></fa-icon>
     </div>
     <div class='card-body'>
-      <form [formGroup]='postForm' class='post-form'>
+      <form [formGroup]='postForm' class='post-form' (keydown.enter)='$event.preventDefault()'>
         <div class='form-row mb-3'>
           <div class='label-col'>
             <label for='title' class='form-label'>Title:</label>

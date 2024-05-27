@@ -1,4 +1,4 @@
-import { Inject, Injectable, makeStateKey, Optional, StateKey } from '@angular/core';
+import { Injectable, makeStateKey, Optional, StateKey, TransferState } from '@angular/core';
 import {
   HttpClient,
   HttpErrorResponse,
@@ -7,7 +7,6 @@ import {
   HttpResponse,
   HttpStatusCode
 } from '@angular/common/http';
-import { TransferState } from '@angular/platform-browser';
 import { EMPTY, from, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { PlatformService } from '../core/platform.service';
@@ -16,8 +15,6 @@ import { Options } from '../config/site-options';
 import { Message } from '../config/message.enum';
 import { MessageService } from '../components/message/message.service';
 import { Router } from '@angular/router';
-import { RESPONSE } from '@nestjs/ng-universal/dist/tokens';
-import { Response } from 'express';
 
 @Injectable({ providedIn: 'root' })
 export class TransferHttpService {
@@ -37,8 +34,8 @@ export class TransferHttpService {
     private platform: PlatformService,
     private message: MessageService,
     private router: Router,
-    @Optional() @Inject(RESPONSE) private response: Response
-  ) {}
+  ) {
+  }
 
   checkAccess(url: string): Observable<boolean> {
     return this.httpClient.get(url, { observe: 'response' }).pipe(
@@ -56,8 +53,8 @@ export class TransferHttpService {
       headers?:
         | HttpHeaders
         | {
-            [header: string]: string | string[];
-          };
+        [header: string]: string | string[];
+      };
       reportProgress?: boolean;
       observe?: 'response';
       responseType?: 'json';
@@ -81,8 +78,8 @@ export class TransferHttpService {
       headers?:
         | HttpHeaders
         | {
-            [header: string]: string | string[];
-          };
+        [header: string]: string | string[];
+      };
       observe?: 'response';
       reportProgress?: boolean;
       responseType?: 'json';
@@ -105,8 +102,8 @@ export class TransferHttpService {
       headers?:
         | HttpHeaders
         | {
-            [header: string]: string | string[];
-          };
+        [header: string]: string | string[];
+      };
       observe?: 'response';
       reportProgress?: boolean;
       responseType?: 'json';
@@ -135,8 +132,8 @@ export class TransferHttpService {
       headers?:
         | HttpHeaders
         | {
-            [header: string]: string | string[];
-          };
+        [header: string]: string | string[];
+      };
       observe?: 'body';
       reportProgress?: boolean;
       responseType?: 'json';
@@ -164,8 +161,8 @@ export class TransferHttpService {
       headers?:
         | HttpHeaders
         | {
-            [header: string]: string | string[];
-          };
+        [header: string]: string | string[];
+      };
       observe?: 'response';
       reportProgress?: boolean;
       responseType?: 'json';
@@ -188,8 +185,8 @@ export class TransferHttpService {
       headers?:
         | HttpHeaders
         | {
-            [header: string]: string | string[];
-          };
+        [header: string]: string | string[];
+      };
       observe?: 'response';
       reportProgress?: boolean;
       responseType?: 'json';
@@ -217,8 +214,8 @@ export class TransferHttpService {
       headers?:
         | HttpHeaders
         | {
-            [header: string]: string | string[];
-          };
+        [header: string]: string | string[];
+      };
       observe?: 'response';
       reportProgress?: boolean;
       responseType?: 'json';
@@ -240,8 +237,8 @@ export class TransferHttpService {
       headers?:
         | HttpHeaders
         | {
-            [header: string]: string | string[];
-          };
+        [header: string]: string | string[];
+      };
       observe?: 'response';
       reportProgress?: boolean;
       responseType?: 'json';
@@ -358,11 +355,7 @@ export class TransferHttpService {
         // Let the app keep running by returning an empty result.
         return of(error.error as T);
       }
-      if (this.platform.isBrowser) {
-        this.router.navigate(['/']);
-      } else {
-        this.response.redirect('/');
-      }
+      this.router.navigate(['/']);
       return EMPTY;
     };
   }

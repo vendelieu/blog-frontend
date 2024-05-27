@@ -1,6 +1,6 @@
 import { Inject, Injectable, Optional } from '@angular/core';
-import { RESPONSE } from '@nestjs/ng-universal/dist/tokens';
 import { Response } from 'express';
+import { RESPONSE } from '../../express.token';
 
 @Injectable({
   providedIn: 'root'

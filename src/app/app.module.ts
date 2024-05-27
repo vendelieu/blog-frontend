@@ -1,10 +1,9 @@
 import { APP_BASE_HREF, CommonModule, NgOptimizedImage, registerLocaleData } from '@angular/common';
-import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_ID, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
-import { TransferHttpCacheModule } from '@nguniversal/common';
 import { environment as env } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,7 +26,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ScrollTopComponent } from './components/scroll-top/scroll-top.component';
 import { ImgFallbackModule } from 'ngx-img-fallback';
 import { AdminPostComponent } from './pages/admin-post/admin-post.component';
-import { TagInputModule } from 'ngx-chips';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { HighlightService } from './services/highlight.service';
 import { ThemeService } from './services/theme.service';
@@ -61,9 +59,7 @@ registerLocaleData(en);
   imports: [
     BrowserModule,
     CommonModule,
-    TransferHttpCacheModule,
     AppRoutingModule,
-    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
@@ -73,7 +69,6 @@ registerLocaleData(en);
     ClipboardModule,
     ImgFallbackModule,
     EditorModule,
-    TagInputModule,
     CoolStorageModule.forRoot(),
     NgOptimizedImage
   ],
@@ -90,4 +85,5 @@ registerLocaleData(en);
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppModule {}
+export class AppModule {
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit, TransferState } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GithubRepo } from '../../interfaces/github-repo';
 import { GithubService } from '../../services/github.service';
 import { faCode, faTerminal } from '@fortawesome/free-solid-svg-icons';
@@ -18,7 +18,8 @@ export class ProjectsComponent implements OnInit {
   langIcon = faTerminal;
   email = Options.email;
 
-  constructor(private githubService: GithubService, private metaService: MetaService) {}
+  constructor(private githubService: GithubService, private metaService: MetaService) {
+  }
 
   public ngOnInit() {
     this.initMeta();

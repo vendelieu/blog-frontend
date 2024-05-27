@@ -5,7 +5,7 @@ export class environment {
   static images_key: string = '';
   static production: boolean = false;
   static server: {
-    host: 'http://127.0.0.1';
+    host: '127.0.0.1';
     port: 4200;
   };
 }

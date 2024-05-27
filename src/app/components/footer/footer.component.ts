@@ -12,9 +12,5 @@ export class FooterComponent {
   emailIcon = faEnvelope;
   githubIcon = faCodeBranch;
   heartIcon = faHeart;
-
-  telegramUrl = Options.telegramUrl;
-  email = Options.email;
-  githubUrl = Options.githubUrl;
   protected readonly Options = Options;
 }

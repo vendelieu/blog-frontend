@@ -9,11 +9,12 @@ import { PostsService } from '../../services/posts.service';
 import { Options } from '../../config/site-options';
 import { Tag } from '../../interfaces/tag';
 import { faAnglesLeft, faAnglesRight, faEnvelope, faQrcode } from '@fortawesome/free-solid-svg-icons';
-import { faFacebookSquare, faLinkedin, faTwitterSquare } from '@fortawesome/free-brands-svg-icons';
+import { faFacebookSquare, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { HighlightService } from '../../services/highlight.service';
 import { PlatformService } from '../../core/platform.service';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { CoolLocalStorage } from '@angular-cool/storage';
+import { faXTwitter } from '@fortawesome/free-brands-svg-icons/faXTwitter';
 
 type shareType = 'twitter' | 'linkedin' | 'facebook' | 'email';
 
@@ -32,7 +33,7 @@ export class PostComponent {
   imgModalPadding = 0;
   qrCodeIcon = faQrcode;
   linkedinIcon = faLinkedin;
-  twitterIcon = faTwitterSquare;
+  twitterIcon = faXTwitter;
   facebookIcon = faFacebookSquare;
   emailIcon = faEnvelope;
   nextIcon = faAnglesRight;

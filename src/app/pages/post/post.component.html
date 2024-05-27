@@ -3,7 +3,7 @@
   <div *ngIf='post.id > 0' class='post' itemprop='blogPosts' itemscope itemtype='https://schema.org/BlogPosting'>
     <header class='post-header'>
       <img alt='Article image' ngSrc='{{post.image}}' src-fallback='/assets/images/blank_image.webp' itemprop='image'
-           fill>
+           fill priority>
       <div class='post-card'>
         <h1 class='post-title' itemprop='headline'>
           {{ post.title }}

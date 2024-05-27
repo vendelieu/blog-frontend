@@ -14,6 +14,7 @@ export class CommentsComponent {
   isExpanded = false;
 
   constructor(private themeService: ThemeService) {
+    this.isExpanded = false;
     themeService.getFlow().subscribe((e) => {
       this.theme = e;
     });

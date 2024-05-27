@@ -23,27 +23,25 @@ export class CommentsComponent {
     themeService: ThemeService
   ) {
     this.isExpanded = false;
-    if (this.platform.isServer) {
-      const giscusComponent = collectResultSync(render(html`
-        <giscus-widget
-          id='comments'
-          repo='vendelieu/blog-frontend'
-          repoid='R_kgDOHo0zig'
-          category='Comments'
-          categoryid='DIC_kwDOHo0zis4CXkRl'
-          mapping='og:title'
-          data-strict='1'
-          reactionsenabled='1'
-          emitmetadata='0'
-          inputposition='top'
-          [attr.theme]='theme'
-          theme='{{theme}}'
-          lang='en'
-          loading='lazy'
-        ></giscus-widget>`));
+    const giscusComponent = collectResultSync(render(html`
+      <giscus-widget
+        id='comments'
+        repo='vendelieu/blog-frontend'
+        repoid='R_kgDOHo0zig'
+        category='Comments'
+        categoryid='DIC_kwDOHo0zis4CXkRl'
+        mapping='og:title'
+        data-strict='1'
+        reactionsenabled='1'
+        emitmetadata='0'
+        inputposition='top'
+        [attr.theme]='theme'
+        theme='{{theme}}'
+        lang='en'
+        loading='lazy'
+      ></giscus-widget>`));
 
-      this.renderer.setProperty(this.commentsEl.nativeElement, 'innerHTML', giscusComponent);
-    }
+    this.renderer.setProperty(this.commentsEl.nativeElement, 'innerHTML', giscusComponent);
     themeService.getFlow().subscribe((e) => {
       this.theme = e;
     });

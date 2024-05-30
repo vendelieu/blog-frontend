@@ -4,20 +4,20 @@
 <div *ngIf='!showComments || !isExpanded' class='comment'>
   <div class='comment-list' id='comments'>
     <giscus-widget
-      id='comments'
-      repo='vendelieu/blog-frontend'
-      repoid='R_kgDOHo0zig'
+      [attr.theme]='theme'
       category='Comments'
       categoryid='DIC_kwDOHo0zis4CXkRl'
-      mapping='og:title'
       data-strict='1'
-      reactionsenabled='1'
       emitmetadata='0'
+      id='comments'
       inputposition='top'
-      [attr.theme]='theme'
-      theme='{{theme}}'
       lang='en'
       loading='lazy'
+      mapping='og:title'
+      reactionsenabled='1'
+      repo='vendelieu/blog-frontend'
+      repoid='R_kgDOHo0zig'
+      theme='{{theme}}'
     ></giscus-widget>
   </div>
 </div>

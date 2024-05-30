@@ -1,8 +1,6 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { faAnglesUp } from '@fortawesome/free-solid-svg-icons';
-import { CommonModule } from '@angular/common';
-import { RouterLink, RouterOutlet } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
@@ -81,7 +79,7 @@ export class ScrollTopComponent {
 
     let initialSpeed = this.speed;
     const that = this;
-    this.timerID = setInterval(function () {
+    this.timerID = setInterval(function() {
       window.scrollBy(0, -initialSpeed);
       initialSpeed = initialSpeed + that.acceleration;
       if (that.getCurrentScrollTop() === 0) {

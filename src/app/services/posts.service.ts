@@ -11,7 +11,8 @@ import { getAdminUrl, getApiUrl } from '../helpers/urlFormer';
   providedIn: 'root'
 })
 export class PostsService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+  }
 
   getPosts(param: PostQueryParam): Observable<PaginatedHttpResponse<PostEntity[]> | undefined> {
     return this.httpClient.get<PaginatedHttpResponse<PostEntity[]>>(

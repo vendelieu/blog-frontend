@@ -29,9 +29,11 @@ export class ModalComponent implements OnInit, OnDestroy, AfterViewInit {
   private unlistenInput!: Function;
   private bodyEle!: ElementRef;
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2) {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngAfterViewInit(): void {
     this.bodyEle = this.renderer.selectRootElement('body', true);

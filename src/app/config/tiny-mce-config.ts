@@ -22,7 +22,7 @@ export const TinyMceConfig = {
   forced_root_block_attrs: {
     class: 'base-block'
   },
-  setup: function (ed: Editor) {
+  setup: function(ed: Editor) {
     ed.on('NodeChange', (e) => {
       const element = e.element;
       if (element.localName.startsWith('h') && parseInt(element.localName.charAt(1)) > 0) {

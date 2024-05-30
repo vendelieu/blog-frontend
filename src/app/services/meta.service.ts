@@ -7,7 +7,8 @@ import { DOCUMENT } from '@angular/common';
   providedIn: 'root'
 })
 export class MetaService {
-  constructor(private meta: Meta, private title: Title, @Inject(DOCUMENT) private dom: Document) {}
+  constructor(private meta: Meta, private title: Title, @Inject(DOCUMENT) private dom: Document) {
+  }
 
   updateTitle(title: string) {
     this.title.setTitle(title);

@@ -44,6 +44,30 @@ export class TocComponent implements OnInit {
     }
   }
 
+  ngOnInit() {
+    this.refresh();
+  }
+
+  refresh() {
+    this.tocList = [];
+    setTimeout(() => this.formToc(), 0);
+  }
+
+  formToc() {
+    this.tocTargetElementRef.forEach((el) => {
+      this.tocList?.push({
+        id: el.id,
+        lvl: parseInt(el.localName.charAt(1)),
+        name: el.textContent ?? ''
+      });
+    });
+
+    if (!this.intersectionObserver) return;
+    this.document.querySelectorAll('div#toc-target *[id]').forEach((section) => {
+      this.intersectionObserver?.observe(section);
+    });
+  }
+
   @HostListener('window:resize', ['$event'])
   private drawLine() {
     const path: (string | number)[] = [];
@@ -68,29 +92,5 @@ export class TocComponent implements OnInit {
     });
 
     this.tocPathEl?.nativeElement.setAttribute('d', path.join(' '));
-  }
-
-  ngOnInit() {
-    this.refresh();
-  }
-
-  refresh() {
-    this.tocList = [];
-    setTimeout(() => this.formToc(), 0);
-  }
-
-  formToc() {
-    this.tocTargetElementRef.forEach((el) => {
-      this.tocList?.push({
-        id: el.id,
-        lvl: parseInt(el.localName.charAt(1)),
-        name: el.textContent ?? ''
-      });
-    });
-
-    if (!this.intersectionObserver) return;
-    this.document.querySelectorAll('div#toc-target *[id]').forEach((section) => {
-      this.intersectionObserver?.observe(section);
-    });
   }
 }

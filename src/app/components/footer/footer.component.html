@@ -1,18 +1,18 @@
 <footer class='footer' itemscope itemtype='https://schema.org/WPFooter'>
-  <meta itemprop='copyrightYear' content='{{Options.CUR_YEAR}}'>
-  <meta itemprop='copyrightHolder' content='{{Options.copyright_notice}}'>
+  <meta content='{{Options.CUR_YEAR}}' itemprop='copyrightYear'>
+  <meta content='{{Options.copyright_notice}}' itemprop='copyrightHolder'>
   <ul class='footer-link'>
     <li>
       <a class='inactive-icon' href='{{Options.githubUrl}}' onmouseout="this.classList.remove('github-hover')"
          onmouseover="this.classList.add('github-hover')"
-         title='Github' rel='nofollow'>
+         rel='nofollow' title='Github'>
         <fa-icon [icon]='githubIcon'></fa-icon>
       </a>
     </li>
     <li>
       <a class='inactive-icon' href='{{Options.telegramUrl}}' onmouseout="this.classList.remove('telegram-hover')"
          onmouseover="this.classList.add('telegram-hover')"
-         title='Telegram' rel='nofollow'>
+         rel='nofollow' title='Telegram'>
         <fa-icon [icon]='telegramIcon'></fa-icon>
       </a>
     </li>
@@ -27,9 +27,9 @@
   <ul>
 
     <li>
-      © {{Options.copyright_notice}}
+      © {{ Options.copyright_notice }}
       <fa-icon [icon]='heartIcon' animation='beat'></fa-icon>
-      - {{Options.CUR_YEAR}}
+      - {{ Options.CUR_YEAR }}
     </li>
   </ul>
 </footer>

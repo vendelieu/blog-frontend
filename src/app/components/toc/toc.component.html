@@ -5,14 +5,14 @@
       <ng-container *ngFor='let toc of tocList'>
         <li class='toc-item {{"toc-lvl-" + toc.lvl}}' id='toc-{{toc.id}}'>
           <a class='toc-link' href='{{baseUrl}}#{{toc.id}}'>
-            <span class='toc-text'>{{toc.name}}</span>
+            <span class='toc-text'>{{ toc.name }}</span>
           </a>
         </li>
       </ng-container>
     </ol>
   </aside>
-  <svg id='toc-svg' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'>
-    <path fill='none' stroke-width='2' transform='translate(-0.5, -0.5)' #tocPath d='' />
+  <svg height='100%' id='toc-svg' width='100%' xmlns='http://www.w3.org/2000/svg'>
+    <path #tocPath d='' fill='none' stroke-width='2' transform='translate(-0.5, -0.5)' />
   </svg>
 </div>
 <div class='toc-block mobile-toc'>
@@ -21,7 +21,7 @@
     <ul>
       <li class='{{"toc-lvl-" + toc.lvl}}'>
         <a href='{{baseUrl}}#{{toc.id}}'>
-          <span class='post-link-text'>- {{toc.name}}</span>
+          <span class='post-link-text'>- {{ toc.name }}</span>
         </a>
       </li>
     </ul>

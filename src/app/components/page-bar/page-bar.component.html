@@ -8,22 +8,23 @@
       </li>
       <ng-container *ngIf='paginator.totalPage < 10'>
         <ng-container *ngFor='let v of counter(paginator.totalPage); let i = index'>
-          <li *ngIf='i + 1 === paginator.curPage' class='paginator-page active'><span>{{i + 1}}</span></li>
+          <li *ngIf='i + 1 === paginator.curPage' class='paginator-page active'><span>{{ i + 1 }}</span></li>
           <li *ngIf='i + 1 !== paginator.curPage' class='paginator-page'>
-            <a (click)='changePage(i + 1)' title='#{{i + 1}} page'>{{i + 1}}</a>
+            <a (click)='changePage(i + 1)' title='#{{i + 1}} page'>{{ i + 1 }}</a>
           </li>
         </ng-container>
       </ng-container>
       <ng-container *ngIf='paginator.totalPage >= 10 && paginator.curPage <= 5'>
         <ng-container *ngFor='let v of counter(5); let i = index'>
-          <li *ngIf='i + 1 === paginator.curPage' class='paginator-page active'><span>{{i + 1}}</span></li>
+          <li *ngIf='i + 1 === paginator.curPage' class='paginator-page active'><span>{{ i + 1 }}</span></li>
           <li *ngIf='i + 1 !== paginator.curPage' class='paginator-page'>
-            <a (click)='changePage(i + 1)' title='#{{i + 1}} page'>{{i + 1}}</a>
+            <a (click)='changePage(i + 1)' title='#{{i + 1}} page'>{{ i + 1 }}</a>
           </li>
         </ng-container>
         <li><span>...</span></li>
         <li class='paginator-page'>
-          <a (click)='changePage(paginator.totalPage)' title='#{{paginator.totalPage}} page'>{{paginator.totalPage}}</a>
+          <a (click)='changePage(paginator.totalPage)'
+             title='#{{paginator.totalPage}} page'>{{ paginator.totalPage }}</a>
         </li>
       </ng-container>
       <ng-container *ngIf='paginator.totalPage >= 10 && paginator.curPage >= paginator.totalPage - 4'>
@@ -31,10 +32,10 @@
         <li><span>...</span></li>
         <ng-container *ngFor='let v of counter(5); let i = index'>
           <li *ngIf='paginator.totalPage - 4 + i === paginator.curPage' class='paginator-page active'>
-            <span>{{paginator.totalPage - 4 + i}}</span></li>
+            <span>{{ paginator.totalPage - 4 + i }}</span></li>
           <li *ngIf='paginator.totalPage - 4 + i !== paginator.curPage' class='paginator-page'>
             <a (click)='changePage(paginator.totalPage - 4 + i)'
-               title='{{paginator.totalPage - 4 + i}} page'>{{paginator.totalPage - 4 + i}}</a>
+               title='{{paginator.totalPage - 4 + i}} page'>{{ paginator.totalPage - 4 + i }}</a>
           </li>
         </ng-container>
       </ng-container>
@@ -44,15 +45,16 @@
         <li><span>...</span></li>
         <ng-container *ngFor='let v of counter(5); let i = index'>
           <li *ngIf='paginator.curPage - 2 + i === paginator.curPage' class='paginator-page active'>
-            <span>{{paginator.curPage - 2 + i}}</span></li>
+            <span>{{ paginator.curPage - 2 + i }}</span></li>
           <li *ngIf='paginator.curPage - 2 + i !== paginator.curPage' class='paginator-page'>
             <a (click)='changePage(paginator.curPage - 2 + i)'
-               title='#{{paginator.curPage - 2 + i}} page'>{{paginator.curPage - 2 + i}}</a>
+               title='#{{paginator.curPage - 2 + i}} page'>{{ paginator.curPage - 2 + i }}</a>
           </li>
         </ng-container>
         <li><span>...</span></li>
         <li class='paginator-page'>
-          <a (click)='changePage(paginator.totalPage)' title='#{{paginator.totalPage}} page'>{{paginator.totalPage}}</a>
+          <a (click)='changePage(paginator.totalPage)'
+             title='#{{paginator.totalPage}} page'>{{ paginator.totalPage }}</a>
         </li>
       </ng-container>
       <li *ngIf='paginator.curPage < paginator.endPage' class='paginator-page'>
@@ -76,7 +78,7 @@
       </li>
       <li *ngIf='isAdmin'>
         <div>
-          <button (click)="addPost()" class='sort-button'
+          <button (click)='addPost()' class='sort-button'
                   title='Add post'>
             <fa-icon [icon]='newPostIcon'></fa-icon>
           </button>

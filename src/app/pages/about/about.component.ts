@@ -10,7 +10,8 @@ import { Options } from '../../config/site-options';
   standalone: true
 })
 export class AboutComponent implements OnInit {
-  constructor(private metaService: MetaService) {}
+  constructor(private metaService: MetaService) {
+  }
 
   ngOnInit(): void {
     this.initMeta();

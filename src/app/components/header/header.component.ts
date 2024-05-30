@@ -1,12 +1,11 @@
 import { DOCUMENT } from '@angular/common';
-import { afterNextRender, Component, EventEmitter, Inject, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { OptionEntity } from '../../interfaces/options';
 import { Options } from '../../config/site-options';
 import { faMoon, faSearch, faSun } from '@fortawesome/free-solid-svg-icons';
 import { ThemeService } from '../../services/theme.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { Subscription } from 'rxjs';
 import { PlatformService } from '../../services/platform.service';
 
 type Theme = 'light' | 'dark';

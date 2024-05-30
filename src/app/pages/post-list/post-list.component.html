@@ -1,6 +1,6 @@
 <div class='banner'>
   <ul>
-    <li><img alt='{{siteName}} Banner' ngSrc='/assets/images/banner.png' height='334' width='1000' priority/></li>
+    <li><img alt='{{siteName}} Banner' height='334' ngSrc='/assets/images/banner.png' priority width='1000' /></li>
   </ul>
 </div>
 <div *ngIf='postList?.length === 0' class='not-found'>
@@ -13,15 +13,15 @@
         <a [routerLink]="['/post/' + post.slug]"
            class='article-link' rel='bookmark'
            title='{{post.title}}'>
-          <img alt='Article image' ngSrc='{{post.image}}' src-fallback='/assets/images/blank_image.webp' fill priority>
+          <img alt='Article image' fill ngSrc='{{post.image}}' priority src-fallback='/assets/images/blank_image.webp'>
         </a>
         <div class='article-card'>
           <h3>
-            <a [routerLink]="['/post/' + post.slug]" rel='bookmark' title='{{post.title}}'>{{post.title}}</a>
+            <a [routerLink]="['/post/' + post.slug]" rel='bookmark' title='{{post.title}}'>{{ post.title }}</a>
           </h3>
           <div class='article-meta article-meta-top'>
       <span title='Date of article creation.'>
-        <i class='icon icon-calendar'></i><span>{{post.updated_at | date:'EEE, MMMM d, y'}}</span>
+        <i class='icon icon-calendar'></i><span>{{ post.updated_at | date:'EEE, MMMM d, y' }}</span>
       </span>
           </div>
         </div>
@@ -37,7 +37,7 @@
               <ul class='article-meta-info tag-list'>
                 <li *ngFor='let tag of post.tags'>
                   <a [routerLink]="['/tag/' + tag.slug]" class='tag-list-item'
-                     rel='category' title='{{tag.name}}'>{{tag.name}}</a>
+                     rel='category' title='{{tag.name}}'>{{ tag.name }}</a>
                 </li>
               </ul>
             </div>

@@ -10,14 +10,14 @@ import 'giscus';
   styleUrls: ['./comments.component.less'],
   imports: [CommonModule],
   standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CommentsComponent {
   theme: string = 'dark';
   @Input('show') showComments!: boolean;
   isExpanded = true;
 
-  constructor(themeService: ThemeService,) {
+  constructor(themeService: ThemeService) {
     themeService.themeChanges.subscribe((e) => {
       this.theme = e;
     });

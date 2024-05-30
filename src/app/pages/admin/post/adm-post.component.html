@@ -1,43 +1,43 @@
 <div class='content'>
   <div class='card'>
     <div class='card-header'>Post Form |
-      <fa-icon [icon]='returnIcon' (mouseup)='backToPost()' class='pointer' title='Back to post'></fa-icon>
+      <fa-icon (mouseup)='backToPost()' [icon]='returnIcon' class='pointer' title='Back to post'></fa-icon>
     </div>
     <div class='card-body'>
-      <form [formGroup]='postForm' class='post-form' (keydown.enter)='$event.preventDefault()'>
+      <form (keydown.enter)='$event.preventDefault()' [formGroup]='postForm' class='post-form'>
         <div class='form-row mb-3'>
           <div class='label-col'>
-            <label for='title' class='form-label'>Title:</label>
+            <label class='form-label' for='title'>Title:</label>
           </div>
           <div class='input-col'>
-            <input id='title' [value]='post.title' formControlName='title' name='title' class='form-control'
+            <input [value]='post.title' class='form-control' formControlName='title' id='title' name='title'
                    placeholder='Enter Title'>
           </div>
         </div>
         <div class='form-row mb-3'>
           <div class='label-col'>
-            <label for='image' class='form-label'>Image:</label>
+            <label class='form-label' for='image'>Image:</label>
           </div>
           <div class='input-col'>
-            <input id='image' [value]='post.image' formControlName='image' name='image' class='form-control'
-                   placeholder='Enter Image URL' (change)='onImageChange()'>
+            <input (change)='onImageChange()' [value]='post.image' class='form-control' formControlName='image' id='image'
+                   name='image' placeholder='Enter Image URL'>
           </div>
         </div>
         <div class='form-row mb-3'>
           <div class='label-col'>
-            <label for='content' class='form-label'>Text:</label>
+            <label class='form-label' for='content'>Text:</label>
           </div>
           <div class='input-col'>
-            <editor id='content' [init]='TinyMCEConfig' [initialValue]='post.content' formControlName='content'
-                    class='form-control'></editor>
+            <editor [init]='TinyMCEConfig' [initialValue]='post.content' class='form-control' formControlName='content'
+                    id='content'></editor>
           </div>
         </div>
         <div class='form-row mb-3'>
           <div class='label-col'>
-            <label for='description' class='form-label'>Description:</label>
+            <label class='form-label' for='description'>Description:</label>
           </div>
           <div class='input-col'>
-            <textarea id='description' [value]='post.description' class='form-control' formControlName='description'
+            <textarea [value]='post.description' class='form-control' formControlName='description' id='description'
                       maxlength='400' placeholder='Short description' rows='3'></textarea>
           </div>
         </div>
@@ -46,26 +46,26 @@
             <label class='form-label'>Tags:</label>
           </div>
           <div class='input-col'>
-            <app-tag-input [tags]='post.tags ? post.tags : []' [postSlug]='post.slug'
-                           (onAdd)='addTag($event)' (onRemove)='removeTag($event)'></app-tag-input>
+            <app-tag-input (onAdd)='addTag($event)' (onRemove)='removeTag($event)'
+                           [postSlug]='post.slug' [tags]='post.tags ? post.tags : []'></app-tag-input>
           </div>
         </div>
         <div class='form-row mb-3'>
           <div class='label-col'>
-            <label for='commentaries_open' class='form-label'>Commentaries:</label>
+            <label class='form-label' for='commentaries_open'>Commentaries:</label>
           </div>
           <div class='input-col'>
-            <input id='commentaries_open' [checked]='post.commentaries_open' formControlName='commentaries_open'
-                   type='checkbox' class='form-check-input'>
+            <input [checked]='post.commentaries_open' class='form-check-input' formControlName='commentaries_open'
+                   id='commentaries_open' type='checkbox'>
           </div>
         </div>
         <div class='form-row mb-3'>
           <div class='label-col'>
-            <label for='slug' class='form-label'>Slug:</label>
+            <label class='form-label' for='slug'>Slug:</label>
           </div>
           <div class='input-col'>
-            <input id='slug' [value]='post.slug' formControlName='slug' name='slug' class='form-control'
-                   placeholder='Enter Slug' (change)='onSlugChange()'>
+            <input (change)='onSlugChange()' [value]='post.slug' class='form-control' formControlName='slug' id='slug'
+                   name='slug' placeholder='Enter Slug'>
           </div>
         </div>
         <div class='form-row button-row'>

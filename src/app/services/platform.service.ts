@@ -8,5 +8,6 @@ export class PlatformService {
   public isBrowser = isPlatformBrowser(this.platformId);
   public isServer = isPlatformServer(this.platformId);
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+  }
 }

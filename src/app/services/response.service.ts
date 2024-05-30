@@ -6,7 +6,8 @@ import { RESPONSE } from '../../express.tokens';
   providedIn: 'root'
 })
 export class ResponseService {
-  constructor(@Optional() @Inject(RESPONSE) protected response: Response) {}
+  constructor(@Optional() @Inject(RESPONSE) protected response: Response) {
+  }
 
   setStatus(code: number): void {
     this.response.status(code);

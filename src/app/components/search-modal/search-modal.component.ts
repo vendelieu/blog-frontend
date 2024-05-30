@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 import { PostsService } from '../../services/posts.service';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';

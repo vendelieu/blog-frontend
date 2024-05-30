@@ -57,9 +57,6 @@ export class PostComponent implements OnInit {
   tocElements: NodeEl[] = [];
 
   @ViewChild('tocTarget') tocTargetEl!: ElementRef;
-  @ViewChild(TocComponent) private tocComponent?: TocComponent;
-  @ViewChild(CommentsComponent) private commentsComponent?: CommentsComponent;
-
   qrCodeIcon = faQrcode;
   linkedinIcon = faLinkedin;
   twitterIcon = faXTwitter;
@@ -68,7 +65,8 @@ export class PostComponent implements OnInit {
   nextIcon = faAnglesRight;
   prevIcon = faAnglesLeft;
   editPostIcon = faPenToSquare;
-
+  @ViewChild(TocComponent) private tocComponent?: TocComponent;
+  @ViewChild(CommentsComponent) private commentsComponent?: CommentsComponent;
   private postSlug!: string;
 
   constructor(

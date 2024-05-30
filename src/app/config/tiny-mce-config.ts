@@ -16,6 +16,7 @@ export const TinyMceConfig = {
     { text: 'Java', value: 'java' },
     { text: 'Bash', value: 'bash' },
     { text: 'Docker', value: 'docker' },
+    { text: 'YAML', value: 'yaml' },
     { text: 'XML', value: 'xml-doc' }
   ],
   browser_spellcheck: true,

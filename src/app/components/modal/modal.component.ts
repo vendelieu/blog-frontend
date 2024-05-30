@@ -14,6 +14,7 @@ import {
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
+  standalone: true,
   styleUrls: ['./modal.component.less']
 })
 export class ModalComponent implements OnInit, OnDestroy, AfterViewInit {

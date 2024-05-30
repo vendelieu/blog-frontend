@@ -5,34 +5,26 @@
   "projects": {
     "vendeli.eu": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "less"
-        },
-        "@schematics/angular:application": {
-          "strict": true
-        }
-      },
+      "schematics": {},
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/browser",
             "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "aot": true,
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "less",
             "allowedCommonJsDependencies": [
               "qrcode",
               "lodash",
               "ua-parser-js",
-              "prismjs",
-              "@nestjs/ng-universal/dist/tokens"
+              "prismjs"
             ],
             "assets": [
               {
@@ -59,7 +51,8 @@
             "styles": [
               "src/styles.less",
               "node_modules/prism-themes/themes/prism-coldark-cold.css",
-              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css"
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
               "node_modules/prismjs/prism.js",
@@ -68,55 +61,51 @@
               "node_modules/prismjs/components/prism-bash.min.js",
               "node_modules/prismjs/components/prism-typescript.min.js",
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js"
-            ]
+            ],
+            "browser": "src/main.ts",
+            "server": "src/main.server.ts",
+            "prerender": true,
+            "ssr": {
+              "entry": "server.ts"
+            }
           },
           "configurations": {
             "production": {
-              "baseHref": "https://vendeli.eu/",
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "8mb"
+                  "maximumWarning": "550kb",
+                  "maximumError": "1mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "128kb",
-                  "maximumError": "512kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "maximumWarning": "5kb",
+                  "maximumError": "12kb"
                 }
               ],
               "outputHashing": "all",
-              "optimization": true
+              "optimization": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true
             },
             "development": {
-              "baseHref": "/",
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "port": 4200
-          },
           "configurations": {
             "production": {
-              "browserTarget": "vendeli.eu:build:production"
+              "buildTarget": "vendeli.eu:build:production"
             },
             "development": {
-              "browserTarget": "vendeli.eu:build:development"
+              "buildTarget": "vendeli.eu:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -131,7 +120,10 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "less",
@@ -158,80 +150,19 @@
             "scripts": []
           }
         },
-        "server": {
-          "builder": "@angular-devkit/build-angular:server",
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "outputPath": "dist/server",
-            "main": "server.ts",
-            "tsConfig": "tsconfig.server.json",
-            "inlineStyleLanguage": "less",
-            "externalDependencies": [
-              "@nestjs/microservices",
-              "@nestjs/microservices/microservices-module",
-              "@nestjs/websockets",
-              "@nestjs/websockets/socket-module",
-              "cache-manager"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "outputHashing": "media",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
-            },
-            "development": {
-              "optimization": false,
-              "sourceMap": true,
-              "extractLicenses": false
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
-          "options": {
-            "port": 4200
-          },
-          "configurations": {
-            "development": {
-              "browserTarget": "vendeli.eu:build:development",
-              "serverTarget": "vendeli.eu:server:development"
-            },
-            "production": {
-              "browserTarget": "vendeli.eu:build:production",
-              "serverTarget": "vendeli.eu:server:production"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "prerender": {
-          "builder": "@nguniversal/builders:prerender",
-          "options": {
-            "routes": [
-              "/"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "vendeli.eu:build:production",
-              "serverTarget": "vendeli.eu:server:production"
-            },
-            "development": {
-              "browserTarget": "vendeli.eu:build:development",
-              "serverTarget": "vendeli.eu:server:development"
-            }
-          },
-          "defaultConfiguration": "production"
+            "lintFilePatterns": ["src/**/*.{ts,html}"]
+          }
         }
       }
     }
   },
-  "defaultProject": "vendeli.eu",
   "cli": {
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ],
     "analytics": false
   }
 }

@@ -1,6 +1,6 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { Response } from 'express';
-import { RESPONSE } from '../../express.token';
+import { RESPONSE } from '../../express.tokens';
 
 @Injectable({
   providedIn: 'root'

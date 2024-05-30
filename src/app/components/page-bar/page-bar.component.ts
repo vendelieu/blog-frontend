@@ -1,21 +1,24 @@
-import { Component, Input } from '@angular/core';
+import { afterNextRender, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { PaginatorEntity } from '../../interfaces/paginator';
 import {
   faAnglesLeft,
   faAnglesRight,
   faArrowDownShortWide,
-  faArrowUpShortWide
+  faArrowUpShortWide,
+  faPlus
 } from '@fortawesome/free-solid-svg-icons';
 import { SortType } from '../../interfaces/posts';
 import { PaginationService } from '../../services/pagination.service';
-import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
-import { CoolLocalStorage } from '@angular-cool/storage';
 import { Options } from '../../config/site-options';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-page-bar',
   templateUrl: './page-bar.component.html',
+  standalone: true,
+  imports: [CommonModule, FontAwesomeModule],
   styleUrls: ['./page-bar.component.less']
 })
 export class PageBarComponent {
@@ -31,12 +34,15 @@ export class PageBarComponent {
 
   constructor(
     private paginationService: PaginationService,
-    private router: Router,
-    localStorage: CoolLocalStorage
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {
-    if (localStorage.getItem(Options.STORAGE_ADMIN_MARK) === '1') {
-      this.isAdmin = true;
-    }
+    afterNextRender(() => {
+      if (localStorage.getItem(Options.STORAGE_ADMIN_MARK) === '1') {
+        this.isAdmin = true;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   addPost() {
@@ -49,6 +55,13 @@ export class PageBarComponent {
 
   changePage(newPage: number) {
     this.paginationService.changePage(newPage);
+
+    const urlTree = this.router.createUrlTree([], {
+      queryParams: { page: newPage },
+      queryParamsHandling: 'merge',
+      preserveFragment: true
+    });
+    this.router.navigateByUrl(urlTree);
   }
 
   counter(size: number) {

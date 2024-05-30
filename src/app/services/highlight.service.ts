@@ -7,6 +7,8 @@ import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-java';
 import 'prismjs/components/prism-markup';
 import 'prismjs/components/prism-kotlin.js';
+import 'prismjs/components/prism-xml-doc.js';
+import 'prismjs/components/prism-docker.js';
 import 'prismjs/components/prism-typescript';
 import { Injectable } from '@angular/core';
 

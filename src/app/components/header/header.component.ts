@@ -1,18 +1,22 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { afterNextRender, Component, EventEmitter, Inject, Input, OnDestroy, Output } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { OptionEntity } from '../../interfaces/options';
 import { Options } from '../../config/site-options';
 import { faMoon, faSearch, faSun } from '@fortawesome/free-solid-svg-icons';
 import { ThemeService } from '../../services/theme.service';
-import { CoolLocalStorage } from '@angular-cool/storage';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Subscription } from 'rxjs';
+import { PlatformService } from '../../services/platform.service';
 
 type Theme = 'light' | 'dark';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.less']
+  styleUrls: ['./header.component.less'],
+  imports: [FontAwesomeModule, RouterLink],
+  standalone: true
 })
 export class HeaderComponent {
   @Input() searchOpen = false;
@@ -30,15 +34,18 @@ export class HeaderComponent {
   constructor(
     private router: Router,
     private themeService: ThemeService,
-    @Inject(DOCUMENT) private document: Document,
-    private localStorage: CoolLocalStorage
+    private platformService: PlatformService,
+    @Inject(DOCUMENT) private document: Document
   ) {
-    const localTheme = this.localStorage.getItem(Options.STORAGE_THEME_KEY);
-    if (localTheme) {
-      this.setTheme(<'light' | 'dark'>localTheme);
-    } else {
-      this.currentTheme =
-        this.document.getElementsByTagName('html').item(0)?.getAttribute('color-mode') ?? undefined;
+    if (platformService.isBrowser) {
+      let theme = localStorage.getItem(Options.STORAGE_THEME_KEY);
+      if (!theme) {
+        theme = this.document.getElementsByTagName('html').item(0)?.getAttribute('color-mode') ?? 'dark';
+      }
+      this.themeService.changeTheme(theme);
+      this.themeService.themeChanges.subscribe((t) => {
+        this.setTheme(<'light' | 'dark'>t);
+      });
     }
   }
 
@@ -76,7 +83,8 @@ export class HeaderComponent {
     this.document.getElementsByTagName('html').item(0)?.setAttribute('color-mode', theme);
     this.currentTheme = theme;
     this.isDark = theme != 'light';
-    this.localStorage.setItem(Options.STORAGE_THEME_KEY, theme);
-    this.themeService.changeTheme(theme);
+    if (this.platformService.isBrowser) {
+      localStorage.setItem(Options.STORAGE_THEME_KEY, theme);
+    }
   }
 }

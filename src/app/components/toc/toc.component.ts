@@ -1,30 +1,27 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  Inject,
-  Input,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { NodeEl, TocElement } from '../../interfaces/posts';
-import { DOCUMENT } from '@angular/common';
-import { PlatformService } from '../../core/platform.service';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { PlatformService } from '../../services/platform.service';
 
 @Component({
   selector: 'app-toc',
   templateUrl: './toc.component.html',
-  styleUrls: ['./toc.component.less']
+  standalone: true,
+  styleUrls: ['./toc.component.less'],
+  imports: [CommonModule]
 })
 export class TocComponent implements OnInit {
   tocList: TocElement[] = [];
   @Input('tocTarget') tocTargetElementRef!: NodeEl[];
   @Input('baseUrl') baseUrl!: string;
 
-  @ViewChild('tocPath') tocPathEl!: ElementRef;
+  @ViewChild('tocPath') tocPathEl?: ElementRef;
   private readonly intersectionObserver?: IntersectionObserver;
 
-  constructor(@Inject(DOCUMENT) private document: Document, private platform: PlatformService) {
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private platform: PlatformService
+  ) {
     if (this.platform.isBrowser) {
       this.intersectionObserver = new IntersectionObserver(
         (entries) => {
@@ -70,10 +67,15 @@ export class TocComponent implements OnInit {
       path.push('v', 27);
     });
 
-    this.tocPathEl.nativeElement.setAttribute('d', path.join(' '));
+    this.tocPathEl?.nativeElement.setAttribute('d', path.join(' '));
   }
 
   ngOnInit() {
+    this.refresh();
+  }
+
+  refresh() {
+    this.tocList = [];
     setTimeout(() => this.formToc(), 0);
   }
 

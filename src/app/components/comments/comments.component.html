@@ -1,6 +1,23 @@
 <div (click)='toggleComments()' *ngIf='showComments'
-     [class]="isExpanded ? 'btn reverse-btn' : 'btn expand-btn'">{{!isExpanded ? 'View comments' : 'Hide comments'}}</div>
-<div [hidden]='!showComments || !isExpanded' class='comment'>
-  <div class='comment-list' id='comments' #comments>
+     [class]="isExpanded ? 'btn reverse-btn' : 'btn expand-btn'">{{ !isExpanded ? 'View comments' : 'Hide comments' }}
+</div>
+<div *ngIf='!showComments || !isExpanded' class='comment'>
+  <div class='comment-list' id='comments'>
+    <giscus-widget
+      id='comments'
+      repo='vendelieu/blog-frontend'
+      repoid='R_kgDOHo0zig'
+      category='Comments'
+      categoryid='DIC_kwDOHo0zis4CXkRl'
+      mapping='og:title'
+      data-strict='1'
+      reactionsenabled='1'
+      emitmetadata='0'
+      inputposition='top'
+      [attr.theme]='theme'
+      theme='{{theme}}'
+      lang='en'
+      loading='lazy'
+    ></giscus-widget>
   </div>
 </div>

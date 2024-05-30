@@ -1,37 +1,37 @@
-import { ViewportScroller } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { CommonModule, NgOptimizedImage, ViewportScroller } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
 import { uniq } from 'lodash';
-import { Subscription } from 'rxjs';
-import { MetaService } from '../../core/meta.service';
-import { PaginatorService } from '../../core/paginator.service';
+import { MetaService } from '../../services/meta.service';
+import { PaginatorService } from '../../services/paginator.service';
 import { HTMLMetaData } from '../../interfaces/meta';
 import { PaginatorEntity } from '../../interfaces/paginator';
 import { PostEntity, PostQueryParam, Sort } from '../../interfaces/posts';
 import { PostsService } from '../../services/posts.service';
 import { Options } from '../../config/site-options';
 import { PaginationService } from '../../services/pagination.service';
-import { CoolLocalStorage } from '@angular-cool/storage';
+import { PlatformService } from '../../services/platform.service';
+import { PageBarComponent } from '../../components/page-bar/page-bar.component';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ImgFallbackModule } from 'ngx-img-fallback';
 
 @Component({
   selector: 'app-post-list',
   templateUrl: './post-list.component.html',
-  styleUrls: ['./post-list.component.less']
+  styleUrls: ['./post-list.component.less'],
+  imports: [CommonModule, PageBarComponent, NgOptimizedImage, RouterLink, ImgFallbackModule],
+  standalone: true
 })
-export class PostListComponent implements OnInit, OnDestroy {
+export class PostListComponent implements OnInit {
+  @Input() query = '';
+  @Input() tag = '';
+
   pageIndex = 'index';
   siteName = Options.site_name;
   page = 1;
-  keyword = '';
-  tag = '';
   sort = 'newest';
   postList: PostEntity[] | undefined;
   total = 0;
   paginatorData: PaginatorEntity | null = null;
-  pageUrl = '';
-  pageUrlParam: Params = {};
-
-  private paramListener!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,33 +40,32 @@ export class PostListComponent implements OnInit, OnDestroy {
     private metaService: MetaService,
     private scroller: ViewportScroller,
     private paginationService: PaginationService,
-    private localStorage: CoolLocalStorage
-  ) {}
-
-  ngOnInit(): void {
-    this.sort = this.localStorage.getItem(Options.STORAGE_POSTS_SORTING_KEY) || 'newest';
-    this.paramListener = this.route.params.subscribe((params) => {
-      this.tag = params['tag']?.trim() || '';
-      this.keyword = params['keyword']?.trim() || '';
-      this.page = params['page']?.trim() || this.page;
+    private platform: PlatformService
+  ) {
+    this.paginationService.sortingChanged.subscribe((newSort) => {
+      this.sort = newSort;
+      if (this.platform.isBrowser) {
+        localStorage.setItem(Options.STORAGE_POSTS_SORTING_KEY, newSort);
+      }
+      if (this.platform.isBrowser) {
+        this.sort = localStorage.getItem(Options.STORAGE_POSTS_SORTING_KEY) || 'newest';
+        this.scroller.scrollToPosition([0, 0]);
+      }
       this.fetchPosts();
-      this.scroller.scrollToPosition([0, 0]);
     });
     this.paginationService.pageChanged.subscribe((newPage) => {
       this.page = newPage;
       this.fetchPosts();
       this.scroller.scrollToPosition([0, 0]);
     });
-    this.paginationService.sortingChanged.subscribe((newSort) => {
-      this.sort = newSort;
-      this.localStorage.setItem(Options.STORAGE_POSTS_SORTING_KEY, newSort);
+  }
+
+  ngOnInit(): void {
+    this.route.queryParamMap.subscribe((p) => {
+      this.page = parseInt(p.get('page') ?? '1');
       this.fetchPosts();
       this.scroller.scrollToPosition([0, 0]);
     });
-  }
-
-  ngOnDestroy() {
-    this.paramListener.unsubscribe();
   }
 
   private fetchPosts() {
@@ -78,8 +77,8 @@ export class PostListComponent implements OnInit, OnDestroy {
       page: this.page,
       sort_by: sortParam
     };
-    if (this.keyword) {
-      param.keyword = this.keyword;
+    if (this.query) {
+      param.keyword = this.query;
     }
     if (this.tag) {
       this.pageIndex = 'tag';
@@ -101,10 +100,10 @@ export class PostListComponent implements OnInit, OnDestroy {
         keywords.unshift(this.tag);
       }
       description += tags.length > 0 ? `「${tags.join('-')}」` : '';
-      if (this.keyword) {
-        titles.unshift(this.keyword, 'Search');
-        description += `「${this.keyword}」search results`;
-        keywords.unshift(this.keyword);
+      if (this.query) {
+        titles.unshift(this.query, 'Search');
+        description += `「${this.query}」search results`;
+        keywords.unshift(this.query);
       } else {
         description += 'Articles list';
       }
@@ -129,17 +128,6 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.metaService.updateHTMLMeta(metaData);
 
       this.paginatorData = this.paginator.getPaginator(this.page, this.total);
-      const urlSegments = this.route.snapshot.url.map((url) => url.path);
-      if (urlSegments.length < 1) {
-        urlSegments.push('post');
-      }
-      if (this.route.snapshot.paramMap.get('page')) {
-        urlSegments.splice(-1, 1, 'page-');
-      } else {
-        urlSegments.push('page-');
-      }
-      this.pageUrl = `/${urlSegments.join('/')}`;
-      this.pageUrlParam = { ...this.route.snapshot.queryParams };
     });
   }
 }

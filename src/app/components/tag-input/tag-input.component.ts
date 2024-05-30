@@ -3,6 +3,8 @@ import { TagDTO } from '../../interfaces/tag';
 import { slugify } from '../../helpers/slugify';
 import { Observable } from 'rxjs';
 import { TagsService } from '../../services/tags.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-tag-input',
@@ -32,6 +34,8 @@ import { TagsService } from '../../services/tags.service';
       </div>
     </div>
   `,
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   styleUrls: ['./tag-input.component.less']
 })
 export class TagInputComponent {

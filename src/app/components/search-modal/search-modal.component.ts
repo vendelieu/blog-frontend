@@ -1,13 +1,17 @@
 import { Component, Inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { PostsService } from '../../services/posts.service';
-import { DOCUMENT } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-search-modal',
   templateUrl: './search-modal.component.html',
-  styleUrls: ['./search-modal.component.less']
+  styleUrls: ['./search-modal.component.less'],
+  imports: [CommonModule, FontAwesomeModule, FormsModule],
+  standalone: true
 })
 export class SearchModalComponent {
   keyword = '';
@@ -17,7 +21,8 @@ export class SearchModalComponent {
     private postsService: PostsService,
     private router: Router,
     @Inject(DOCUMENT) private document: Document
-  ) {}
+  ) {
+  }
 
   search() {
     this.keyword = this.keyword.trim();

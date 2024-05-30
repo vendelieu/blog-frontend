@@ -19,7 +19,7 @@
               <i class='icon icon-book'></i> {{ post.content | readingTime }} min
             </span>
           <span title='Edit post' *ngIf='isAdmin'>
-              <fa-icon [icon]='editPostIcon' (click)='editPostButton()'></fa-icon>
+              <fa-icon [icon]='editPostIcon' (click)='editPostButton()' class='cursor'></fa-icon>
           </span>
         </div>
       </div>
@@ -68,13 +68,13 @@
       <div *ngIf='post.prev || post.next' class='divider-dashed'></div>
       <div *ngIf='post.prev || post.next' class='post-link'>
         <div class='post-link-prev'>
-          <a *ngIf='post.prev' [routerLink]="['/' + post.prev.slug]" title='{{post.prev.title}}'>
+          <a *ngIf='post.prev' [routerLink]="['/post/' + post.prev.slug]" title='{{post.prev.title}}'>
             <span class='post-link-text'><fa-icon [icon]='prevIcon'></fa-icon>
               {{ post.prev.title }}</span>
           </a>
         </div>
         <div class='post-link-next'>
-          <a *ngIf='post.next' [routerLink]="['/' + post.next.slug]" title='{{post.next.title}}'>
+          <a *ngIf='post.next' [routerLink]="['/post/' + post.next.slug]" title='{{post.next.title}}'>
             <span class='post-link-text'>{{ post.next.title }}
               <fa-icon [icon]='nextIcon'></fa-icon></span>
           </a>

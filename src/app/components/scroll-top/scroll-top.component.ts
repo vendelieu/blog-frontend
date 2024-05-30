@@ -1,11 +1,16 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { faAnglesUp } from '@fortawesome/free-solid-svg-icons';
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-scroll-top',
   templateUrl: './scroll-top.component.html',
   styleUrls: ['./scroll-top.component.less'],
+  imports: [FontAwesomeModule],
+  standalone: true,
   animations: [
     trigger('appearInOut', [
       state(

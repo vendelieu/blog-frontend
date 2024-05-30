@@ -1,54 +1,30 @@
-import { Component, ElementRef, Inject, Input, PLATFORM_ID, Renderer2, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { ThemeService } from '../../services/theme.service';
+import { CommonModule } from '@angular/common';
 
 import 'giscus';
-import { collectResultSync } from '@lit-labs/ssr/lib/render-result';
-import { html, render } from '@lit-labs/ssr';
-import { PlatformService } from '../../core/platform.service';
-import { isPlatformServer } from '@angular/common';
 
 @Component({
   selector: 'app-comments',
   templateUrl: './comments.component.html',
-  styleUrls: ['./comments.component.less']
+  styleUrls: ['./comments.component.less'],
+  imports: [CommonModule],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CommentsComponent {
   theme: string = 'dark';
   @Input('show') showComments!: boolean;
-  isExpanded = false;
-  @ViewChild('comments') commentsEl!: ElementRef;
+  isExpanded = true;
 
-  constructor(
-    private renderer: Renderer2,
-    @Inject(PLATFORM_ID) _platformId: Object,
-    themeService: ThemeService
-  ) {
-    this.isExpanded = false;
-
-    if (isPlatformServer(_platformId)) {
-      const giscusComponent = collectResultSync(render(html`
-        <giscus-widget
-          id='comments'
-          repo='vendelieu/blog-frontend'
-          repoid='R_kgDOHo0zig'
-          category='Comments'
-          categoryid='DIC_kwDOHo0zis4CXkRl'
-          mapping='og:title'
-          data-strict='1'
-          reactionsenabled='1'
-          emitmetadata='0'
-          inputposition='top'
-          [attr.theme]='theme'
-          theme='{{theme}}'
-          lang='en'
-          loading='lazy'
-        ></giscus-widget>`));
-
-      this.renderer.setProperty(this.commentsEl.nativeElement, 'innerHTML', giscusComponent);
-    }
-    themeService.getFlow().subscribe((e) => {
+  constructor(themeService: ThemeService,) {
+    themeService.themeChanges.subscribe((e) => {
       this.theme = e;
     });
+  }
+
+  refresh() {
+    this.isExpanded = true;
   }
 
   toggleComments() {

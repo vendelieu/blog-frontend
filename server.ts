@@ -1,50 +1,35 @@
-import 'zone.js/node';
-
 import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine } from '@angular/ssr';
-import * as express from 'express';
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
-import { AppServerModule } from './src/main.server';
-import { environment } from './src/environments/environment';
-import * as compress from 'compression';
-import helmet from 'helmet';
-
-const cors = require('cors');
-const corsOpts = {
-  origin: ['127.0.0.1:3000', ['vendeli.eu']],
-
-  methods: [
-    'GET',
-    'POST'
-  ],
-
-  allowedHeaders: [
-    'Content-Type'
-  ]
-};
+import express from 'express';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { REQUEST, RESPONSE } from './src/express.tokens';
+import bootstrap from './src/main.server';
+import compress from 'compression';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
-  const distFolder = join(process.cwd(), 'dist/browser');
-  const indexHtml = existsSync(join(distFolder, 'index.original.html'))
-    ? join(distFolder, 'index.original.html')
-    : join(distFolder, 'index.html');
+  const serverDistFolder = dirname(fileURLToPath(import.meta.url));
+  const browserDistFolder = resolve(serverDistFolder, '../browser');
+  const indexHtml = join(serverDistFolder, 'index.server.html');
 
-  const commonEngine = new CommonEngine({
-    enablePerformanceProfiler: true
-  });
+  const commonEngine = new CommonEngine();
 
   server.set('view engine', 'html');
-  server.set('views', distFolder);
+  server.set('views', browserDistFolder);
 
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser
-  server.get('*.*', express.static(distFolder, {
-    maxAge: '1y'
-  }));
+  server.get(
+    '*.*',
+    express.static(browserDistFolder, {
+      maxAge: '1y',
+    })
+  );
+
+  server.use(compress());
 
   // All regular routes use the Angular engine
   server.get('*', (req, res, next) => {
@@ -52,11 +37,15 @@ export function app(): express.Express {
 
     commonEngine
       .render({
-        bootstrap: AppServerModule,
+        bootstrap,
         documentFilePath: indexHtml,
         url: `${protocol}://${headers.host}${originalUrl}`,
-        publicPath: distFolder,
-        providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }]
+        publicPath: browserDistFolder,
+        providers: [
+          { provide: APP_BASE_HREF, useValue: baseUrl },
+          { provide: REQUEST, useValue: req },
+          { provide: RESPONSE, useValue: res },
+        ],
       })
       .then((html) => res.send(html))
       .catch((err) => next(err));
@@ -66,39 +55,13 @@ export function app(): express.Express {
 }
 
 function run(): void {
-  const port = environment.server?.port || 4000;
-  const host = environment.server?.host || 'localhost';
+  const port = process.env['PORT'] || 4000;
 
   // Start up the Node server
   const server = app();
-
-  server.use(compress());
-  server.use(cors(corsOpts));
-
-  server.use(
-    helmet({
-      contentSecurityPolicy: false,
-      crossOriginEmbedderPolicy: false,
-      crossOriginOpenerPolicy: false,
-      originAgentCluster: false,
-      dnsPrefetchControl: false,
-      referrerPolicy: false
-    })
-  );
-
-  server.listen(port, host, () => {
-    console.log(`Node Express server listening on http://${host}:${port}`);
+  server.listen(port, () => {
+    console.log(`Node Express server listening on http://localhost:${port}`);
   });
 }
 
-// Webpack will replace 'require' with '__webpack_require__'
-// '__non_webpack_require__' is a proxy to Node 'require'
-// The below code is to ensure that the server is run only when not requiring the bundle.
-declare const __non_webpack_require__: NodeRequire;
-const mainModule = __non_webpack_require__.main;
-const moduleFilename = mainModule && mainModule.filename || '';
-if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
-  run();
-}
-
-export default AppServerModule;
+run();

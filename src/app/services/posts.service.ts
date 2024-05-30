@@ -4,59 +4,60 @@ import { map } from 'rxjs/operators';
 import { ApiUrl } from '../config/api-url';
 import { NavPost, PostEntity, PostQueryParam } from '../interfaces/posts';
 import { HttpResponseEntity, PaginatedHttpResponse } from '../interfaces/http-response';
-import { TransferHttpService } from './transfer-http.service';
+import { HttpClient } from '@angular/common/http';
+import { getAdminUrl, getApiUrl } from '../helpers/urlFormer';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostsService {
-  constructor(private transferHttp: TransferHttpService) {}
+  constructor(private httpClient: HttpClient) {}
 
   getPosts(param: PostQueryParam): Observable<PaginatedHttpResponse<PostEntity[]> | undefined> {
-    return this.transferHttp.get<PaginatedHttpResponse<PostEntity[]>>(
-      this.transferHttp.getApiUrl(ApiUrl.GET_POSTS),
-      { params: param }
+    return this.httpClient.get<PaginatedHttpResponse<PostEntity[]>>(
+      getApiUrl(ApiUrl.GET_POSTS),
+      { params: param as any }
     );
   }
 
   getPostBySlug(slug: string): Observable<PostEntity | undefined> {
-    return this.transferHttp
+    return this.httpClient
       .get<HttpResponseEntity<PostEntity>>(
-        this.transferHttp.getApiUrl(ApiUrl.GET_POST_BY_SLUG).replace(':slug', slug)
+        getApiUrl(ApiUrl.GET_POST_BY_SLUG).replace(':slug', slug)
       )
       .pipe(map((res) => res?.data || undefined));
   }
 
   getRelatedPostBySlug(slug: string): Observable<NavPost[] | undefined> {
-    return this.transferHttp
+    return this.httpClient
       .get<HttpResponseEntity<NavPost[]>>(
-        this.transferHttp.getApiUrl(ApiUrl.GET_RELATED_POST_BY_SLUG).replace(':slug', slug)
+        getApiUrl(ApiUrl.GET_RELATED_POST_BY_SLUG).replace(':slug', slug)
       )
       .pipe(map((res) => res?.data || undefined));
   }
 
   updatePostById(id: number, body: Record<string, any>): Observable<boolean> {
-    return this.transferHttp
+    return this.httpClient
       .put<HttpResponseEntity<string>>(
-        this.transferHttp.getAdminUrl(ApiUrl.ADMIN_POST_ACTION).replace(':id', id.toString()),
+        getAdminUrl(ApiUrl.ADMIN_POST_ACTION).replace(':id', id.toString()),
         body
       )
       .pipe(map((res) => res.code === 200));
   }
 
   createPost(body: Record<string, any>): Observable<boolean> {
-    return this.transferHttp
+    return this.httpClient
       .post<HttpResponseEntity<string>>(
-        this.transferHttp.getAdminUrl(ApiUrl.ADMIN_CREATE_POST),
+        getAdminUrl(ApiUrl.ADMIN_CREATE_POST),
         body
       )
       .pipe(map((res) => res.code === 200));
   }
 
   deletePost(id: number) {
-    return this.transferHttp
+    return this.httpClient
       .delete<HttpResponseEntity<string>>(
-        this.transferHttp.getAdminUrl(ApiUrl.ADMIN_POST_ACTION).replace(':id', id.toString())
+        getAdminUrl(ApiUrl.ADMIN_POST_ACTION).replace(':id', id.toString())
       )
       .pipe(map((res) => res.code === 200));
   }

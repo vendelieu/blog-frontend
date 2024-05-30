@@ -1,6 +1,6 @@
 <div class='banner'>
   <ul>
-    <li><img alt='{{siteName}} Banner' src='/assets/images/banner.png' /></li>
+    <li><img alt='{{siteName}} Banner' ngSrc='/assets/images/banner.png' height='334' width='1000' priority/></li>
   </ul>
 </div>
 <div *ngIf='postList?.length === 0' class='not-found'>
@@ -10,14 +10,14 @@
   <div class='article-list'>
     <article *ngFor='let post of postList' class='article'>
       <header>
-        <a [routerLink]="['/' + post.slug]"
+        <a [routerLink]="['/post/' + post.slug]"
            class='article-link' rel='bookmark'
            title='{{post.title}}'>
-          <img alt='Article image' src='{{post.image}}' src-fallback='/assets/images/blank_image.webp'>
+          <img alt='Article image' ngSrc='{{post.image}}' src-fallback='/assets/images/blank_image.webp' fill priority>
         </a>
         <div class='article-card'>
           <h3>
-            <a [routerLink]="['/' + post.slug]" rel='bookmark' title='{{post.title}}'>{{post.title}}</a>
+            <a [routerLink]="['/post/' + post.slug]" rel='bookmark' title='{{post.title}}'>{{post.title}}</a>
           </h3>
           <div class='article-meta article-meta-top'>
       <span title='Date of article creation.'>

@@ -11,7 +11,7 @@ import { Options } from '../../../config/site-options';
 import { MetaService } from '../../../services/meta.service';
 import { ImagesService } from '../../../services/images.service';
 import { slugify } from '../../../helpers/slugify';
-import { faUndo } from '@fortawesome/free-solid-svg-icons/faUndo';
+import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import { TagsService } from '../../../services/tags.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EditorModule } from '@tinymce/tinymce-angular';

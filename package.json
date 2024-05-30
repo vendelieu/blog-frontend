@@ -12,7 +12,8 @@
     "test": "ng test",
     "coverage": "ng test --no-watch --code-coverage",
     "lint": "ng lint",
-    "serve": "node dist/browser/server/server.mjs"
+    "serve": "node dist/browser/server/server.mjs",
+    "build:prod": "npm run build --configuration=production && gulp build"
   },
   "dependencies": {
     "@angular/animations": "^18.0.0",

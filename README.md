@@ -17,17 +17,9 @@ provided by [blog-backend](https://github.com/vendelieu/blog-backend).
 # Installation
 $ npm i
 
-# SSR mode
-$ npm run dev:ssr
-$ npm run serve:ssr
-$ npm run build:ssr
-$ npm run build:gulp
-$ npm run build:prod
-
-# SPA mode
-$ npm run start
+# SSR
 $ npm run build
-$ npm run watch
+$ npm run build:prod
 
 # Code scaffolding
 $ ng g component|directive|pipe|service|class|guard|interface|enum|module name

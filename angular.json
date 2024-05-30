@@ -24,6 +24,7 @@
               "qrcode",
               "lodash",
               "ua-parser-js",
+              "compression",
               "prismjs"
             ],
             "assets": [
@@ -74,13 +75,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "550kb",
+                  "maximumWarning": "610kb",
                   "maximumError": "1mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "5kb",
-                  "maximumError": "12kb"
+                  "maximumWarning": "12kb",
+                  "maximumError": "24kb"
                 }
               ],
               "outputHashing": "all",

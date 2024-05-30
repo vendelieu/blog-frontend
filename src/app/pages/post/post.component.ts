@@ -150,7 +150,7 @@ export class PostComponent implements OnInit {
       setTimeout(() => this.prepareContent(), 0);
     }
     this.postTags = this.post.tags;
-    this.shareUrl = Options.site_url + '/' + this.post.slug;
+    this.shareUrl = Options.site_url + '/post/' + this.post.slug;
     this.fetchRelated();
   }
 

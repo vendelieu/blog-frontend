@@ -47,3 +47,4 @@ yarn.lock
 /src/environments
 /src/favicon/*
 /src/webmaster/*
+/scripts/routes.txt

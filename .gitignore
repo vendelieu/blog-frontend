@@ -48,3 +48,4 @@ yarn.lock
 /src/favicon/*
 /src/webmaster/*
 /scripts/routes.txt
+/scripts/build.sh

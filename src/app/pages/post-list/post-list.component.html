@@ -1,6 +1,7 @@
 <div class='banner'>
   <ul>
-    <li><img alt='{{siteName}} Banner' ngSrc='/assets/images/banner.png' priority/></li>
+    <li><!--suppress AngularNgOptimizedImage -->
+      <img alt='{{siteName}} Banner' src='/assets/images/banner.png'/></li>
   </ul>
 </div>
 <div *ngIf='postList?.length === 0' class='not-found'>

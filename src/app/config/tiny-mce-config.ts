@@ -9,12 +9,14 @@ export const TinyMceConfig = {
   codesample_global_prismjs: true,
   codesample_languages: [
     { text: 'Kotlin', value: 'kotlin' },
-    { text: 'HTML/XML', value: 'markup' },
+    { text: 'HTML', value: 'markup' },
     { text: 'TypeScript', value: 'typescript' },
     { text: 'Rust', value: 'rust' },
     { text: 'Python', value: 'python' },
     { text: 'Java', value: 'java' },
-    { text: 'Bash', value: 'bash' }
+    { text: 'Bash', value: 'bash' },
+    { text: 'Docker', value: 'docker' },
+    { text: 'XML', value: 'xml-doc' }
   ],
   browser_spellcheck: true,
   skin: '',

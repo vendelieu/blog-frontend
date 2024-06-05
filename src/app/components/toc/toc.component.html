@@ -1,23 +1,25 @@
-<div *ngIf='tocList.length > 0' class='toc-section'>
-  <aside class='toc-wrap'>
-    <h3 class='toc-title'>Contents:</h3>
-    <ol class='toc'>
-      <ng-container *ngFor='let toc of tocList'>
-        <li class='toc-item {{"toc-lvl-" + toc.lvl}}' id='toc-{{toc.id}}'>
-          <a class='toc-link' href='{{baseUrl}}#{{toc.id}}'>
-            <span class='toc-text'>{{ toc.name }}</span>
-          </a>
-        </li>
-      </ng-container>
-    </ol>
-  </aside>
-  <svg height='100%' id='toc-svg' width='100%' xmlns='http://www.w3.org/2000/svg'>
-    <path #tocPath d='' fill='none' stroke-width='2' transform='translate(-0.5, -0.5)' />
-  </svg>
-</div>
+@if (tocList.length > 0) {
+  <div class='toc-section'>
+    <aside class='toc-wrap'>
+      <h3 class='toc-title'>Contents:</h3>
+      <ol class='toc'>
+        @for (toc of tocList; track toc) {
+          <li class='toc-item {{"toc-lvl-" + toc.lvl}}' id='toc-{{toc.id}}'>
+            <a class='toc-link' href='{{baseUrl}}#{{toc.id}}'>
+              <span class='toc-text'>{{ toc.name }}</span>
+            </a>
+          </li>
+        }
+      </ol>
+    </aside>
+    <svg height='100%' id='toc-svg' width='100%' xmlns='http://www.w3.org/2000/svg'>
+      <path #tocPath d='' fill='none' stroke-width='2' transform='translate(-0.5, -0.5)' />
+    </svg>
+  </div>
+}
 <div class='toc-block mobile-toc'>
   <h3 class='toc-title'>Table of Contents:</h3>
-  <ng-container *ngFor='let toc of tocList'>
+  @for (toc of tocList; track toc) {
     <ul>
       <li class='{{"toc-lvl-" + toc.lvl}}'>
         <a href='{{baseUrl}}#{{toc.id}}'>
@@ -25,5 +27,5 @@
         </a>
       </li>
     </ul>
-  </ng-container>
+  }
 </div>

@@ -11,14 +11,14 @@ import { SortType } from '../../interfaces/posts';
 import { PaginationService } from '../../services/pagination.service';
 import { Options } from '../../config/site-options';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-page-bar',
   templateUrl: './page-bar.component.html',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [FontAwesomeModule],
   styleUrls: ['./page-bar.component.less']
 })
 export class PageBarComponent {

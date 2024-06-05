@@ -5,14 +5,14 @@ import { faCode, faTerminal } from '@fortawesome/free-solid-svg-icons';
 import { Options } from '../../config/site-options';
 import { MetaService } from '../../services/meta.service';
 import { HTMLMetaData } from '../../interfaces/meta';
-import { CommonModule } from '@angular/common';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.less'],
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [FontAwesomeModule],
   standalone: true
 })
 export class ProjectsComponent implements OnInit {

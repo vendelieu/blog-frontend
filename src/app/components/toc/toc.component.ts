@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { NodeEl, TocElement } from '../../interfaces/posts';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { PlatformService } from '../../services/platform.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { PlatformService } from '../../services/platform.service';
   templateUrl: './toc.component.html',
   standalone: true,
   styleUrls: ['./toc.component.less'],
-  imports: [CommonModule]
+  imports: []
 })
 export class TocComponent implements OnInit {
   tocList: TocElement[] = [];

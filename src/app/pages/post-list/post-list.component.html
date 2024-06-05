@@ -1,51 +1,63 @@
 <div class='banner'>
   <ul>
     <li><!--suppress AngularNgOptimizedImage -->
-      <img alt='{{siteName}} Banner' src='/assets/images/banner.png'/></li>
+    <img alt='{{siteName}} Banner' src='/assets/images/banner.png'/></li>
   </ul>
 </div>
-<div *ngIf='postList?.length === 0' class='not-found'>
-  no posts found
-</div>
+@if (postList?.length === 0) {
+  <div class='not-found'>
+    no posts found
+  </div>
+}
 <div class='post-list-wrapper'>
   <div class='article-list'>
-    <article *ngFor='let post of postList' class='article'>
-      <header>
-        <a [routerLink]="['/post/' + post.slug]"
-           class='article-link' rel='bookmark'
-           title='{{post.title}}'>
-          <img alt='Article image' fill ngSrc='{{post.image}}' priority src-fallback='/assets/images/blank_image.webp'>
-        </a>
-        <div class='article-card'>
-          <h3>
-            <a [routerLink]="['/post/' + post.slug]" rel='bookmark' title='{{post.title}}'>{{ post.title }}</a>
-          </h3>
-          <div class='article-meta article-meta-top'>
-      <span title='Date of article creation.'>
-        <i class='icon icon-calendar'></i><span>{{ post.updated_at | date:'EEE, MMMM d, y' }}</span>
-      </span>
-          </div>
-        </div>
-      </header>
-      <div class='content-wrapper'>
-        <div class='article-content'>
-          <p class='article-excerpt'>
-            <span [innerHTML]='post.description'></span>
-          </p>
-          <div *ngIf='post.tags?.length ?? 0 > 0' class='article-meta article-meta-bottom'>
-            <div *ngIf='post.tags?.length ?? 0 > 0' class='article-meta-tag'>
-              <div class='article-meta-icon'><i class='icon icon-tag'></i></div>
-              <ul class='article-meta-info tag-list'>
-                <li *ngFor='let tag of post.tags'>
-                  <a [routerLink]="['/tag/' + tag.slug]" class='tag-list-item'
-                     rel='category' title='{{tag.name}}'>{{ tag.name }}</a>
-                </li>
-              </ul>
+    @for (post of postList; track post) {
+      <article class='article'>
+        <header>
+          <a [routerLink]="['/post/' + post.slug]"
+            class='article-link' rel='bookmark'
+            title='{{post.title}}'>
+            <img alt='Article image' fill ngSrc='{{post.image}}' priority src-fallback='/assets/images/blank_image.webp'>
+          </a>
+          <div class='article-card'>
+            <h3>
+              <a [routerLink]="['/post/' + post.slug]" rel='bookmark' title='{{post.title}}'>{{ post.title }}</a>
+            </h3>
+            <div class='article-meta article-meta-top'>
+              <span title='Date of article creation.'>
+                <i class='icon icon-calendar'></i><span>{{ post.updated_at | date:'EEE, MMMM d, y' }}</span>
+              </span>
             </div>
           </div>
+        </header>
+        <div class='content-wrapper'>
+          <div class='article-content'>
+            <p class='article-excerpt'>
+              <span [innerHTML]='post.description'></span>
+            </p>
+            @if (post.tags.length > 0) {
+              <div class='article-meta article-meta-bottom'>
+                @if (post.tags.length > 0) {
+                  <div class='article-meta-tag'>
+                    <div class='article-meta-icon'><i class='icon icon-tag'></i></div>
+                    <ul class='article-meta-info tag-list'>
+                      @for (tag of post.tags; track tag) {
+                        <li>
+                          <a [routerLink]="['/tag/' + tag.slug]" class='tag-list-item'
+                          rel='category' title='{{tag.name}}'>{{ tag.name }}</a>
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                }
+              </div>
+            }
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
+    }
   </div>
-  <app-page-bar *ngIf='postList?.length ?? 0 > 0' [paginator]='paginatorData' curSort='{{sort}}' />
+  @if (postList?.length ?? 0 > 0) {
+    <app-page-bar [paginator]='paginatorData' curSort='{{sort}}' />
+  }
 </div>

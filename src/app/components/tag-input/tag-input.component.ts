@@ -3,7 +3,7 @@ import { TagDTO } from '../../interfaces/tag';
 import { slugify } from '../../helpers/slugify';
 import { Observable } from 'rxjs';
 import { TagsService } from '../../services/tags.service';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -11,10 +11,12 @@ import { FormsModule } from '@angular/forms';
   template: `
     <div class='tag-input-container'>
       <div class='tags'>
-        <span *ngFor='let tag of tags; let i = index' class='tag'>
-          {{ tag.name }}
-          <span class='remove-tag' (click)='removeTag(i)'>×</span>
-        </span>
+        @for (tag of tags; track tag; let i = $index) {
+          <span class='tag'>
+            {{ tag.name }}
+            <span class='remove-tag' (click)='removeTag(i)'>×</span>
+          </span>
+        }
       </div>
       <input
         [(ngModel)]='inputValue'
@@ -24,18 +26,19 @@ import { FormsModule } from '@angular/forms';
         (blur)='hideDropdown()'
         [placeholder]='placeholder'
         class='tag-input' />
-      <div class='autocomplete-list' *ngIf='showAutocomplete && autocompleteItems && autocompleteItems.length > 0'>
-        <div
-          *ngFor='let item of autocompleteItems'
-          class='autocomplete-item'
-          (mousedown)='selectAutocompleteItem(item);'>
-          {{ item.name }}
-        </div>
+      <div class='autocomplete-list' *if='showAutocomplete && autocompleteItems && autocompleteItems.length > 0'>
+        @for (item of autocompleteItems; track item) {
+          <div
+            class='autocomplete-item'
+            (mousedown)='selectAutocompleteItem(item);'>
+            {{ item.name }}
+          </div>
+        }
       </div>
     </div>
-  `,
+    `,
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   styleUrls: ['./tag-input.component.less']
 })
 export class TagInputComponent {

@@ -16,7 +16,7 @@ import { TagsService } from '../../../services/tags.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { TagInputComponent } from '../../../components/tag-input/tag-input.component';
-import { CommonModule } from '@angular/common';
+
 import { PlatformService } from '../../../services/platform.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -26,12 +26,11 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./adm-post.component.less'],
   standalone: true,
   imports: [
-    CommonModule,
     TagInputComponent,
     FontAwesomeModule,
     ReactiveFormsModule,
     EditorModule
-  ]
+]
 })
 export class AdmPostComponent implements OnInit {
   @Input() slug = '';

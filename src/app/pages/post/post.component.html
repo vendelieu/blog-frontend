@@ -1,89 +1,113 @@
 <div class='post-content' itemscope itemtype='https://schema.org/Blog'>
-  <i *ngIf='post.id === 0' class='icon icon-loading'></i>
-  <div *ngIf='post.id > 0' class='post' itemprop='blogPosts' itemscope itemtype='https://schema.org/BlogPosting'>
-    <header class='post-header'>
-      <img alt='Article image' fill itemprop='image' ngSrc='{{post.image}}'
-           priority src-fallback='/assets/images/blank_image.webp'>
-      <div class='post-card'>
-        <h1 class='post-title' itemprop='headline'>
-          {{ post.title }}
-        </h1>
-        <div class='post-meta post-meta-top'>
-            <span title='Date of article creation.'>
-              <i class='icon icon-calendar'></i>
-              <span attr.datetime="{{post.updated_at | date: 'YYYY-MM-DD'}}" itemprop='datePublished'>
-                {{ post.updated_at | date:'EEE, MMMM d, y, HH:mm' }}
+  @if (post.id === 0) {
+    <i class='icon icon-loading'></i>
+  }
+  @if (post.id > 0) {
+    <div class='post' itemprop='blogPosts' itemscope itemtype='https://schema.org/BlogPosting'>
+      <header class='post-header'>
+        <img alt='Article image' fill itemprop='image' ngSrc='{{post.image}}'
+          priority src-fallback='/assets/images/blank_image.webp'>
+          <div class='post-card'>
+            <h1 class='post-title' itemprop='headline'>
+              {{ post.title }}
+            </h1>
+            <div class='post-meta post-meta-top'>
+              <span title='Date of article creation.'>
+                <i class='icon icon-calendar'></i>
+                <span attr.datetime="{{post.updated_at | date: 'YYYY-MM-DD'}}" itemprop='datePublished'>
+                  {{ post.updated_at | date:'EEE, MMMM d, y, HH:mm' }}
+                </span>
               </span>
-            </span>
-          <span title='Read time'>
-              <i class='icon icon-book'></i> {{ post.content | readingTime }} min
-            </span>
-          <span *ngIf='isAdmin' title='Edit post'>
-              <fa-icon (click)='editPostButton()' [icon]='editPostIcon' class='cursor'></fa-icon>
-          </span>
-        </div>
+              <span title='Read time'>
+                <i class='icon icon-book'></i> {{ post.content | readingTime }} min
+              </span>
+              @if (isAdmin) {
+                <span title='Edit post'>
+                  <fa-icon (click)='editPostButton()' [icon]='editPostIcon' class='cursor'></fa-icon>
+                </span>
+              }
+            </div>
+          </div>
+        </header>
+        @if (tocElements.length > 0) {
+          <app-toc [baseUrl]='shareUrl' [tocTarget]='tocElements'></app-toc>
+        }
+        <article class='article-content' itemprop='articleBody'>
+          <div #tocTarget [innerHTML]='post.content | safeHtml' class='line-numbers' id='toc-target'></div>
+        </article>
+        <footer class='post-footer'>
+          @if (relatedPosts?.length ?? 0 > 0) {
+            <div class='related'>
+              <div class='post-meta'>
+                <h4>Related posts:</h4>
+                @for (relatedPost of relatedPosts; track relatedPost) {
+                  <a [routerLink]="['/' + relatedPost.slug]" title='{{relatedPost.title}}'>
+                    <span class='post-link-text'>{{ relatedPost.title }}</span>
+                  </a>
+                }
+              </div>
+            </div>
+          }
+          <div class='post-actions'>
+            <button (click)='showShareQrcode()' title='Qr code'>
+              <fa-icon [icon]='qrCodeIcon'></fa-icon>
+            </button>
+            <button (click)='shareButton("email")' title='Email'>
+              <fa-icon [icon]='emailIcon'></fa-icon>
+            </button>
+            <button (click)='shareButton("linkedin")' title='LinkedIn'>
+              <fa-icon [icon]='linkedinIcon'></fa-icon>
+            </button>
+            <button (click)='shareButton("facebook")' title='Facebook'>
+              <fa-icon [icon]='facebookIcon'></fa-icon>
+            </button>
+            <button (click)='shareButton("twitter")' title='Twitter'>
+              <fa-icon [icon]='twitterIcon'></fa-icon>
+            </button>
+          </div>
+          @if (postTags?.length ?? 0 > 0) {
+            <div class='post-meta'>
+              <div class='post-meta-icon'><i class='icon icon-tag'></i></div>
+              <ul class='post-meta-info tag-list'>
+                @for (tag of postTags; track tag) {
+                  <li>
+                    <a [routerLink]="['/tag/' + tag.slug]" class='tag-list-item'
+                    rel='category' title='{{tag.name}}'>{{ tag.name }}</a>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+          @if (post.prev || post.next) {
+            <div class='divider-dashed'></div>
+          }
+          @if (post.prev || post.next) {
+            <div class='post-link'>
+              <div class='post-link-prev'>
+                @if (post.prev) {
+                  <a [routerLink]="['/post/' + post.prev.slug]" title='{{post.prev.title}}'>
+                    <span class='post-link-text'><fa-icon [icon]='prevIcon'></fa-icon>
+                  {{ post.prev.title }}</span>
+                </a>
+              }
+            </div>
+            <div class='post-link-next'>
+              @if (post.next) {
+                <a [routerLink]="['/post/' + post.next.slug]" title='{{post.next.title}}'>
+                  <span class='post-link-text'>{{ post.next.title }}
+                    <fa-icon [icon]='nextIcon'></fa-icon></span>
+                  </a>
+                }
+              </div>
+            </div>
+          }
+        </footer>
+        <meta attr.itemid='{{shareUrl}}' itemType='https://schema.org/WebPage' itemprop='mainEntityOfPage' itemscope />
       </div>
-    </header>
-    <app-toc *ngIf='tocElements.length > 0' [baseUrl]='shareUrl' [tocTarget]='tocElements'></app-toc>
-    <article class='article-content' itemprop='articleBody'>
-      <div #tocTarget [innerHTML]='post.content | safeHtml' class='line-numbers' id='toc-target'></div>
-    </article>
-    <footer class='post-footer'>
-      <div *ngIf='relatedPosts?.length ?? 0 > 0' class='related'>
-        <div class='post-meta'>
-          <h4>Related posts:</h4>
-          <ng-container *ngFor='let relatedPost of relatedPosts'>
-            <a [routerLink]="['/' + relatedPost.slug]" title='{{relatedPost.title}}'>
-              <span class='post-link-text'>{{ relatedPost.title }}</span>
-            </a>
-          </ng-container>
-        </div>
-      </div>
-      <div class='post-actions'>
-        <button (click)='showShareQrcode()' title='Qr code'>
-          <fa-icon [icon]='qrCodeIcon'></fa-icon>
-        </button>
-        <button (click)='shareButton("email")' title='Email'>
-          <fa-icon [icon]='emailIcon'></fa-icon>
-        </button>
-        <button (click)='shareButton("linkedin")' title='LinkedIn'>
-          <fa-icon [icon]='linkedinIcon'></fa-icon>
-        </button>
-        <button (click)='shareButton("facebook")' title='Facebook'>
-          <fa-icon [icon]='facebookIcon'></fa-icon>
-        </button>
-        <button (click)='shareButton("twitter")' title='Twitter'>
-          <fa-icon [icon]='twitterIcon'></fa-icon>
-        </button>
-      </div>
-      <div *ngIf='postTags?.length ?? 0 > 0' class='post-meta'>
-        <div class='post-meta-icon'><i class='icon icon-tag'></i></div>
-        <ul class='post-meta-info tag-list'>
-          <li *ngFor='let tag of postTags'>
-            <a [routerLink]="['/tag/' + tag.slug]" class='tag-list-item'
-               rel='category' title='{{tag.name}}'>{{ tag.name }}</a>
-          </li>
-        </ul>
-      </div>
-      <div *ngIf='post.prev || post.next' class='divider-dashed'></div>
-      <div *ngIf='post.prev || post.next' class='post-link'>
-        <div class='post-link-prev'>
-          <a *ngIf='post.prev' [routerLink]="['/post/' + post.prev.slug]" title='{{post.prev.title}}'>
-            <span class='post-link-text'><fa-icon [icon]='prevIcon'></fa-icon>
-              {{ post.prev.title }}</span>
-          </a>
-        </div>
-        <div class='post-link-next'>
-          <a *ngIf='post.next' [routerLink]="['/post/' + post.next.slug]" title='{{post.next.title}}'>
-            <span class='post-link-text'>{{ post.next.title }}
-              <fa-icon [icon]='nextIcon'></fa-icon></span>
-          </a>
-        </div>
-      </div>
-    </footer>
-    <meta attr.itemid='{{shareUrl}}' itemType='https://schema.org/WebPage' itemprop='mainEntityOfPage' itemscope />
+    }
+    @if (showImgModal) {
+      <app-modal (toggleModal)='toggleImgModal($event)'
+        [imgEle]='clickedImage' [padding]='imgModalPadding' />
+    }
+    <app-comments [show]='post.commentaries_open' />
   </div>
-  <app-modal (toggleModal)='toggleImgModal($event)'
-             *ngIf='showImgModal' [imgEle]='clickedImage' [padding]='imgModalPadding' />
-  <app-comments [show]='post.commentaries_open' />
-</div>

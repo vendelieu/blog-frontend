@@ -7,36 +7,43 @@
     libraries, and frameworks that improve the developer experience.<br><br>
 
     If you have any relevant suggestions or interesting questions to discuss, please contact me directly via <a
-    href='mailto:{{email}}'>email</a>.
-  </div>
-  <div>
-    <h1 class='project-text'>
-      <b>Projects</b>
-    </h1>
-  </div>
-  <i *ngIf='loading' class='icon icon-loading'></i>
+  href='mailto:{{email}}'>email</a>.
+</div>
+<div>
+  <h1 class='project-text'>
+    <b>Projects</b>
+  </h1>
+</div>
+@if (loading) {
+  <i class='icon icon-loading'></i>
+}
+@if (githubProjects?.length ?? 0 > 0) {
   <div
-    *ngIf='githubProjects?.length ?? 0 > 0'
     class='row'
-  >
-    <a *ngFor='let project of githubProjects; let i = index' class='card'
-       href='{{ project.html_url }}'
-       target='_blank'
     >
-      <div class='card-content secondary-color project-text'>
-        <span>
-          <div class='card-title-content'>
-            <h5 class='project-title'>
-              <fa-icon [icon]='projectIcon'> </fa-icon>
-              {{ project.name }}
-            </h5>
-            <span *ngIf='project.language'><fa-icon [icon]='langIcon'></fa-icon>
-              {{ project.language }}
-            </span>
+    @for (project of githubProjects; track project; let i = $index) {
+      <a class='card'
+        href='{{ project.html_url }}'
+        target='_blank'
+        >
+        <div class='card-content secondary-color project-text'>
+          <span>
+            <div class='card-title-content'>
+              <h5 class='project-title'>
+                <fa-icon [icon]='projectIcon'> </fa-icon>
+                {{ project.name }}
+              </h5>
+              @if (project.language) {
+                <span><fa-icon [icon]='langIcon'></fa-icon>
+                {{ project.language }}
+              </span>
+            }
           </div>
         </span>
         <p class='project-description'>{{ project.description }}</p>
       </div>
     </a>
-  </div>
+  }
+</div>
+}
 </div>

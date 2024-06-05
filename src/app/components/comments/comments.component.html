@@ -1,23 +1,27 @@
-<div (click)='toggleComments()' *ngIf='showComments'
-     [class]="isExpanded ? 'btn reverse-btn' : 'btn expand-btn'">{{ !isExpanded ? 'View comments' : 'Hide comments' }}
-</div>
-<div *ngIf='!showComments || !isExpanded' class='comment'>
-  <div class='comment-list' id='comments'>
-    <giscus-widget
-      [attr.theme]='theme'
-      category='Comments'
-      categoryid='DIC_kwDOHo0zis4CXkRl'
-      data-strict='1'
-      emitmetadata='0'
-      id='comments'
-      inputposition='top'
-      lang='en'
-      loading='lazy'
-      mapping='og:title'
-      reactionsenabled='1'
-      repo='vendelieu/blog-frontend'
-      repoid='R_kgDOHo0zig'
-      theme='{{theme}}'
-    ></giscus-widget>
+@if (showComments) {
+  <div (click)='toggleComments()'
+    [class]="isExpanded ? 'btn reverse-btn' : 'btn expand-btn'">{{ !isExpanded ? 'View comments' : 'Hide comments' }}
   </div>
-</div>
+}
+@if (!showComments || isExpanded) {
+  <div class='comment'>
+    <div class='comment-list' id='comments'>
+      <giscus-widget
+        [attr.theme]='theme'
+        category='Comments'
+        categoryid='DIC_kwDOHo0zis4CXkRl'
+        data-strict='1'
+        emitmetadata='0'
+        id='comments'
+        inputposition='top'
+        lang='en'
+        loading='lazy'
+        mapping='og:title'
+        reactionsenabled='1'
+        repo='vendelieu/blog-frontend'
+        repoid='R_kgDOHo0zig'
+        theme='{{theme}}'
+      ></giscus-widget>
+    </div>
+  </div>
+}
